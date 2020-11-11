@@ -14,6 +14,8 @@ import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import {enableScreens} from 'react-native-screens';
 import Tabbar from './src/components/Tabbar';
 import Editor from './src/screens/Editor';
+import Publish from './src/screens/Publish';
+import {getColorScheme} from './src/helpers';
 
 enableScreens();
 
@@ -23,61 +25,42 @@ const HomeNav = createNativeStackNavigator();
 const ChallengesNav = createNativeStackNavigator();
 const EditorNav = createNativeStackNavigator();
 
-const HomeStack = () => {
-  return (
-    <HomeNav.Navigator>
-      <HomeNav.Screen name="Home" component={Home} />
-    </HomeNav.Navigator>
-  );
-};
+const HomeStack = () => (
+  <HomeNav.Navigator>
+    <HomeNav.Screen name="Home" component={Home} />
+  </HomeNav.Navigator>
+);
 
-const ChallengesStack = () => {
-  return (
-    <ChallengesNav.Navigator>
-      <ChallengesNav.Screen name="Challenges" component={Challenges} />
-    </ChallengesNav.Navigator>
-  );
-};
+const ChallengesStack = () => (
+  <ChallengesNav.Navigator>
+    <ChallengesNav.Screen name="Challenges" component={Challenges} />
+  </ChallengesNav.Navigator>
+);
 
-const TabsStack = () => {
-  return (
-    <Tab.Navigator tabBar={Tabbar}>
-      <Tab.Screen name="Home" component={HomeStack} />
-      <Tab.Screen name="Editor" component={Editor} />
-      <Tab.Screen name="Challenges" component={ChallengesStack} />
-    </Tab.Navigator>
-  );
-};
+const TabsStack = () => (
+  <Tab.Navigator tabBar={Tabbar}>
+    <Tab.Screen name="Home" component={HomeStack} />
+    <Tab.Screen name="Editor" component={Editor} />
+    <Tab.Screen name="Challenges" component={ChallengesStack} />
+  </Tab.Navigator>
+);
 
-const EditorStack = () => {
-  return (
-    <EditorNav.Navigator>
-      <EditorNav.Screen name="Edit" component={Editor} />
-    </EditorNav.Navigator>
-  );
-};
+const EditorStack = () => (
+  <EditorNav.Navigator>
+    <EditorNav.Screen
+      name="Edit"
+      component={Editor}
+      options={{headerShown: false}}
+    />
+    <EditorNav.Screen name="Publish" component={Publish} />
+  </EditorNav.Navigator>
+);
 
 const App = () => {
   const scheme = useColorScheme();
   const appStateStore = useContext(AppState);
 
-  let theme;
-  let statusBarStyle;
-  if (appStateStore.theme === Themes.automatic) {
-    if (scheme === 'dark') {
-      theme = darkTheme;
-      statusBarStyle = 'light-content';
-    } else {
-      theme = lightTheme;
-      statusBarStyle = 'dark-content';
-    }
-  } else if (appStateStore.theme === Themes.light) {
-    theme = lightTheme;
-    statusBarStyle = 'dark-content';
-  } else if (appStateStore.theme === Themes.dark) {
-    theme = darkTheme;
-    statusBarStyle = 'light-content';
-  }
+  const {theme, statusBarStyle} = getColorScheme(appStateStore.theme, scheme);
 
   return (
     <AppearanceProvider>

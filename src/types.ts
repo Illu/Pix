@@ -3,3 +3,7 @@ export enum Themes {
   light,
   dark,
 }
+
+export interface Pixel {
+  color: string;
+}

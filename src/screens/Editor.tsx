@@ -1,20 +1,34 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import {Text, ScrollView, Image, Pressable} from 'react-native';
+import { useNavigation } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import Canvas from '../components/editor/Canvas';
+import CustomHeader from '../components/CustomHeader';
+import { PIXEL_COUNT } from '../constants';
+import { DEFAULT_EDITOR_BACKGROUND_COLOR, DEFAULT_EDITOR_COLOR_PALETTE } from '../theme';
+
+const initialData = Array.apply(null, { length: PIXEL_COUNT * PIXEL_COUNT }).map(
+  () => {
+    return { color: DEFAULT_EDITOR_BACKGROUND_COLOR };
+  },
+);
 
 const Editor = () => {
   const navigation = useNavigation();
+
+  const [canvasData, setCanvasData] = useState(initialData);
+  const [currentColor, setCurrentColor] = useState(DEFAULT_EDITOR_COLOR_PALETTE[0]);
+  const [backgroundColor, setBackgroundColor] = useState(DEFAULT_EDITOR_BACKGROUND_COLOR);
+
   return (
-    <ScrollView>
-      <Text style={{fontSize: 45}}>EDITOR</Text>
-      <Image
-        source={{uri: 'http://placekitten.com/800/800'}}
-        style={{height: 300, width: 300}}
+    <SafeAreaView>
+      <CustomHeader action={() => navigation.navigate('Publish')} />
+      <Canvas
+        data={canvasData}
+        updateData={setCanvasData}
+        backgroundColor={backgroundColor}
+        currentColor={currentColor}
       />
-      <Pressable onPress={navigation.goBack}>
-        <Text>go back</Text>
-      </Pressable>
-    </ScrollView>
+    </SafeAreaView>
   );
 };
 
