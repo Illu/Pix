@@ -1,11 +1,15 @@
 import React from 'react';
-import {Text, View} from 'react-native';
+import {Text, ScrollView, Image} from 'react-native';
 
 const Home = () => {
   return (
-    <View>
-      <Text style={{fontSize: 34}}>Hello</Text>
-    </View>
+    <ScrollView>
+      <Text style={{fontSize: 34}}>Hello 🦦</Text>
+      <Image
+        source={{uri: 'http://placekitten.com/600/600'}}
+        style={{height: 300, width: 300}}
+      />
+    </ScrollView>
   );
 };
 
