@@ -14,6 +14,7 @@ export enum SORT {
 
 export const TABBAR_HEIGHT = 70;
 export const HEADER_HEIGHT = 50;
+export const BUTTON_WIDTH = 275;
 
 export const PIXEL_COUNT = 16;
 

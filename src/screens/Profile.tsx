@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
-import {Dimensions, ScrollView} from 'react-native';
+import { Dimensions, ScrollView } from 'react-native';
 import Avatar from '../components/Avatar';
-import {SCREEN_PADDING} from '../theme';
+import { SCREEN_PADDING } from '../theme';
 import IconButton from '../components/IconButton';
-import {useState} from 'react';
+import { useState } from 'react';
 import PixelArt from '../components/PixelArt';
+import { observer } from 'mobx-react-lite';
+import User from '../stores/User';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.colors.card};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const Row = styled.View`
@@ -45,8 +47,9 @@ const PostWrapper = styled.View`
   justify-content: space-between;
 `;
 
-const Profile = () => {
+const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
+  const userStore = useContext(User);
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
@@ -75,15 +78,15 @@ const Profile = () => {
       </HeaderWrapper>
       <ScrollView>
         <PostWrapper>
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
+          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
+          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
+          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
+          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
         </PostWrapper>
       </ScrollView>
     </>
   );
-};
+});
 
 export default Profile;

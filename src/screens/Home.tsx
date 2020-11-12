@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ScrollView} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
 import {SORT} from '../constants';
@@ -13,7 +13,7 @@ import {useNavigation} from '@react-navigation/native';
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({theme}) => theme.colors.card};
+  background: ${({theme}) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
