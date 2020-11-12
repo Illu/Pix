@@ -1,17 +1,17 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Pixel } from '../../types';
-import { PanResponder } from 'react-native';
+import {Pixel} from '../../types';
+import {PanResponder} from 'react-native';
 import {
   EDITOR_BORDER_SIZE,
   HEADER_HEIGHT,
   PIXEL_COUNT,
   PIXEL_SIZE,
 } from '../../constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Wrapper = styled.View`
-  background: ${({ backgroundColor }) => backgroundColor};
+  background: ${({backgroundColor}) => backgroundColor};
   width: 100%;
   padding: ${EDITOR_BORDER_SIZE}px;
 `;
@@ -25,7 +25,7 @@ const Grid = styled.View`
 `;
 
 const PixelBlock = styled.View`
-  background: ${({ color }) => color};
+  background: ${({color}) => color};
   height: ${PIXEL_SIZE}px;
   width: ${PIXEL_SIZE}px;
 `;
@@ -37,7 +37,7 @@ interface Props {
   currentColor: string;
 }
 
-const Canvas = ({ backgroundColor, data, updateData, currentColor }: Props) => {
+const Canvas = ({backgroundColor, data, updateData, currentColor}: Props) => {
   const insets = useSafeAreaInsets();
 
   const updateCanvas = (evt) => {
@@ -57,7 +57,7 @@ const Canvas = ({ backgroundColor, data, updateData, currentColor }: Props) => {
       return;
     }
     const newData = data;
-    newData[arrayPosition] = { color: currentColor };
+    newData[arrayPosition] = {color: currentColor};
     updateData([...newData]);
   };
 

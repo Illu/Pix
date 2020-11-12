@@ -1,25 +1,25 @@
-import React, {useContext} from 'react';
-import {ThemeProvider} from 'styled-components/native';
-import {Themes} from './src/types';
-import {StatusBar} from 'react-native';
-import {darkTheme, lightTheme} from './src/theme';
-import {NavigationContainer} from '@react-navigation/native';
-import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
+import React, { useContext } from 'react';
+import { ThemeProvider } from 'styled-components/native';
+import { StatusBar, Button } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import AppState from './src/stores/AppState';
 import Home from './src/screens/Home';
 import Challenges from './src/screens/Challenges';
-import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {createStackNavigator} from '@react-navigation/stack';
-import {createNativeStackNavigator} from 'react-native-screens/native-stack';
-import {enableScreens} from 'react-native-screens';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import { enableScreens } from 'react-native-screens';
 import Tabbar from './src/components/Tabbar';
 import Editor from './src/screens/Editor';
 import Publish from './src/screens/Publish';
-import {getColorScheme} from './src/helpers';
+import { getColorScheme } from './src/helpers';
+import Profile from './src/screens/Profile';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import Settings from './src/screens/Settings';
 
 enableScreens();
 
-const RootStack = createStackNavigator();
+const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 const HomeNav = createNativeStackNavigator();
 const ChallengesNav = createNativeStackNavigator();
@@ -27,7 +27,24 @@ const EditorNav = createNativeStackNavigator();
 
 const HomeStack = () => (
   <HomeNav.Navigator>
-    <HomeNav.Screen name="Home" component={Home} />
+    <HomeNav.Screen
+      name="Home"
+      options={{ headerShown: false }}
+      component={Home}
+    />
+    <HomeNav.Screen
+      name="Profile"
+      component={Profile}
+      options={({ navigation, route }) => ({
+        headerRight: () => (
+          <Button
+            onPress={() => navigation.navigate('Settings')}
+            title="Settings"
+          />
+        ),
+      })}
+    />
+    <HomeNav.Screen name="Settings" component={Settings} />
   </HomeNav.Navigator>
 );
 
@@ -50,7 +67,7 @@ const EditorStack = () => (
     <EditorNav.Screen
       name="Edit"
       component={Editor}
-      options={{headerShown: false}}
+      options={{ headerShown: false }}
     />
     <EditorNav.Screen name="Publish" component={Publish} />
   </EditorNav.Navigator>
@@ -60,26 +77,28 @@ const App = () => {
   const scheme = useColorScheme();
   const appStateStore = useContext(AppState);
 
-  const {theme, statusBarStyle} = getColorScheme(appStateStore.theme, scheme);
+  const { theme, statusBarStyle } = getColorScheme(appStateStore.theme, scheme);
 
   return (
     <AppearanceProvider>
       <ThemeProvider theme={theme}>
-        <NavigationContainer>
-          <StatusBar barStyle={statusBarStyle} />
-          <RootStack.Navigator mode="modal">
-            <RootStack.Screen
-              name="Main"
-              component={TabsStack}
-              options={{headerShown: false}}
-            />
-            <RootStack.Screen
-              name="EditorModal"
-              options={{headerShown: false}}
-              component={EditorStack}
-            />
-          </RootStack.Navigator>
-        </NavigationContainer>
+        <SafeAreaProvider>
+          <NavigationContainer>
+            <StatusBar barStyle={statusBarStyle} />
+            <RootStack.Navigator mode="modal">
+              <RootStack.Screen
+                name="Main"
+                component={TabsStack}
+                options={{ headerShown: false }}
+              />
+              <RootStack.Screen
+                name="EditorModal"
+                options={{ headerShown: false }}
+                component={EditorStack}
+              />
+            </RootStack.Navigator>
+          </NavigationContainer>
+        </SafeAreaProvider>
       </ThemeProvider>
     </AppearanceProvider>
   );

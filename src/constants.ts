@@ -1,10 +1,15 @@
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 
 export enum STATES {
   IDLE,
   LOADING,
   SUCCESS,
   ERROR,
+}
+
+export enum SORT {
+  TRENDING,
+  NEW,
 }
 
 export const TABBAR_HEIGHT = 70;
