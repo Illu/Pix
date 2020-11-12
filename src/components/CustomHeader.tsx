@@ -13,7 +13,7 @@ const Wrapper = styled.View`
   height: ${({insetTop}) => HEADER_HEIGHT + insetTop}px;
   padding: 0 10px;
   padding-top: ${({insetTop}) => insetTop}px;
-  background: ${({theme}) => theme.colors.card};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const Title = styled.Text`

@@ -16,7 +16,7 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.colors.card};
+  background: ${({theme}) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 

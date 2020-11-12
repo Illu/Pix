@@ -1,0 +1,81 @@
+import { useNavigation, useTheme } from '@react-navigation/native';
+import React from 'react';
+import { useState } from 'react';
+import { Text } from 'react-native';
+import styled from 'styled-components/native';
+import Button from '../components/Button';
+import { BUTTON_WIDTH } from '../constants';
+
+const Wrapper = styled.View`
+  align-items: center;
+  justify-content: center;
+  background: ${({ theme }) => theme.secondary};
+  flex: 1;
+`;
+
+const TextInput = styled.TextInput`
+  border-radius: 4px;
+  background: ${({ theme }) => theme.background};
+  padding: 10px;
+  width: ${BUTTON_WIDTH}px;
+  font-size: 12px;
+  margin-bottom: 10px;
+`;
+
+const IntroText = styled.Text`
+  width: ${BUTTON_WIDTH}px;
+  text-align: center;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 20px;
+  margin-bottom: 30px;
+`;
+
+const Label = styled.Text`
+  font-weight: 600;
+  font-size: 11px;
+  margin: 5px 0;
+  width: ${BUTTON_WIDTH}px;
+`;
+
+const AccountCreation = () => {
+  const { colors } = useTheme();
+  const navigation = useNavigation();
+
+  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
+
+  return (
+    <Wrapper>
+      <IntroText>
+        Create your account and enjoy the app and its community !
+      </IntroText>
+      <Label>First, choose your username</Label>
+      <TextInput
+        value={username}
+        placeholderTextColor={colors.secondaryText}
+        placeholder="Your username"
+        autoCapitalize="none"
+        onChangeText={setUsername}
+        autocompleteType="username"
+      />
+      <Label>Your email</Label>
+      <TextInput
+        placeholder="Your email"
+        value={email}
+        autoCapitalize="none"
+        placeholderTextColor={colors.secondaryText}
+        onChangeText={setEmail}
+        autoCompleteType="email"
+      />
+      <Button
+        onPress={() =>
+          navigation.navigate('AccountPasswordCreation', { username, email })
+        }
+        title="Next"
+      />
+    </Wrapper>
+  );
+};
+
+export default AccountCreation;

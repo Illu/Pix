@@ -26,7 +26,7 @@ const TabbarComponent = ({props}) => {
   const {colors} = useTheme();
 
   return (
-    <View style={{backgroundColor: colors.card}}>
+    <View style={{backgroundColor: colors.secondary}}>
       <Wrapper insetBottom={insets.bottom}>
         {props.state.routeNames.map((route, index) =>
           index !== 1 ? (
