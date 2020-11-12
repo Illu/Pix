@@ -1,16 +1,16 @@
-import { makeObservable, observable, action } from 'mobx';
-import { createContext } from 'react';
+import {makeObservable, observable, action} from 'mobx';
+import {createContext} from 'react';
 import auth from '@react-native-firebase/auth';
-import { STATES } from '../constants';
+import {STATES} from '../constants';
 
 class User {
   constructor() {
-    console.log("lo")
     auth().onAuthStateChanged((user) => this.onAuthStateChanged(user));
+    auth().onUserChanged((user) => this.onAuthStateChanged(user));
     makeObservable(this, {
       state: observable,
       user: observable,
-      onAuthStateChanged: action
+      onAuthStateChanged: action,
     });
   }
 
@@ -20,7 +20,6 @@ class User {
   onAuthStateChanged(user) {
     this.user = user;
     this.state = STATES.SUCCESS;
-    console.log("this.user", this, user)
   }
 }
 

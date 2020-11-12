@@ -1,21 +1,21 @@
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 import auth from '@react-native-firebase/auth';
 
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -41,7 +41,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   const login = () => {
     setLoading(true);
@@ -49,7 +49,6 @@ const Login = () => {
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         console.log('User loged in!');
-        alert('ok')
         // navigate success
       })
       .catch((error) => {

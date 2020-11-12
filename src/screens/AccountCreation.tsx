@@ -1,21 +1,21 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import { useState } from 'react';
-import { Text } from 'react-native';
+import {useState} from 'react';
+import {Text} from 'react-native';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -39,7 +39,7 @@ const Label = styled.Text`
 `;
 
 const AccountCreation = () => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
@@ -70,7 +70,7 @@ const AccountCreation = () => {
       />
       <Button
         onPress={() =>
-          navigation.navigate('AccountPasswordCreation', { username, email })
+          navigation.navigate('AccountPasswordCreation', {username, email})
         }
         title="Next"
       />

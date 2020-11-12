@@ -3,6 +3,9 @@ import React from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
 import {BUTTON_WIDTH} from '../constants';
+import {AppleButton} from '@invertase/react-native-apple-authentication';
+import auth from '@react-native-firebase/auth';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 const Wrapper = styled.View`
   align-items: center;
@@ -22,6 +25,29 @@ const IntroText = styled.Text`
 `;
 
 const LoginSelection = () => {
+  const onAppleButtonPress = async () => {
+    // Start the sign-in request
+    const appleAuthRequestResponse = await appleAuth.performRequest({
+      requestedOperation: appleAuth.Operation.LOGIN,
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+    });
+
+    // Ensure Apple returned a user identityToken
+    if (!appleAuthRequestResponse.identityToken) {
+      throw 'Apple Sign-In failed - no identify token returned';
+    }
+
+    // Create a Firebase credential from the response
+    const {identityToken, nonce} = appleAuthRequestResponse;
+    const appleCredential = auth.AppleAuthProvider.credential(
+      identityToken,
+      nonce,
+    );
+
+    // Sign the user in with the credential
+    return auth().signInWithCredential(appleCredential);
+  };
+
   const navigation = useNavigation();
   return (
     <Wrapper>
@@ -38,6 +64,19 @@ const LoginSelection = () => {
         onPress={() => navigation.navigate('Login')}
         fill={false}
         title="Sign in"
+      />
+
+      <AppleButton
+        buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+        buttonType={AppleButton.Type.SIGN_IN}
+        style={{
+          marginTop: 10,
+          width: BUTTON_WIDTH,
+          height: 45,
+        }}
+        onPress={() =>
+          onAppleButtonPress().then(() => alert('Apple sign-in complete!'))
+        }
       />
     </Wrapper>
   );
