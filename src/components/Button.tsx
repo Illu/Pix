@@ -1,23 +1,23 @@
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
-import { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {ActivityIndicator} from 'react-native';
+import {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import styled from 'styled-components/native';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 
 const Wrapper = styled.Pressable`
   width: ${BUTTON_WIDTH}px;
   padding: 10px;
-  background: ${({ theme, fill }) => (fill ? theme.accent : theme.secondary)};
+  background: ${({theme, fill}) => (fill ? theme.accent : theme.secondary)};
   border-radius: 4px;
   align-items: center;
-  border-width: ${({ fill }) => (fill ? 0 : 1)}px;
-  border-color: ${({ theme }) => theme.secondaryText};
+  border-width: ${({fill}) => (fill ? 0 : 1)}px;
+  border-color: ${({theme}) => theme.secondaryText};
 `;
 
 const Title = styled.Text`
   font-weight: 600;
-  color: ${({ theme, fill }) => (fill ? theme.secondary : theme.secondaryText)};
+  color: ${({theme, fill}) => (fill ? theme.secondary : theme.secondaryText)};
 `;
 
 interface Props {
@@ -37,17 +37,23 @@ const Button = ({
   loading = false,
   disabled = false,
 }: Props) => {
-
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
-    <Wrapper style={{ ...style }} onPress={onPress} fill={fill} disabled={disabled || loading}>
+    <Wrapper
+      style={{...style}}
+      onPress={onPress}
+      fill={fill}
+      disabled={disabled || loading}>
       {loading ? (
-        <ActivityIndicator color={fill ? colors.secondary : colors.secondaryText} />
+        <ActivityIndicator
+          color={fill ? colors.secondary : colors.secondaryText}
+        />
       ) : (
-          <Title fill={fill}>{title}</Title>
-        )}
-    </Wrapper>)
+        <Title fill={fill}>{title}</Title>
+      )}
+    </Wrapper>
+  );
 };
 
 export default Button;

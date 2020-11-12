@@ -1,21 +1,21 @@
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 import auth from '@react-native-firebase/auth';
 
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -42,7 +42,7 @@ const ErrorText = styled.Text`
   color: red;
 `;
 
-const AccountPasswordCreation = ({ route }) => {
+const AccountPasswordCreation = ({route}) => {
   const navigation = useNavigation();
 
   const [password, setPassword] = useState('');
@@ -50,7 +50,7 @@ const AccountPasswordCreation = ({ route }) => {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const { email, username } = route.params;
+  const {email, username} = route.params;
 
   const createAccount = () => {
     if (password !== passwordVerification) {
@@ -61,7 +61,11 @@ const AccountPasswordCreation = ({ route }) => {
     auth()
       .createUserWithEmailAndPassword(email, password)
       .then(() => {
-        console.log('User account created & signed in!');
+        console.log('User account created & signed in!, setting username...');
+        const update = {
+          displayName: username,
+        };
+        return auth().currentUser.updateProfile(update);
         // navigate success
       })
       .catch((error) => {
@@ -100,12 +104,16 @@ const AccountPasswordCreation = ({ route }) => {
         }}
         secureTextEntry
       />
-      <Button onPress={createAccount} loading={loading} title="Create my account" />
+      <Button
+        onPress={createAccount}
+        loading={loading}
+        title="Create my account"
+      />
       <Button
         onPress={navigation.goBack}
         fill={false}
         title="Previous"
-        style={{ marginTop: 10 }}
+        style={{marginTop: 10}}
       />
       <ErrorText>{error}</ErrorText>
     </Wrapper>

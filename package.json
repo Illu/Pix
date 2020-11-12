@@ -13,6 +13,7 @@
     "prettier-check": "prettier --debug-check '**/*.{js,jsx,ts,tsx,vue,json,css,scss,less,md,mdx,graphql}'"
   },
   "dependencies": {
+    "@invertase/react-native-apple-authentication": "^2.1.0",
     "@react-native-community/async-storage": "^1.12.1",
     "@react-native-community/masked-view": "^0.1.10",
     "@react-native-firebase/app": "^9.0.0",

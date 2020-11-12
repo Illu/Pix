@@ -1,17 +1,18 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
-import { Dimensions, ScrollView } from 'react-native';
+import {Dimensions, ScrollView} from 'react-native';
 import Avatar from '../components/Avatar';
-import { SCREEN_PADDING } from '../theme';
+import {SCREEN_PADDING} from '../theme';
 import IconButton from '../components/IconButton';
-import { useState } from 'react';
+import {useState} from 'react';
 import PixelArt from '../components/PixelArt';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import User from '../stores/User';
+import {useNavigation} from '@react-navigation/native';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const Row = styled.View`
@@ -50,6 +51,12 @@ const PostWrapper = styled.View`
 const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
   const userStore = useContext(User);
+  const navigation = useNavigation();
+
+  if (!userStore.user) {
+    navigation.popToTop();
+    return;
+  }
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
@@ -59,13 +66,17 @@ const Profile = observer(() => {
         <Row>
           <Avatar size={119} />
           <InfosWrapper>
-            <UserName>JuanDeLaVega777</UserName>
+            <UserName>{userStore.user.displayName}</UserName>
             <PostsInfos>12 posts</PostsInfos>
           </InfosWrapper>
+          <IconButton
+            title="edit"
+            onPress={() => navigation.navigate('EditProfile')}
+          />
         </Row>
         <ButtonsRow>
           <IconButton
-            title="Posts"
+            title="Published"
             onPress={() => setShowDrafts(false)}
             active={!showDrafts}
           />
@@ -78,11 +89,11 @@ const Profile = observer(() => {
       </HeaderWrapper>
       <ScrollView>
         <PostWrapper>
-          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
-          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
-          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
-          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
-          <PixelArt size={postSize} rounded style={{ marginBottom: 10 }} />
+          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
         </PostWrapper>
       </ScrollView>
     </>

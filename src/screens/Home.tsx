@@ -1,6 +1,6 @@
 import React from 'react';
 import {useState} from 'react';
-import {ScrollView} from 'react-native';
+import {ScrollView, Text} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
 import {SORT} from '../constants';
@@ -10,6 +10,9 @@ import IconButton from '../components/IconButton';
 import Avatar from '../components/Avatar';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import {useNavigation} from '@react-navigation/native';
+import {useContext} from 'react';
+import User from '../stores/User';
+import {observer} from 'mobx-react-lite';
 
 const Row = styled.View`
   flex-direction: row;
@@ -19,8 +22,9 @@ const Row = styled.View`
   justify-content: center;
 `;
 
-const Home = () => {
+const Home = observer(() => {
   const navigation = useNavigation();
+  const userStore = useContext(User);
   const [sort, setSort] = useState(SORT.TRENDING);
 
   const UserAvatar = (
@@ -29,9 +33,18 @@ const Home = () => {
     </Pressable>
   );
 
+  const OptionsLink = (
+    <Pressable onPress={() => navigation.navigate('Settings')}>
+      <Text>Settings</Text>
+    </Pressable>
+  );
+
   return (
     <>
-      <CustomHeader title="Pix" rightComponent={UserAvatar} />
+      <CustomHeader
+        title="Pix"
+        rightComponent={userStore.user ? UserAvatar : OptionsLink}
+      />
       <Row>
         <IconButton
           title="Trending"
@@ -50,6 +63,6 @@ const Home = () => {
       </ScrollView>
     </>
   );
-};
+});
 
 export default Home;

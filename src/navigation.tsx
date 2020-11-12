@@ -13,6 +13,7 @@ import LoginSelection from './screens/LoginSelection';
 import Profile from './screens/Profile';
 import AccountCreation from './screens/AccountCreation';
 import AccountPasswordCreation from './screens/AccountPasswordCreation';
+import EditProfile from './screens/settings/EditProfile';
 
 export const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -40,6 +41,7 @@ const HomeStack = () => (
         ),
       })}
     />
+    <HomeNav.Screen name="EditProfile" component={EditProfile} />
     <HomeNav.Screen name="Settings" component={Settings} />
   </HomeNav.Navigator>
 );
