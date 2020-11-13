@@ -1,0 +1,15 @@
+export {default as TrendingUp} from './trendingup.svg';
+export {default as Add} from './add.svg';
+export {default as Home} from './home.svg';
+export {default as Challenges} from './challenges.svg';
+export {default as Star} from './star.svg';
+export {default as Edit} from './edit.svg';
+export {default as Settings} from './settings.svg';
+export {default as Heart} from './heart.svg';
+export {default as HeartFull} from './heartfull.svg';
+export {default as Account} from './account.svg';
+export {default as Palette} from './palette.svg';
+export {default as Infos} from './infos.svg';
+export {default as Logout} from './logout.svg';
+export {default as Money} from './money.svg';
+export {default as Help} from './help.svg';

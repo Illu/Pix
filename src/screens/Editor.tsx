@@ -69,11 +69,13 @@ const Editor = () => {
         />
         <Row>
           <IconButton
+            icon="Star"
             title="Draw"
             onPress={() => setDisplayDrawTab(true)}
             active={displayDrawTab}
           />
           <IconButton
+            icon="Star"
             title="Background"
             onPress={() => setDisplayDrawTab(false)}
             active={!displayDrawTab}

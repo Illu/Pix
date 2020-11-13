@@ -8,7 +8,8 @@ import {useState} from 'react';
 import PixelArt from '../components/PixelArt';
 import {observer} from 'mobx-react-lite';
 import User from '../stores/User';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import Icon from '../components/Icon';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -33,6 +34,11 @@ const PostsInfos = styled.Text`
 
 const InfosWrapper = styled.View`
   margin-left: 10px;
+  flex: 1;
+`;
+
+const EditButton = styled.TouchableOpacity`
+  align-self: flex-start;
 `;
 
 const ButtonsRow = styled.View`
@@ -52,6 +58,7 @@ const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
   const userStore = useContext(User);
   const navigation = useNavigation();
+  const {colors} = useTheme();
 
   useEffect(() => {
     userStore.loadPosts();
@@ -71,23 +78,27 @@ const Profile = observer(() => {
           <Avatar size={119} />
           <InfosWrapper>
             <UserName>{userStore.user.displayName}</UserName>
-            <PostsInfos>12 posts</PostsInfos>
+            <PostsInfos>
+              {userStore.posts?.length || 'no'} post
+              {userStore.posts?.length > 1 ? 's' : ''}
+            </PostsInfos>
           </InfosWrapper>
-          <IconButton
-            title="edit"
-            onPress={() => navigation.navigate('EditProfile')}
-          />
+          <EditButton onPress={() => navigation.navigate('EditProfile')}>
+            <Icon name="Edit" color={colors.text} size={24} />
+          </EditButton>
         </Row>
         <ButtonsRow>
           <IconButton
             title="Published"
             onPress={() => setShowDrafts(false)}
             active={!showDrafts}
+            icon="Star"
           />
           <IconButton
             title="Drafts"
             onPress={() => setShowDrafts(true)}
             active={showDrafts}
+            icon="Star"
           />
         </ButtonsRow>
       </HeaderWrapper>

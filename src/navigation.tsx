@@ -1,5 +1,5 @@
 import React from 'react';
-import {Button} from 'react-native';
+import {Button, TouchableOpacity} from 'react-native';
 import Home from './screens/Home';
 import Challenges from './screens/Challenges';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
@@ -14,6 +14,8 @@ import Profile from './screens/Profile';
 import AccountCreation from './screens/AccountCreation';
 import AccountPasswordCreation from './screens/AccountPasswordCreation';
 import EditProfile from './screens/settings/EditProfile';
+import Icon from './components/Icon';
+import {useTheme} from '@react-navigation/native';
 
 export const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -22,29 +24,32 @@ const ChallengesNav = createNativeStackNavigator();
 const EditorNav = createNativeStackNavigator();
 const LoginNav = createNativeStackNavigator();
 
-const HomeStack = () => (
-  <HomeNav.Navigator>
-    <HomeNav.Screen
-      name="Home"
-      options={{headerShown: false}}
-      component={Home}
-    />
-    <HomeNav.Screen
-      name="Profile"
-      component={Profile}
-      options={({navigation, route}) => ({
-        headerRight: () => (
-          <Button
-            onPress={() => navigation.navigate('Settings')}
-            title="Settings"
-          />
-        ),
-      })}
-    />
-    <HomeNav.Screen name="EditProfile" component={EditProfile} />
-    <HomeNav.Screen name="Settings" component={Settings} />
-  </HomeNav.Navigator>
-);
+const HomeStack = () => {
+  const {colors} = useTheme();
+
+  return (
+    <HomeNav.Navigator>
+      <HomeNav.Screen
+        name="Home"
+        options={{headerShown: false}}
+        component={Home}
+      />
+      <HomeNav.Screen
+        name="Profile"
+        component={Profile}
+        options={({navigation, route}) => ({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+              <Icon name="Settings" size={25} color={colors.text} />
+            </TouchableOpacity>
+          ),
+        })}
+      />
+      <HomeNav.Screen name="EditProfile" component={EditProfile} />
+      <HomeNav.Screen name="Settings" component={Settings} />
+    </HomeNav.Navigator>
+  );
+};
 
 const ChallengesStack = () => (
   <ChallengesNav.Navigator>
