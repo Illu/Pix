@@ -1,9 +1,8 @@
-import React from 'react';
-import {useState} from 'react';
-import {ScrollView, Text} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, Text, View, RefreshControl} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
-import {SORT} from '../constants';
+import {SORT, STATES} from '../constants';
 import {SCREEN_PADDING} from '../theme';
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
@@ -13,6 +12,7 @@ import {useNavigation} from '@react-navigation/native';
 import {useContext} from 'react';
 import User from '../stores/User';
 import {observer} from 'mobx-react-lite';
+import Feed from '../stores/Feed';
 
 const Row = styled.View`
   flex-direction: row;
@@ -25,7 +25,12 @@ const Row = styled.View`
 const Home = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
+  const feedStore = useContext(Feed);
   const [sort, setSort] = useState(SORT.TRENDING);
+
+  useEffect(() => {
+    feedStore.loadFeed();
+  }, []);
 
   const UserAvatar = (
     <Pressable onPress={() => navigation.navigate('Profile')}>
@@ -57,9 +62,27 @@ const Home = observer(() => {
           active={sort === SORT.NEW}
         />
       </Row>
-      <ScrollView contentContainerStyle={{padding: SCREEN_PADDING}}>
-        <FeedCard />
-        <FeedCard />
+      <ScrollView
+        contentContainerStyle={{padding: SCREEN_PADDING}}
+        refreshControl={
+          <RefreshControl
+            refreshing={feedStore.state === STATES.LOADING}
+            onRefresh={() => feedStore.loadFeed()}
+          />
+        }>
+        {feedStore.feed?.map((post) => (
+          <View key={post.id}>
+            <FeedCard
+              data={post.data.pixels}
+              backgroundColor={post.data.backgroundColor}
+              userName={post.user.displayName}
+              likes={post.likes}
+              onLike={() =>
+                feedStore.likePost(post.id, userStore.user.uid, post.likes)
+              }
+            />
+          </View>
+        ))}
       </ScrollView>
     </>
   );

@@ -16,6 +16,10 @@ const Wrapper = styled.View`
   background: ${({theme}) => theme.secondary};
 `;
 
+const SectionWrapper = styled.View`
+  width: 33%;
+`;
+
 const Title = styled.Text`
   font-weight: 600;
   font-size: 15px;
@@ -45,25 +49,31 @@ const CustomHeader = ({
 
   return (
     <Wrapper insetTop={insets.top}>
-      {leftComponent ? (
-        leftComponent
-      ) : back ? (
-        <Pressable onPress={navigation.goBack}>
-          <Text>🙅‍♀️</Text>
-        </Pressable>
-      ) : (
-        <EmptyPlaceholder />
-      )}
-      <Title>{title}</Title>
-      {rightComponent ? (
-        rightComponent
-      ) : action ? (
-        <Pressable onPress={action}>
-          <Text>👉</Text>
-        </Pressable>
-      ) : (
-        <EmptyPlaceholder />
-      )}
+      <SectionWrapper>
+        {leftComponent ? (
+          leftComponent
+        ) : back ? (
+          <Pressable onPress={navigation.goBack}>
+            <Text>🙅‍♀️</Text>
+          </Pressable>
+        ) : (
+          <EmptyPlaceholder />
+        )}
+      </SectionWrapper>
+      <SectionWrapper style={{alignItems: 'center'}}>
+        <Title>{title}</Title>
+      </SectionWrapper>
+      <SectionWrapper style={{alignItems: 'flex-end'}}>
+        {rightComponent ? (
+          rightComponent
+        ) : action ? (
+          <Pressable onPress={action}>
+            <Text>👉</Text>
+          </Pressable>
+        ) : (
+          <EmptyPlaceholder />
+        )}
+      </SectionWrapper>
     </Wrapper>
   );
 };

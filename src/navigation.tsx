@@ -85,6 +85,10 @@ export const EditorStack = () => (
       component={Editor}
       options={{headerShown: false}}
     />
-    <EditorNav.Screen name="Publish" component={Publish} />
+    <EditorNav.Screen
+      name="Publish"
+      component={Publish}
+      options={{headerShown: false}}
+    />
   </EditorNav.Navigator>
 );

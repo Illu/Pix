@@ -1,17 +1,17 @@
-import React, { useRef } from 'react';
+import React, {useRef} from 'react';
 import styled from 'styled-components';
-import { Pixel } from '../../types';
-import { PanResponder } from 'react-native';
+import {Pixel} from '../../types';
+import {PanResponder} from 'react-native';
 import {
   EDITOR_BORDER_SIZE,
   HEADER_HEIGHT,
   PIXEL_COUNT,
   PIXEL_SIZE,
 } from '../../constants';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const Wrapper = styled.View`
-  background: ${({ backgroundColor }) => backgroundColor};
+  background: ${({backgroundColor}) => backgroundColor};
   width: 100%;
   padding: ${EDITOR_BORDER_SIZE}px;
 `;
@@ -25,11 +25,11 @@ const Grid = styled.View`
 `;
 
 const PixelBlock = styled.View`
-  background: ${({ color, backgroundColor }) =>
+  background: ${({color, backgroundColor}) =>
     color === 'none' ? backgroundColor : color};
   height: ${PIXEL_SIZE}px;
   width: ${PIXEL_SIZE}px;
-  ${({ displayGrid, index }) =>
+  ${({displayGrid, index}) =>
     displayGrid &&
     `
     border-bottom-width: 1px;
@@ -73,40 +73,38 @@ const Canvas = ({
       return;
     }
     const newData = data;
-    newData[arrayPosition] = { color: currentColor };
+    newData[arrayPosition] = {color: currentColor};
     updateData([...newData]);
-  }
+  };
 
+  const panResponder = PanResponder.create({
+    onStartShouldSetPanResponder: (evt, gestureState) => true,
+    onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
+    onMoveShouldSetPanResponder: (evt, gestureState) => true,
+    onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
-  const panResponder =
-    PanResponder.create({
-      onStartShouldSetPanResponder: (evt, gestureState) => true,
-      onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-      onMoveShouldSetPanResponder: (evt, gestureState) => true,
-      onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
-
-      onPanResponderGrant: updateCanvas,
-      onPanResponderMove: (evt, gestureState) => {
-        // The most recent move distance is gestureState.move{X,Y}
-        // The accumulated gesture distance since becoming responder is
-        // gestureState.d{x,y}
-        updateCanvas(evt);
-      },
-      onPanResponderTerminationRequest: (evt, gestureState) => true,
-      onPanResponderRelease: (evt, gestureState) => {
-        // The user has released all touches while this view is the
-        // responder. This typically means a gesture has succeeded
-      },
-      onPanResponderTerminate: (evt, gestureState) => {
-        // Another component has become the responder, so this gesture
-        // should be cancelled
-      },
-      onShouldBlockNativeResponder: (evt, gestureState) => {
-        // Returns whether this component should block native components from becoming the JS
-        // responder. Returns true by default. Is currently only supported on android.
-        return true;
-      },
-    })
+    onPanResponderGrant: updateCanvas,
+    onPanResponderMove: (evt, gestureState) => {
+      // The most recent move distance is gestureState.move{X,Y}
+      // The accumulated gesture distance since becoming responder is
+      // gestureState.d{x,y}
+      updateCanvas(evt);
+    },
+    onPanResponderTerminationRequest: (evt, gestureState) => true,
+    onPanResponderRelease: (evt, gestureState) => {
+      // The user has released all touches while this view is the
+      // responder. This typically means a gesture has succeeded
+    },
+    onPanResponderTerminate: (evt, gestureState) => {
+      // Another component has become the responder, so this gesture
+      // should be cancelled
+    },
+    onShouldBlockNativeResponder: (evt, gestureState) => {
+      // Returns whether this component should block native components from becoming the JS
+      // responder. Returns true by default. Is currently only supported on android.
+      return true;
+    },
+  });
   return (
     <Wrapper backgroundColor={backgroundColor}>
       <Grid {...panResponder.panHandlers}>
@@ -117,7 +115,7 @@ const Canvas = ({
             backgroundColor={backgroundColor}
             displayGrid={displayGrid}
             color={pixel.color}
-            style={{ borderColor: '#E5E5E5' }}
+            style={{borderColor: '#E5E5E5'}}
           />
         ))}
       </Grid>

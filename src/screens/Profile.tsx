@@ -1,6 +1,6 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import styled from 'styled-components';
-import {Dimensions, ScrollView} from 'react-native';
+import {Dimensions, ScrollView, View} from 'react-native';
 import Avatar from '../components/Avatar';
 import {SCREEN_PADDING} from '../theme';
 import IconButton from '../components/IconButton';
@@ -53,6 +53,10 @@ const Profile = observer(() => {
   const userStore = useContext(User);
   const navigation = useNavigation();
 
+  useEffect(() => {
+    userStore.loadPosts();
+  }, []);
+
   if (!userStore.user) {
     navigation.popToTop();
     return;
@@ -89,11 +93,17 @@ const Profile = observer(() => {
       </HeaderWrapper>
       <ScrollView>
         <PostWrapper>
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
-          <PixelArt size={postSize} rounded style={{marginBottom: 10}} />
+          {userStore.posts?.map((post, index) => (
+            <View key={index}>
+              <PixelArt
+                size={postSize}
+                data={post.data.pixels}
+                backgroundColor={post.data.backgroundColor}
+                rounded
+                style={{marginBottom: 10}}
+              />
+            </View>
+          ))}
         </PostWrapper>
       </ScrollView>
     </>
