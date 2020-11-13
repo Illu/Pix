@@ -1,14 +1,14 @@
 import React from 'react';
-import {Text, ScrollView, Image} from 'react-native';
+import { Text, ScrollView, Image } from 'react-native';
+import PixelArt from '../components/PixelArt';
 
-const Publish = () => {
+const Publish = ({ route }) => {
+  const { canvasData, backgroundColor } = route.params;
+
   return (
     <ScrollView>
-      <Text style={{fontSize: 34}}>Publish</Text>
-      <Image
-        source={{uri: 'http://placekitten.com/700/600'}}
-        style={{height: 300, width: 300}}
-      />
+      <Text style={{ fontSize: 34 }}>Publish</Text>
+      <PixelArt data={canvasData} backgroundColor={backgroundColor} size={200} />
     </ScrollView>
   );
 };

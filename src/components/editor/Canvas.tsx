@@ -1,17 +1,17 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import styled from 'styled-components';
-import {Pixel} from '../../types';
-import {PanResponder} from 'react-native';
+import { Pixel } from '../../types';
+import { PanResponder } from 'react-native';
 import {
   EDITOR_BORDER_SIZE,
   HEADER_HEIGHT,
   PIXEL_COUNT,
   PIXEL_SIZE,
 } from '../../constants';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
 const Wrapper = styled.View`
-  background: ${({backgroundColor}) => backgroundColor};
+  background: ${({ backgroundColor }) => backgroundColor};
   width: 100%;
   padding: ${EDITOR_BORDER_SIZE}px;
 `;
@@ -25,9 +25,18 @@ const Grid = styled.View`
 `;
 
 const PixelBlock = styled.View`
-  background: ${({color}) => color};
+  background: ${({ color, backgroundColor }) =>
+    color === 'none' ? backgroundColor : color};
   height: ${PIXEL_SIZE}px;
   width: ${PIXEL_SIZE}px;
+  ${({ displayGrid, index }) =>
+    displayGrid &&
+    `
+    border-bottom-width: 1px;
+    border-left-width: 1px;
+    border-right-width: ${index % PIXEL_COUNT === 15 ? 1 : 0}px;
+    border-top-width: ${index < PIXEL_COUNT ? 1 : 0}px;
+  `}
 `;
 
 interface Props {
@@ -35,9 +44,16 @@ interface Props {
   updateData(data: Pixel[]): void;
   data: Pixel[];
   currentColor: string;
+  displayGrid: boolean;
 }
 
-const Canvas = ({backgroundColor, data, updateData, currentColor}: Props) => {
+const Canvas = ({
+  backgroundColor,
+  data,
+  updateData,
+  currentColor,
+  displayGrid,
+}: Props) => {
   const insets = useSafeAreaInsets();
 
   const updateCanvas = (evt) => {
@@ -57,20 +73,19 @@ const Canvas = ({backgroundColor, data, updateData, currentColor}: Props) => {
       return;
     }
     const newData = data;
-    newData[arrayPosition] = {color: currentColor};
+    newData[arrayPosition] = { color: currentColor };
     updateData([...newData]);
-  };
+  }
 
-  const panResponder = React.useRef(
+
+  const panResponder =
     PanResponder.create({
       onStartShouldSetPanResponder: (evt, gestureState) => true,
       onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
       onMoveShouldSetPanResponder: (evt, gestureState) => true,
       onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
 
-      onPanResponderGrant: (evt, gestureState) => {
-        updateCanvas(evt);
-      },
+      onPanResponderGrant: updateCanvas,
       onPanResponderMove: (evt, gestureState) => {
         // The most recent move distance is gestureState.move{X,Y}
         // The accumulated gesture distance since becoming responder is
@@ -91,14 +106,19 @@ const Canvas = ({backgroundColor, data, updateData, currentColor}: Props) => {
         // responder. Returns true by default. Is currently only supported on android.
         return true;
       },
-    }),
-  ).current;
-
+    })
   return (
     <Wrapper backgroundColor={backgroundColor}>
       <Grid {...panResponder.panHandlers}>
         {data.map((pixel, index) => (
-          <PixelBlock key={index} color={pixel.color} />
+          <PixelBlock
+            key={index}
+            index={index}
+            backgroundColor={backgroundColor}
+            displayGrid={displayGrid}
+            color={pixel.color}
+            style={{ borderColor: '#E5E5E5' }}
+          />
         ))}
       </Grid>
     </Wrapper>
