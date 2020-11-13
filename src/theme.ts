@@ -1,6 +1,6 @@
 import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 
-export const DEFAULT_EDITOR_BACKGROUND_COLOR = '#E5E5E5';
+export const DEFAULT_EDITOR_BACKGROUND_COLOR = '#F4F4F4';
 export const DEFAULT_EDITOR_COLOR_PALETTE = [
   '#FF0000',
   '#2B2D42',
