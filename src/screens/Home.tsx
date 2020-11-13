@@ -1,5 +1,11 @@
 import React, {useEffect, useState} from 'react';
-import {ScrollView, Text, View, RefreshControl} from 'react-native';
+import {
+  ScrollView,
+  Text,
+  View,
+  RefreshControl,
+  TouchableOpacity,
+} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
 import {SORT, STATES} from '../constants';
@@ -8,11 +14,12 @@ import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
 import Avatar from '../components/Avatar';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import {useContext} from 'react';
 import User from '../stores/User';
 import {observer} from 'mobx-react-lite';
 import Feed from '../stores/Feed';
+import Icon from '../components/Icon';
 
 const Row = styled.View`
   flex-direction: row;
@@ -26,6 +33,7 @@ const Home = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
   const feedStore = useContext(Feed);
+  const {colors} = useTheme();
   const [sort, setSort] = useState(SORT.TRENDING);
 
   useEffect(() => {
@@ -33,14 +41,14 @@ const Home = observer(() => {
   }, []);
 
   const UserAvatar = (
-    <Pressable onPress={() => navigation.navigate('Profile')}>
+    <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
       <Avatar />
-    </Pressable>
+    </TouchableOpacity>
   );
 
   const OptionsLink = (
     <Pressable onPress={() => navigation.navigate('Settings')}>
-      <Text>Settings</Text>
+      <Icon name="Settings" size={25} color={colors.text} />
     </Pressable>
   );
 
@@ -55,11 +63,14 @@ const Home = observer(() => {
           title="Trending"
           onPress={() => setSort(SORT.TRENDING)}
           active={sort === SORT.TRENDING}
+          icon="TrendingUp"
         />
         <IconButton
           title="New"
           onPress={() => setSort(SORT.NEW)}
           active={sort === SORT.NEW}
+          color="yellow"
+          icon="Star"
         />
       </Row>
       <ScrollView
@@ -80,6 +91,7 @@ const Home = observer(() => {
               onLike={() =>
                 feedStore.likePost(post.id, userStore.user.uid, post.likes)
               }
+              liked={post.likes.includes(userStore.user.uid)}
             />
           </View>
         ))}

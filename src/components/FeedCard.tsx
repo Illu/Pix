@@ -1,10 +1,12 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, Text, Pressable} from 'react-native';
+import {Dimensions, Text} from 'react-native';
 import {SCREEN_PADDING} from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
 import {Pixel} from '../types';
+import Icon from './Icon';
+import {useTheme} from '@react-navigation/native';
 
 const {width} = Dimensions.get('window');
 
@@ -22,13 +24,17 @@ const Wrapper = styled.View`
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
-const Image = styled.Image`
-  height: ${width - SCREEN_PADDING * 4}px;
-  width: ${width - SCREEN_PADDING * 4}px;
+const Likes = styled.Text`
+  color: ${({theme}) => theme.text};
+  font-size: 14px;
+  margin-left: 5px;
+  font-weight: 600;
 `;
 
-const Likes = styled.Text`
+const LikesRow = styled.Pressable`
   margin: 10px 0 5px 0;
+  flex-direction: row;
+  align-items: center;
 `;
 
 const UserName = styled.Text`
@@ -41,6 +47,7 @@ interface Props {
   likes?: string[];
   userName: string;
   onLike(): void;
+  liked: boolean;
 }
 
 const FeedCard = ({
@@ -48,25 +55,35 @@ const FeedCard = ({
   data,
   backgroundColor,
   likes = [],
+  liked,
   onLike,
-}: Props) => (
-  <Wrapper>
-    <Row>
-      <Row noMargins>
-        <Avatar />
-        <UserName>{userName}</UserName>
+}: Props) => {
+  const {colors} = useTheme();
+
+  return (
+    <Wrapper>
+      <Row>
+        <Row noMargins>
+          <Avatar />
+          <UserName>{userName}</UserName>
+        </Row>
+        <Text>···</Text>
       </Row>
-      <Text>···</Text>
-    </Row>
-    <PixelArt
-      data={data}
-      backgroundColor={backgroundColor}
-      size={width - SCREEN_PADDING * 4}
-    />
-    <Pressable onPress={onLike}>
-      <Likes>❤️ {likes.length}</Likes>
-    </Pressable>
-  </Wrapper>
-);
+      <PixelArt
+        data={data}
+        backgroundColor={backgroundColor}
+        size={width - SCREEN_PADDING * 4}
+      />
+      <LikesRow onPress={onLike}>
+        <Icon
+          name={liked ? 'HeartFull' : 'Heart'}
+          color={liked ? '#ED6A5A' : colors.text}
+          size={24}
+        />
+        <Likes>{likes.length}</Likes>
+      </LikesRow>
+    </Wrapper>
+  );
+};
 
 export default FeedCard;

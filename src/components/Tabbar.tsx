@@ -6,6 +6,7 @@ import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import styled from 'styled-components/native';
 
 import {TABBAR_HEIGHT} from '../constants';
+import Icon from './Icon';
 
 const Wrapper = styled.View`
   height: ${TABBAR_HEIGHT}px;
@@ -61,7 +62,7 @@ const TabbarComponent = ({props}) => {
                   props.navigation.navigate(route);
                 }
               }}>
-              <Text>{route}</Text>
+              <Icon name={route} size={24} color={colors.text} />
             </PressableWrapper>
           ) : (
             <PressableWrapper
@@ -69,7 +70,7 @@ const TabbarComponent = ({props}) => {
               onPress={() => {
                 props.navigation.navigate('EditorModal');
               }}>
-              <Text>+</Text>
+              <Icon name="Add" size={40} color={colors.text} />
             </PressableWrapper>
           ),
         )}
