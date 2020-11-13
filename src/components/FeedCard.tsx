@@ -1,8 +1,10 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, Text} from 'react-native';
+import {Dimensions, Text, Pressable} from 'react-native';
 import {SCREEN_PADDING} from '../theme';
 import Avatar from './Avatar';
+import PixelArt from './PixelArt';
+import {Pixel} from '../types';
 
 const {width} = Dimensions.get('window');
 
@@ -33,19 +35,37 @@ const UserName = styled.Text`
   margin-left: 10px;
 `;
 
-interface Props {}
+interface Props {
+  data: Pixel[];
+  backgroundColor: string;
+  likes?: string[];
+  userName: string;
+  onLike(): void;
+}
 
-const FeedCard = () => (
+const FeedCard = ({
+  userName,
+  data,
+  backgroundColor,
+  likes = [],
+  onLike,
+}: Props) => (
   <Wrapper>
     <Row>
       <Row noMargins>
         <Avatar />
-        <UserName>JuanDeLaVega777</UserName>
+        <UserName>{userName}</UserName>
       </Row>
       <Text>···</Text>
     </Row>
-    <Image source={{uri: 'http://placekitten.com/1000/1000'}} />
-    <Likes>❤️ 128 likes</Likes>
+    <PixelArt
+      data={data}
+      backgroundColor={backgroundColor}
+      size={width - SCREEN_PADDING * 4}
+    />
+    <Pressable onPress={onLike}>
+      <Likes>❤️ {likes.length}</Likes>
+    </Pressable>
   </Wrapper>
 );
 

@@ -1,18 +1,18 @@
-import { useNavigation } from '@react-navigation/native';
-import React, { useState } from 'react';
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
 import Canvas from '../components/editor/Canvas';
 import CustomHeader from '../components/CustomHeader';
-import { PIXEL_COUNT } from '../constants';
+import {PIXEL_COUNT} from '../constants';
 import {
   DEFAULT_EDITOR_BACKGROUND_COLOR,
   DEFAULT_EDITOR_COLOR_PALETTE,
 } from '../theme';
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
-import { ScrollView } from 'react-native-gesture-handler';
+import {ScrollView} from 'react-native-gesture-handler';
 
 const Wrapper = styled.View`
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
@@ -25,17 +25,17 @@ const Row = styled.View`
 `;
 
 const ColorDrop = styled.TouchableOpacity`
-  height: ${({ selected }) => (selected ? 50 : 40)}px;
-  width: ${({ selected }) => (selected ? 50 : 40)}px;
-  background: ${({ color }) => color};
-  border-width: ${({ color }) => (color === '#FFFFFF' ? 1 : 0)}px;
+  height: ${({selected}) => (selected ? 50 : 40)}px;
+  width: ${({selected}) => (selected ? 50 : 40)}px;
+  background: ${({color}) => color};
+  border-width: ${({color}) => (color === '#FFFFFF' ? 1 : 0)}px;
   border-radius: 25px;
   margin-left: 10px;
 `;
 
 const initialData = Array.apply(null, {
   length: PIXEL_COUNT * PIXEL_COUNT,
-}).map(() => ({ color: 'none' }));
+}).map(() => ({color: 'none'}));
 
 const Editor = () => {
   const navigation = useNavigation();
@@ -53,7 +53,9 @@ const Editor = () => {
   return (
     <>
       <CustomHeader
-        action={() => navigation.navigate('Publish', { canvasData, backgroundColor })}
+        action={() =>
+          navigation.navigate('Publish', {canvasData, backgroundColor})
+        }
         title={'Create'}
         back
       />

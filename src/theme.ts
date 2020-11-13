@@ -24,7 +24,7 @@ export const lightTheme = {
     secondaryText: '#7A7A7A',
     accent: '#4DB3FF',
     accentBackground: 'rgba(10, 132, 255, 0.1)',
-    uiAccent: '#c3c4c6',
+    uiAccent: '#e5e5e5',
   },
 };
 
