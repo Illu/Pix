@@ -18,7 +18,6 @@ class Feed {
 
   async loadFeed() {
     this.state = STATES.LOADING;
-    console.log('update!');
     try {
       const snapshot = await firestore().collection('Posts').limit(10).get();
       const newFeed = [];
@@ -26,7 +25,6 @@ class Feed {
         newFeed.push({...doc.data(), id: doc.id});
       });
       runInAction(() => {
-        console.log('NEWFEED', newFeed);
         this.state = STATES.SUCCESS;
         this.feed = [...newFeed];
       });

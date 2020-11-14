@@ -3,6 +3,7 @@ import {Button, TouchableOpacity} from 'react-native';
 import Home from './screens/Home';
 import Challenges from './screens/Challenges';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
 import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import Tabbar from './components/Tabbar';
 import Editor from './screens/Editor';
@@ -88,7 +89,7 @@ export const EditorStack = () => (
     <EditorNav.Screen
       name="Edit"
       component={Editor}
-      options={{headerShown: false}}
+      options={{headerShown: false, stackPresentation: 'modal'}}
     />
     <EditorNav.Screen
       name="Publish"

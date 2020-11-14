@@ -34,7 +34,10 @@ const App = observer((props) => {
               />
               <RootStack.Screen
                 name="EditorModal"
-                options={{headerShown: false}}
+                options={{
+                  headerShown: false,
+                  stackPresentation: 'fullScreenModal',
+                }}
                 component={userStore.user ? EditorStack : LoginStack}
               />
             </RootStack.Navigator>

@@ -11,6 +11,7 @@ import User from '../stores/User';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
+import Empty from '../components/Empty';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -127,6 +128,7 @@ const Profile = observer(() => {
               />
             </TouchableOpacity>
           ))}
+          {!displayedData || (displayedData.length === 0 && <Empty />)}
         </PostWrapper>
       </ScrollView>
     </>

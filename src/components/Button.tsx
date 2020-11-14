@@ -8,7 +8,7 @@ import {BUTTON_WIDTH} from '../constants';
 const Wrapper = styled.TouchableOpacity`
   width: ${BUTTON_WIDTH}px;
   padding: 10px;
-  background: ${({theme, fill}) => (fill ? theme.accent : theme.secondary)};
+  background: ${({theme, fill}) => (fill ? theme.accent : 'transparent')};
   border-radius: 4px;
   align-items: center;
   border-width: ${({fill}) => (fill ? 0 : 1)}px;
