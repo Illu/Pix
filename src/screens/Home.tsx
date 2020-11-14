@@ -91,7 +91,7 @@ const Home = observer(() => {
               onLike={() =>
                 feedStore.likePost(post.id, userStore.user.uid, post.likes)
               }
-              liked={post.likes.includes(userStore.user.uid)}
+              liked={userStore.user && post.likes.includes(userStore.user.uid)}
             />
           </View>
         ))}
