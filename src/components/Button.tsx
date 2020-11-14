@@ -5,7 +5,7 @@ import {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import styled from 'styled-components/native';
 import {BUTTON_WIDTH} from '../constants';
 
-const Wrapper = styled.Pressable`
+const Wrapper = styled.TouchableOpacity`
   width: ${BUTTON_WIDTH}px;
   padding: 10px;
   background: ${({theme, fill}) => (fill ? theme.accent : theme.secondary)};

@@ -12,6 +12,12 @@ export enum SORT {
   NEW,
 }
 
+export enum TOOLS {
+  PENCIL,
+  BUCKET,
+  ERASER,
+}
+
 export const TABBAR_HEIGHT = 70;
 export const HEADER_HEIGHT = 40;
 export const BUTTON_WIDTH = 275;

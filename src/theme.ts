@@ -8,6 +8,10 @@ export const DEFAULT_EDITOR_COLOR_PALETTE = [
   '#FF8A00',
   '#FFE600',
   '#70FF00',
+  '#70FF00',
+  '#70FF00',
+  '#70FF00',
+  '#70FF00',
 ];
 
 export const SCREEN_PADDING = 10;

@@ -1,11 +1,11 @@
 import {useTheme} from '@react-navigation/native';
-import React from 'react';
-import {View, Text} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {View, Dimensions, Animated} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
 import styled from 'styled-components/native';
 
 import {TABBAR_HEIGHT} from '../constants';
+import {SCREEN_PADDING} from '../theme';
 import Icon from './Icon';
 
 const Wrapper = styled.View`
@@ -17,38 +17,46 @@ const Wrapper = styled.View`
   margin-bottom: ${({insetBottom}) => insetBottom}px;
 `;
 
-const PressableWrapper = styled.Pressable`
+const PressableWrapper = styled.TouchableOpacity`
   flex: 1;
   align-items: center;
+`;
+
+const TabIndicatorWrapper = styled(Animated.View)`
+  align-items: center;
+  position: absolute;
+  bottom: 10px;
+`;
+
+const TabIndicator = styled.View`
+  height: 4px;
+  width: 4px;
 `;
 
 const TabbarComponent = ({props}) => {
   const insets = useSafeAreaInsets();
   const {colors} = useTheme();
+  const [switchAnim] = useState(new Animated.Value(0));
+
+  const tabbarWidth = Dimensions.get('window').width - 32;
+  const indicatorPosition = switchAnim.interpolate({
+    inputRange: [0, props.state.routeNames.length - 1],
+    outputRange: [16, tabbarWidth - tabbarWidth / 3 + 16],
+  });
+
+  useEffect(() => {
+    Animated.spring(switchAnim, {
+      toValue: props.state.index,
+      duration: 250,
+      useNativeDriver: false,
+    }).start();
+  }, [props.state.index]);
 
   return (
     <View style={{backgroundColor: colors.secondary}}>
       <Wrapper insetBottom={insets.bottom}>
         {props.state.routeNames.map((route, index) =>
           index !== 1 ? (
-            // <Pushable
-            //   key={route}
-            //   onPress={() => {
-            //     const isFocused = props.state.index === index;
-            //     const event = props.navigation.emit({
-            //       type: "tabPress",
-            //       target: route.key,
-            //       canPreventDefault: true,
-            //     });
-            //     if (!isFocused && !event.defaultPrevented) {
-            //       props.navigation.navigate(route);
-            //     }
-            //   }}
-            // >
-            //   <IconWrapper style={{ width: tabbarWidth / 4 }}>
-            //     <Icon color={colors.text} name={route} />
-            //   </IconWrapper>
-            // </Pushable>
             <PressableWrapper
               key={route}
               onPress={() => {
@@ -74,6 +82,11 @@ const TabbarComponent = ({props}) => {
             </PressableWrapper>
           ),
         )}
+        <TabIndicatorWrapper
+          style={{left: indicatorPosition, width: tabbarWidth / 4}}
+          insetBottom={insets.bottom}>
+          <TabIndicator style={{backgroundColor: colors.accent}} />
+        </TabIndicatorWrapper>
       </Wrapper>
     </View>
   );
