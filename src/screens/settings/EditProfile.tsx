@@ -62,7 +62,7 @@ const EditProfile = () => {
 
   return (
     <Wrapper contentContainerStyle={{alignItems: 'center'}}>
-      <Avatar size={119} />
+      <Avatar size={119} withBorder />
       <Button
         onPress={() => {}}
         title="Edit profile picture"

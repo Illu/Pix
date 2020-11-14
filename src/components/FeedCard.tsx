@@ -64,7 +64,7 @@ const FeedCard = ({
     <Wrapper>
       <Row>
         <Row noMargins>
-          <Avatar />
+          <Avatar withBorder />
           <UserName>{userName}</UserName>
         </Row>
         <Text>···</Text>

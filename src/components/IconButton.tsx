@@ -15,7 +15,7 @@ const Wrapper = styled.TouchableOpacity`
 
 const Title = styled.Text`
   font-weight: 700;
-  font-size: 12px;
+  font-size: 14px;
   margin-left: 10px;
 `;
 

@@ -1,6 +1,6 @@
 import React, {useContext, useEffect} from 'react';
 import styled from 'styled-components';
-import {Dimensions, ScrollView, View} from 'react-native';
+import {Dimensions, ScrollView, TouchableOpacity} from 'react-native';
 import Avatar from '../components/Avatar';
 import {SCREEN_PADDING} from '../theme';
 import IconButton from '../components/IconButton';
@@ -10,6 +10,7 @@ import {observer} from 'mobx-react-lite';
 import User from '../stores/User';
 import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from '../components/Icon';
+import Drafts from '../stores/Drafts';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -57,6 +58,7 @@ const PostWrapper = styled.View`
 const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
   const userStore = useContext(User);
+  const draftsStore = useContext(Drafts);
   const navigation = useNavigation();
   const {colors} = useTheme();
 
@@ -71,16 +73,24 @@ const Profile = observer(() => {
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
+  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts;
+
+  const openArt = (index: number) => {
+    if (showDrafts) {
+      draftsStore.removeDraft(index);
+    }
+  };
+
   return (
     <>
       <HeaderWrapper>
         <Row>
-          <Avatar size={119} />
+          <Avatar size={119} withBorder />
           <InfosWrapper>
             <UserName>{userStore.user.displayName}</UserName>
             <PostsInfos>
               {userStore.posts?.length || 'no'} post
-              {userStore.posts?.length > 1 ? 's' : ''}
+              {userStore.posts?.length === 1 ? '' : 's'}
             </PostsInfos>
           </InfosWrapper>
           <EditButton onPress={() => navigation.navigate('EditProfile')}>
@@ -92,20 +102,22 @@ const Profile = observer(() => {
             title="Published"
             onPress={() => setShowDrafts(false)}
             active={!showDrafts}
-            icon="Star"
+            icon="Picture"
+            color="green"
           />
           <IconButton
             title="Drafts"
             onPress={() => setShowDrafts(true)}
             active={showDrafts}
-            icon="Star"
+            icon="EditPicture"
+            color="yellow"
           />
         </ButtonsRow>
       </HeaderWrapper>
       <ScrollView>
         <PostWrapper>
-          {userStore.posts?.map((post, index) => (
-            <View key={index}>
+          {displayedData?.map((post, index) => (
+            <TouchableOpacity key={index} onPress={() => openArt(index)}>
               <PixelArt
                 size={postSize}
                 data={post.data.pixels}
@@ -113,7 +125,7 @@ const Profile = observer(() => {
                 rounded
                 style={{marginBottom: 10}}
               />
-            </View>
+            </TouchableOpacity>
           ))}
         </PostWrapper>
       </ScrollView>

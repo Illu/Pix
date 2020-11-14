@@ -1,9 +1,10 @@
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import {Text, Pressable} from 'react-native';
+import {TouchableOpacity} from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import styled from 'styled-components';
 import {HEADER_HEIGHT} from '../constants';
+import Icon from './Icon';
 
 const Wrapper = styled.View`
   flex-direction: row;
@@ -24,6 +25,12 @@ const Title = styled.Text`
   font-size: 15px;
 `;
 
+const BackText = styled.Text`
+  font-weight: 400;
+  font-size: 14px;
+  color: ${({theme}) => theme.text};
+`;
+
 const EmptyPlaceholder = styled.View`
   width: 40px;
 `;
@@ -34,6 +41,7 @@ interface Props {
   leftComponent?: React.Component;
   rightComponent?: React.Component;
   back?: boolean;
+  close?: boolean;
 }
 
 const CustomHeader = ({
@@ -42,19 +50,28 @@ const CustomHeader = ({
   leftComponent,
   rightComponent,
   back,
+  close,
 }: Props) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
+  const {colors} = useTheme();
 
   return (
     <Wrapper insetTop={insets.top}>
       <SectionWrapper>
         {leftComponent ? (
           leftComponent
-        ) : back ? (
-          <Pressable onPress={navigation.goBack}>
-            <Text>🙅‍♀️</Text>
-          </Pressable>
+        ) : back || close ? (
+          <TouchableOpacity
+            onPress={navigation.goBack}
+            style={{flexDirection: 'row', alignItems: 'center'}}>
+            <Icon
+              name={back ? 'ChevronLeft' : 'Cross'}
+              color={colors.text}
+              size={24}
+            />
+            <BackText>{back ? 'Back' : ''}</BackText>
+          </TouchableOpacity>
         ) : (
           <EmptyPlaceholder />
         )}
@@ -66,9 +83,9 @@ const CustomHeader = ({
         {rightComponent ? (
           rightComponent
         ) : action ? (
-          <Pressable onPress={action}>
-            <Text>👉</Text>
-          </Pressable>
+          <TouchableOpacity onPress={action}>
+            <Icon name="ArrowRight" color={colors.accent} size={24} />
+          </TouchableOpacity>
         ) : (
           <EmptyPlaceholder />
         )}

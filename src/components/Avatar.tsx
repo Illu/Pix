@@ -6,6 +6,8 @@ const Wrapper = styled.View`
   height: ${({size}) => size}px;
   border-radius: ${({size}) => size / 2}px;
   overflow: hidden;
+  border-color: ${({theme}) => theme.text};
+  border-width: ${({border}) => (border ? 1 : 0)}px;
 `;
 
 const Image = styled.Image`
@@ -15,10 +17,11 @@ const Image = styled.Image`
 
 interface Props {
   size?: number;
+  withBorder?: boolean;
 }
 
-const Avatar = ({size = 32}: Props) => (
-  <Wrapper size={size}>
+const Avatar = ({size = 32, withBorder = false}: Props) => (
+  <Wrapper size={size} border={withBorder}>
     <Image source={{uri: 'http://placekitten.com/1200/1200'}} />
   </Wrapper>
 );
