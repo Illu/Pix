@@ -86,7 +86,7 @@ const Profile = observer(() => {
     <>
       <HeaderWrapper>
         <Row>
-          <Avatar size={119} withBorder />
+          <Avatar size={119} />
           <InfosWrapper>
             <UserName>{userStore.user.displayName}</UserName>
             <PostsInfos>

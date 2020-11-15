@@ -20,6 +20,7 @@ import User from '../stores/User';
 import {observer} from 'mobx-react-lite';
 import Feed from '../stores/Feed';
 import Icon from '../components/Icon';
+import Empty from '../components/Empty';
 
 const Row = styled.View`
   flex-direction: row;
@@ -98,7 +99,7 @@ const Home = observer(() => {
               userName={post.user.displayName}
               likesCount={post.likesCount}
               onLike={() => {
-                if (userStore.user.uid) {
+                if (userStore.user?.uid) {
                   feedStore.likePost(
                     post.id,
                     userStore.user.uid,
@@ -112,6 +113,9 @@ const Home = observer(() => {
             />
           </View>
         ))}
+        {!feedStore.feed?.length && (
+          <Empty actionTitle="Add the first ever pixel art!" />
+        )}
       </ScrollView>
     </>
   );

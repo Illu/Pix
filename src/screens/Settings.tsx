@@ -54,7 +54,7 @@ const Settings = () => {
         icon: 'ChevronRight',
         thumbIcon: 'Infos',
         thumbColor: '#35CE8D',
-        action: () => {},
+        action: () => navigation.navigate('About'),
       },
       {
         title: 'Rate the App',

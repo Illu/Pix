@@ -122,6 +122,7 @@ const Editor = ({route}) => {
           backgroundColor={backgroundColor}
           currentColor={currentColor}
           displayGrid={displayGrid}
+          selectedTool={selectedTool}
         />
         <Row>
           <IconButton
