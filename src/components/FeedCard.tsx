@@ -39,6 +39,7 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
+  color: ${({theme}) => theme.text};
 `;
 
 interface Props {

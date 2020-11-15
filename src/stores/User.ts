@@ -27,6 +27,7 @@ class User {
   }
 
   async loadPosts() {
+    this.state = STATES.LOADING;
     const snapshot = await firestore()
       .collection('Posts')
       .where('user.id', '==', this.user.uid)
@@ -36,6 +37,7 @@ class User {
       newPosts.push(doc.data());
     });
     runInAction(() => {
+      this.state = STATES.SUCCESS;
       this.posts = newPosts;
     });
   }

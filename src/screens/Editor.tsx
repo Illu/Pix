@@ -77,16 +77,22 @@ const Editor = ({route}) => {
     navigation.goBack();
   };
 
+  const nonEmpty = canvasData.some((item) => item.color !== 'none');
+
   return (
     <>
       <CustomHeader
-        action={() =>
-          navigation.navigate('Publish', {canvasData, backgroundColor})
-        }
+        action={() => {
+          if (nonEmpty) {
+            navigation.navigate('Publish', {canvasData, backgroundColor});
+          } else {
+            Alert.alert('Oops...', 'You cannot submit an empty canvas!');
+          }
+        }}
         leftComponent={
           <TouchableOpacity
             onPress={() => {
-              if (canvasData.some((item) => item.color !== 'none')) {
+              if (nonEmpty) {
                 Alert.alert(
                   'Save your work?',
                   'You will be able to resume working on this amazing art from your profile page.',
@@ -147,7 +153,7 @@ const Editor = ({route}) => {
                 <Icon
                   name="Pencil"
                   size={24}
-                  color={selectedTool === TOOLS.PENCIL ? '#fff' : '#000'}
+                  color={selectedTool === TOOLS.PENCIL ? '#fff' : colors.text}
                 />
               </IconWrapper>
               <IconWrapper
@@ -156,7 +162,7 @@ const Editor = ({route}) => {
                 <Icon
                   name="Bucket"
                   size={24}
-                  color={selectedTool === TOOLS.BUCKET ? '#fff' : '#000'}
+                  color={selectedTool === TOOLS.BUCKET ? '#fff' : colors.text}
                 />
               </IconWrapper>
               <IconWrapper
@@ -165,7 +171,7 @@ const Editor = ({route}) => {
                 <Icon
                   name="Eraser"
                   size={24}
-                  color={selectedTool === TOOLS.ERASER ? '#fff' : '#000'}
+                  color={selectedTool === TOOLS.ERASER ? '#fff' : colors.text}
                 />
               </IconWrapper>
             </>
@@ -176,7 +182,7 @@ const Editor = ({route}) => {
               <Icon
                 name="Grid"
                 size={24}
-                color={displayGrid ? '#fff' : '#000'}
+                color={displayGrid ? '#fff' : colors.text}
               />
             </IconWrapper>
           )}

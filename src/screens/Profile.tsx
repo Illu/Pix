@@ -1,6 +1,11 @@
 import React, {useContext, useEffect} from 'react';
 import styled from 'styled-components';
-import {Dimensions, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  Dimensions,
+  ScrollView,
+  TouchableOpacity,
+  ActivityIndicator,
+} from 'react-native';
 import Avatar from '../components/Avatar';
 import {SCREEN_PADDING} from '../theme';
 import IconButton from '../components/IconButton';
@@ -12,6 +17,7 @@ import {useNavigation, useTheme} from '@react-navigation/native';
 import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
 import Empty from '../components/Empty';
+import {STATES} from '../constants';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -27,11 +33,13 @@ const Row = styled.View`
 const UserName = styled.Text`
   font-size: 14px;
   font-weight: 600;
+  color: ${({theme}) => theme.text};
 `;
 
 const PostsInfos = styled.Text`
   font-weight: 400;
   font-size: 12px;
+  color: ${({theme}) => theme.text};
 `;
 
 const InfosWrapper = styled.View`
@@ -115,6 +123,9 @@ const Profile = observer(() => {
           />
         </ButtonsRow>
       </HeaderWrapper>
+      {userStore.state === STATES.LOADING && (
+        <ActivityIndicator style={{margin: 50}} />
+      )}
       <ScrollView>
         <PostWrapper>
           {displayedData?.map((post, index) => (
