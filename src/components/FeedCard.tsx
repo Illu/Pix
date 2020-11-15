@@ -44,7 +44,7 @@ const UserName = styled.Text`
 interface Props {
   data: Pixel[];
   backgroundColor: string;
-  likes?: string[];
+  likesCount?: number;
   userName: string;
   onLike(): void;
   liked: boolean;
@@ -54,7 +54,7 @@ const FeedCard = ({
   userName,
   data,
   backgroundColor,
-  likes = [],
+  likesCount = 0,
   liked,
   onLike,
 }: Props) => {
@@ -80,7 +80,7 @@ const FeedCard = ({
           color={liked ? '#ED6A5A' : colors.text}
           size={24}
         />
-        <Likes>{likes.length}</Likes>
+        <Likes>{likesCount}</Likes>
       </LikesRow>
     </Wrapper>
   );

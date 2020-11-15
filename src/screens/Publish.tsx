@@ -1,14 +1,21 @@
 import React, {useState, useContext} from 'react';
-import {Dimensions} from 'react-native';
+import {Dimensions, Switch} from 'react-native';
 import PixelArt from '../components/PixelArt';
 import styled from 'styled-components/native';
 import CustomHeader from '../components/CustomHeader';
 import {SCREEN_PADDING} from '../theme';
 import firestore from '@react-native-firebase/firestore';
 import User from '../stores/User';
+import {useNavigation} from '@react-navigation/native';
+import Challenge from '../stores/Challenge';
 
 const ScrollView = styled.ScrollView`
   background: ${({theme}) => theme.secondary};
+`;
+
+const Row = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
 `;
 
 const PublishButton = styled.TouchableOpacity`
@@ -51,7 +58,20 @@ const TextInput = styled.TextInput`
 const Publish = ({route}) => {
   const {canvasData, backgroundColor} = route.params;
   const userStore = useContext(User);
+  const challengeStore = useContext(Challenge);
   const [desc, setDesc] = useState('');
+  const [tag, setTag] = useState(null);
+  const navigation = useNavigation();
+
+  const toggleSwitch = () => {
+    if (tag) {
+      setTag(null);
+    } else {
+      if (challengeStore.currentChallenge) {
+        setTag(challengeStore.currentChallenge.id);
+      }
+    }
+  };
 
   const sendPost = () => {
     const data = {
@@ -65,13 +85,16 @@ const Publish = ({route}) => {
       },
       desc,
       likes: [],
+      likesCount: 0,
+      tag,
+      timestamp: new Date().getTime(),
     };
     firestore()
       .collection('Posts')
       .add(data)
       .then(() => {
         console.log('post submitted!');
-        // navigate
+        navigation.popToTop();
       });
   };
 
@@ -96,7 +119,17 @@ const Publish = ({route}) => {
             value={desc}
             onChangeText={(str) => str.length < 200 && setDesc(str)}
             multiline></TextInput>
-          <Label>I’m participating in this month challenge</Label>
+          <Row>
+            <Label style={{flex: 1}}>
+              I’m participating in this month challenge (
+              {challengeStore.currentChallenge.title})
+            </Label>
+            <Switch
+              style={{marginLeft: 20}}
+              onValueChange={toggleSwitch}
+              value={!!tag}
+            />
+          </Row>
         </ContentWrapper>
       </ScrollView>
     </>

@@ -24,7 +24,11 @@ const Image = styled.Image`
   margin-top: 50px;
 `;
 
-const Empty = () => {
+interface Props {
+  actionTitle?: string;
+}
+
+const Empty = ({actionTitle = 'Create your first artwork!'}) => {
   const navigation = useNavigation();
   return (
     <Wrapper>
@@ -33,7 +37,7 @@ const Empty = () => {
       <Button
         onPress={() => navigation.navigate('EditorModal')}
         fill={false}
-        title="Create your first artwork!"
+        title={actionTitle}
       />
     </Wrapper>
   );

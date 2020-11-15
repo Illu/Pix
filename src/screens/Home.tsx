@@ -40,6 +40,15 @@ const Home = observer(() => {
     feedStore.loadFeed();
   }, []);
 
+  const load = () => {
+    feedStore.loadFeed(sort === SORT.NEW ? 'timestamp' : 'likesCount');
+  };
+
+  const changeSort = (newSort: SORT) => {
+    setSort(newSort);
+    feedStore.loadFeed(newSort === SORT.NEW ? 'timestamp' : 'likesCount');
+  };
+
   const UserAvatar = (
     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
       <Avatar />
@@ -61,13 +70,13 @@ const Home = observer(() => {
       <Row>
         <IconButton
           title="Trending"
-          onPress={() => setSort(SORT.TRENDING)}
+          onPress={() => changeSort(SORT.TRENDING)}
           active={sort === SORT.TRENDING}
           icon="TrendingUp"
         />
         <IconButton
           title="New"
-          onPress={() => setSort(SORT.NEW)}
+          onPress={() => changeSort(SORT.NEW)}
           active={sort === SORT.NEW}
           color="yellow"
           icon="Star"
@@ -78,7 +87,7 @@ const Home = observer(() => {
         refreshControl={
           <RefreshControl
             refreshing={feedStore.state === STATES.LOADING}
-            onRefresh={() => feedStore.loadFeed()}
+            onRefresh={load}
           />
         }>
         {feedStore.feed?.map((post) => (
@@ -87,10 +96,18 @@ const Home = observer(() => {
               data={post.data.pixels}
               backgroundColor={post.data.backgroundColor}
               userName={post.user.displayName}
-              likes={post.likes}
-              onLike={() =>
-                feedStore.likePost(post.id, userStore.user.uid, post.likes)
-              }
+              likesCount={post.likesCount}
+              onLike={() => {
+                if (userStore.user.uid) {
+                  feedStore.likePost(
+                    post.id,
+                    userStore.user.uid,
+                    post.likes || [],
+                  );
+                } else {
+                  navigation.navigate('EditorModal');
+                }
+              }}
               liked={userStore.user && post.likes.includes(userStore.user.uid)}
             />
           </View>
