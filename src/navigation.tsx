@@ -54,7 +54,11 @@ const HomeStack = () => {
 
 const ChallengesStack = () => (
   <ChallengesNav.Navigator>
-    <ChallengesNav.Screen name="Challenges" component={Challenges} />
+    <ChallengesNav.Screen
+      name="Challenges"
+      component={Challenges}
+      options={{headerShown: false}}
+    />
   </ChallengesNav.Navigator>
 );
 

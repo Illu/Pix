@@ -10,13 +10,17 @@ import {SafeAreaProvider} from 'react-native-safe-area-context';
 import {EditorStack, LoginStack, RootStack, TabsStack} from './src/navigation';
 import User from './src/stores/User';
 import {observer} from 'mobx-react-lite';
+import Challenge from './src/stores/Challenge';
 
 enableScreens();
 
 const App = observer((props) => {
   const scheme = useColorScheme();
   const appStateStore = useContext(AppState);
+  const challengeStore = useContext(Challenge);
   const userStore = useContext(User);
+
+  challengeStore.loadCurrentChallenge();
 
   const {theme, statusBarStyle} = getColorScheme(appStateStore.theme, scheme);
 

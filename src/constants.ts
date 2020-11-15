@@ -10,6 +10,8 @@ export enum STATES {
 export enum SORT {
   TRENDING,
   NEW,
+  SUBMISSIONS,
+  HALL_OF_FAME,
 }
 
 export enum TOOLS {
@@ -27,3 +29,33 @@ export const PIXEL_COUNT = 16;
 export const EDITOR_BORDER_SIZE = 10;
 export const PIXEL_SIZE =
   (Dimensions.get('window').width - EDITOR_BORDER_SIZE * 2) / PIXEL_COUNT;
+
+export const MONTHS = [
+  'JAN',
+  'FEB',
+  'MAR',
+  'APR',
+  'MAY',
+  'JUN',
+  'JUL',
+  'AUG',
+  'SEP',
+  'OCT',
+  'NOV',
+  'DEC',
+];
+
+export const MONTHS_FULL = [
+  'January',
+  'February',
+  'March',
+  'April',
+  'May',
+  'June',
+  'July',
+  'August',
+  'September',
+  'October',
+  'November',
+  'December',
+];

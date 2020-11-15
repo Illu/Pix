@@ -4,37 +4,58 @@ import {STATES} from '../constants';
 import firestore from '@react-native-firebase/firestore';
 import {firebase} from '@react-native-firebase/auth';
 
-class Feed {
+class Challenge {
   constructor() {
     makeObservable(this, {
       state: observable,
-      feed: observable,
-      loadFeed: action,
+      currentChallenge: observable,
+      challenges: observable,
       likePost: action,
+      loadChallenges: action,
+      loadCurrentChallenge: action,
     });
   }
 
-  feed = null;
+  challenges = null;
+  currentChallenge = null;
   state = STATES.IDLE;
 
-  async loadFeed(order: 'timestamp' | 'likesCount' = 'likesCount') {
+  async loadCurrentChallenge() {
+    const currentMonth = 'Nov';
+    const challengesData = await firestore().collection('Challenges').get();
+    if (challengesData.empty) {
+      this.state = STATES.ERROR;
+    }
+    challengesData.forEach((challenge) => {
+      if (challenge.id === currentMonth) {
+        runInAction(() => {
+          this.currentChallenge = challenge.data();
+        });
+      }
+    });
+  }
+
+  async loadChallenges(
+    order: 'timestamp' | 'likesCount' = 'likesCount',
+    challengeId,
+  ) {
     this.state = STATES.LOADING;
     try {
       const snapshot = await firestore()
         .collection('Posts')
+        .where('tag', '==', challengeId)
         .orderBy(order, 'desc')
         .limit(10)
         .get();
-      const newFeed = [];
+      const newChallenges = [];
       snapshot.forEach((doc) => {
-        newFeed.push({...doc.data(), id: doc.id});
+        newChallenges.push({...doc.data(), id: doc.id});
       });
       runInAction(() => {
         this.state = STATES.SUCCESS;
-        this.feed = [...newFeed];
+        this.challenges = [...newChallenges];
       });
     } catch (err) {
-      console.log('err', err);
       runInAction(() => {
         this.state = STATES.ERROR;
       });
@@ -56,14 +77,14 @@ class Feed {
     }
     const newPostData = await firestore().collection('Posts').doc(postId).get();
     runInAction(() => {
-      this.feed[
-        this.feed.findIndex((i) => i.id === postId)
+      this.challenges[
+        this.challenges.findIndex((i) => i.id === postId)
       ].likes = newPostData.data().likes;
-      this.feed[
-        this.feed.findIndex((i) => i.id === postId)
+      this.challenges[
+        this.challenges.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
   }
 }
 
-export default createContext(new Feed());
+export default createContext(new Challenge());
