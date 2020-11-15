@@ -18,6 +18,7 @@ import EditProfile from './screens/settings/EditProfile';
 import Icon from './components/Icon';
 import {useTheme} from '@react-navigation/native';
 import About from './screens/settings/About';
+import Appearance from './screens/settings/Appearance';
 
 export const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -50,6 +51,7 @@ const HomeStack = () => {
       <HomeNav.Screen name="EditProfile" component={EditProfile} />
       <HomeNav.Screen name="Settings" component={Settings} />
       <HomeNav.Screen name="About" component={About} />
+      <HomeNav.Screen name="Appearance" component={Appearance} />
     </HomeNav.Navigator>
   );
 };

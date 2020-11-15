@@ -22,7 +22,7 @@ const Settings = () => {
         thumbIcon: 'Palette',
         thumbColor: '#ED6A5A',
         icon: 'ChevronRight',
-        action: () => navigation.navigate('Notifications'),
+        action: () => navigation.navigate('Appearance'),
       },
       {
         title: 'App Icon',

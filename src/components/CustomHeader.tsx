@@ -23,6 +23,7 @@ const SectionWrapper = styled.View`
 const Title = styled.Text`
   font-weight: 600;
   font-size: 15px;
+  color: ${({theme}) => theme.text};
 `;
 
 const BackText = styled.Text`
