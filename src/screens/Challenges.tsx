@@ -12,7 +12,7 @@ import User from '../stores/User';
 import Avatar from '../components/Avatar';
 import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
-import {SORT, STATES} from '../constants';
+import {SORT, STATES, TABBAR_HEIGHT} from '../constants';
 import styled from 'styled-components/native';
 import Challenge from '../stores/Challenge';
 import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
@@ -68,7 +68,7 @@ const Challenges = observer(() => {
   );
 
   return (
-    <View>
+    <View style={{flex: 1}}>
       <CustomHeader
         title="Pix - Challenges"
         rightComponent={userStore.user ? UserAvatar : OptionsLink}
@@ -107,7 +107,7 @@ const Challenges = observer(() => {
               userName={post.user.displayName}
               likesCount={post.likesCount}
               onLike={() => {
-                if (userStore.user.uid) {
+                if (userStore.user?.uid) {
                   challengeStore.likePost(
                     post.id,
                     userStore.user.uid,

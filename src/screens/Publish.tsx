@@ -94,7 +94,7 @@ const Publish = ({route}) => {
       .add(data)
       .then(() => {
         console.log('post submitted!');
-        navigation.popToTop();
+        navigation.navigate(tag ? 'Challenges' : 'Home');
       });
   };
 

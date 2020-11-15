@@ -7,6 +7,7 @@ import {
   HEADER_HEIGHT,
   PIXEL_COUNT,
   PIXEL_SIZE,
+  TOOLS,
 } from '../../constants';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
@@ -44,6 +45,7 @@ interface Props {
   updateData(data: Pixel[]): void;
   data: Pixel[];
   currentColor: string;
+  selectedTool: TOOLS;
   displayGrid: boolean;
 }
 
@@ -53,6 +55,7 @@ const Canvas = ({
   updateData,
   currentColor,
   displayGrid,
+  selectedTool,
 }: Props) => {
   const insets = useSafeAreaInsets();
 
@@ -69,11 +72,16 @@ const Canvas = ({
     if (arrayPosition + 1 > data.length || arrayPosition < 0) {
       return;
     }
-    if (data[arrayPosition].color === currentColor) {
+    if (
+      data[arrayPosition].color ===
+      (selectedTool === TOOLS.ERASER ? 'none' : currentColor)
+    ) {
       return;
     }
     const newData = data;
-    newData[arrayPosition] = {color: currentColor};
+    newData[arrayPosition] = {
+      color: selectedTool === TOOLS.PENCIL ? currentColor : 'none',
+    };
     updateData([...newData]);
   };
 
