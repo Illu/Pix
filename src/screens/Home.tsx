@@ -89,6 +89,7 @@ const Home = observer(() => {
           <RefreshControl
             refreshing={feedStore.state === STATES.LOADING}
             onRefresh={load}
+            tintColor={colors.secondaryText}
           />
         }>
         {feedStore.feed?.map((post) => (
@@ -113,7 +114,7 @@ const Home = observer(() => {
             />
           </View>
         ))}
-        {!feedStore.feed?.length && (
+        {!feedStore.feed?.length && feedStore.state !== STATES.LOADING && (
           <Empty actionTitle="Add the first ever pixel art!" />
         )}
       </ScrollView>

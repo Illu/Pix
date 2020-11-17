@@ -1,21 +1,26 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useEffect, useState, useContext} from 'react';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import React, { useEffect, useState, useContext } from 'react';
 import Canvas from '../components/editor/Canvas';
 import CustomHeader from '../components/CustomHeader';
-import {PIXEL_COUNT, TOOLS} from '../constants';
+import { PIXEL_COUNT, TOOLS } from '../constants';
 import {
   DEFAULT_EDITOR_BACKGROUND_COLOR,
   DEFAULT_EDITOR_COLOR_PALETTE,
+  PALETTES,
 } from '../theme';
-import {ScrollView, Alert, TouchableOpacity} from 'react-native';
+import { ScrollView, Alert, TouchableOpacity } from 'react-native';
+import Animated from 'react-native-reanimated';
+
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
 import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
 import Button from '../components/Button';
+import BottomSheet from 'reanimated-bottom-sheet';
+import Palettes from '../components/editor/Palettes';
 
 const Wrapper = styled.View`
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   flex: 1;
 `;
 
@@ -28,10 +33,10 @@ const Row = styled.View`
 `;
 
 const ColorDrop = styled.TouchableOpacity`
-  height: ${({selected}) => (selected ? 50 : 40)}px;
-  width: ${({selected}) => (selected ? 50 : 40)}px;
-  background: ${({color}) => color};
-  border-width: ${({color}) => (color === '#FFFFFF' ? 1 : 0)}px;
+  height: ${({ selected }) => (selected ? 50 : 40)}px;
+  width: ${({ selected }) => (selected ? 50 : 40)}px;
+  background: ${({ color }) => color};
+  border-width: ${({ color }) => (color === '#FFFFFF' ? 1 : 0)}px;
   border-radius: 25px;
   margin-left: 10px;
 `;
@@ -42,29 +47,44 @@ const IconWrapper = styled.TouchableOpacity`
   align-items: center;
   justify-content: center;
   border-radius: 30px;
-  background: ${({theme, active}) =>
+  background: ${({ theme, active }) =>
     active ? theme.accent : theme.background};
+`;
+
+const OpacityView = styled(Animated.View)`
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background: #000;
+  opacity: 0.5;
+  z-index: 1;
 `;
 
 const initialData = Array.apply(null, {
   length: PIXEL_COUNT * PIXEL_COUNT,
-}).map(() => ({color: 'none'}));
+}).map(() => ({ color: 'none' }));
 
-const Editor = ({route}) => {
+const Editor = ({ route }) => {
   const navigation = useNavigation();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const draftsStore = useContext(Drafts);
 
   const [canvasData, setCanvasData] = useState(initialData);
   const [selectedTool, setSelectedTool] = useState(TOOLS.PENCIL);
   const [displayDrawTab, setDisplayDrawTab] = useState(true);
   const [displayGrid, setdisplayGrid] = useState(true);
-  const [currentColor, setCurrentColor] = useState(
-    DEFAULT_EDITOR_COLOR_PALETTE[0],
+  const [colorPalette, setColorPalette] = useState(
+    PALETTES[DEFAULT_EDITOR_COLOR_PALETTE].colors,
   );
+  const [currentColor, setCurrentColor] = useState(colorPalette[0]);
+  const [drawerShown, setDrawerShown] = useState(false);
   const [backgroundColor, setBackgroundColor] = useState(
     DEFAULT_EDITOR_BACKGROUND_COLOR,
   );
+
+  let fall = new Animated.Value(1);
 
   useEffect(() => {
     setCanvasData(route.params?.data?.pixels || initialData);
@@ -79,12 +99,18 @@ const Editor = ({route}) => {
 
   const nonEmpty = canvasData.some((item) => item.color !== 'none');
 
+  const sheetRef = React.useRef(null);
+  const animatedShadowOpacity = Animated.interpolate(fall, {
+    inputRange: [0, 1],
+    outputRange: [0.5, 0],
+  });
+
   return (
     <>
       <CustomHeader
         action={() => {
           if (nonEmpty) {
-            navigation.navigate('Publish', {canvasData, backgroundColor});
+            navigation.navigate('Publish', { canvasData, backgroundColor });
           } else {
             Alert.alert('Oops...', 'You cannot submit an empty canvas!');
           }
@@ -110,7 +136,7 @@ const Editor = ({route}) => {
                       },
                     },
                   ],
-                  {cancelable: false},
+                  { cancelable: false },
                 );
               } else {
                 goBack();
@@ -144,7 +170,7 @@ const Editor = ({route}) => {
             active={!displayDrawTab}
           />
         </Row>
-        <Row style={{justifyContent: 'space-around'}}>
+        <Row style={{ justifyContent: 'space-around' }}>
           {displayDrawTab ? (
             <>
               <IconWrapper
@@ -176,20 +202,20 @@ const Editor = ({route}) => {
               </IconWrapper>
             </>
           ) : (
-            <IconWrapper
-              active={displayGrid}
-              onPress={() => setdisplayGrid(!displayGrid)}>
-              <Icon
-                name="Grid"
-                size={24}
-                color={displayGrid ? '#fff' : colors.text}
-              />
-            </IconWrapper>
-          )}
+              <IconWrapper
+                active={displayGrid}
+                onPress={() => setdisplayGrid(!displayGrid)}>
+                <Icon
+                  name="Grid"
+                  size={24}
+                  color={displayGrid ? '#fff' : colors.text}
+                />
+              </IconWrapper>
+            )}
         </Row>
-        <ScrollView horizontal style={{maxHeight: 80}}>
+        <ScrollView horizontal style={{ maxHeight: 80 }}>
           <Row>
-            {DEFAULT_EDITOR_COLOR_PALETTE.map((color, index) => (
+            {colorPalette.map((color, index) => (
               <ColorDrop
                 key={index}
                 onPress={() =>
@@ -210,11 +236,35 @@ const Editor = ({route}) => {
         <Row>
           <Button
             title="Change color palette"
-            onPress={() => {}}
+            onPress={() => {
+              setDrawerShown(true);
+              sheetRef.current.snapTo(0);
+            }}
             fill={false}
           />
         </Row>
       </Wrapper>
+      <BottomSheet
+        ref={sheetRef}
+        snapPoints={[500, 0]}
+        initialSnap={1}
+        borderRadius={10}
+        renderContent={() =>
+          Palettes((palette) => {
+            setColorPalette([...palette]);
+            setCurrentColor(palette[0]);
+            sheetRef.current.snapTo(1);
+          })
+        }
+        callbackNode={fall}
+        onCloseEnd={() => setDrawerShown(false)}
+      />
+      <OpacityView
+        pointerEvents={drawerShown ? 'auto' : 'none'}
+        style={{
+          opacity: animatedShadowOpacity,
+        }}
+      />
     </>
   );
 };

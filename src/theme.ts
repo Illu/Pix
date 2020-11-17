@@ -1,18 +1,7 @@
 import {DarkTheme, DefaultTheme} from '@react-navigation/native';
 
 export const DEFAULT_EDITOR_BACKGROUND_COLOR = '#F4F4F4';
-export const DEFAULT_EDITOR_COLOR_PALETTE = [
-  '#FF0000',
-  '#2B2D42',
-  '#FFFFFF',
-  '#FF8A00',
-  '#FFE600',
-  '#70FF00',
-  '#70FF00',
-  '#70FF00',
-  '#70FF00',
-  '#70FF00',
-];
+export const DEFAULT_EDITOR_COLOR_PALETTE = 0; // Classic
 
 export const SCREEN_PADDING = 10;
 
@@ -47,3 +36,66 @@ export const darkTheme = {
     uiAccent: '#68707e',
   },
 };
+
+export const PALETTES = [
+  {
+    name: 'Classic',
+    colors: [
+      '#2B2D42',
+      '#FFFFFF',
+      '#ED6A5A',
+      '#FFB800',
+      '#35CE8D',
+      '#4DB3FF',
+      '#0085FF',
+    ],
+  },
+  {
+    name: 'Fall',
+    colors: [
+      '#291517',
+      '#5A1F31',
+      '#A47973',
+      '#F79A32',
+      '#AD4D00',
+      '#0A4E35',
+      '#859B8E',
+    ],
+  },
+  {
+    name: 'Ocean',
+    colors: [
+      '#023450',
+      '#076194',
+      '#6493AD',
+      '#72ACAE',
+      '#B4DADB',
+      '#F2F1F7',
+      '#B2AFCC',
+    ],
+  },
+  {
+    name: 'Greens',
+    colors: [
+      '#DFEEC5',
+      '#BAD87C',
+      '#BDFF00',
+      '#73DB21',
+      '#55B808',
+      '#188B46',
+      '#01672A',
+    ],
+  },
+  {
+    name: 'Skin',
+    colors: [
+      '#F9F4F0',
+      '#FAEBDE',
+      '#F8ECCF',
+      '#E6C6A2',
+      '#795A3D',
+      '#5F3D1F',
+      '#402812',
+    ],
+  },
+];
