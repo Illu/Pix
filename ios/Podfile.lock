@@ -540,6 +540,8 @@ PODS:
   - React-jsinspector (0.63.3)
   - react-native-appearance (0.3.4):
     - React
+  - react-native-color-picker-ios (0.1.2):
+    - React
   - react-native-safe-area-context (3.1.8):
     - React-Core
   - React-RCTActionSheet (0.63.3):
@@ -621,8 +623,8 @@ PODS:
     - RNFBApp
   - RNGestureHandler (1.8.0):
     - React
-  - RNReanimated (1.13.1):
-    - React
+  - RNReanimated (1.13.2):
+    - React-Core
   - RNScreens (2.14.0):
     - React-Core
   - RNSVG (12.1.0):
@@ -669,6 +671,7 @@ DEPENDENCIES:
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
   - react-native-appearance (from `../node_modules/react-native-appearance`)
+  - react-native-color-picker-ios (from `../node_modules/react-native-color-picker-ios`)
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -755,6 +758,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
   react-native-appearance:
     :path: "../node_modules/react-native-appearance"
+  react-native-color-picker-ios:
+    :path: "../node_modules/react-native-color-picker-ios"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
   React-RCTActionSheet:
@@ -843,6 +848,7 @@ SPEC CHECKSUMS:
   React-jsiexecutor: b56c03e61c0dd5f5801255f2160a815f4a53d451
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
+  react-native-color-picker-ios: 2e23dbcbfd3506c7560632c58b7e130b6015fbeb
   react-native-safe-area-context: 79fea126c6830c85f65947c223a5e3058a666937
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
@@ -861,7 +867,7 @@ SPEC CHECKSUMS:
   RNFBAuth: 005fc073e59f272bac33a5b5a2f9ffd77dbeebc9
   RNFBFirestore: be5e266c0134a30766bf0568e258e6692c50294a
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
-  RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
+  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 2e278a90eb15092ed261d4f2271e3fc9b60d08d4
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a

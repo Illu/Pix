@@ -1,9 +1,9 @@
 import React from 'react';
 import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ActionMenu from '../components/ActionMenu';
-import {useContext} from 'react';
+import { useContext } from 'react';
 import User from '../stores/User';
 
 const Wrapper = styled.ScrollView``;
@@ -40,12 +40,11 @@ const Settings = () => {
         action: () => navigation.navigate('EditProfile'),
       },
       {
-        title: 'Log me out',
+        title: !userStore.user ? 'Log in / Sign up' : 'Log me out',
         icon: 'ChevronRight',
-        thumbIcon: 'Logout',
+        thumbIcon: !userStore.user ? 'Logout' : 'Logout', // TODO
         thumbColor: '#35CE8D',
-        disabled: !userStore.user,
-        action: logout,
+        action: !userStore.user ? () => navigation.navigate("EditorModal") : logout,
       },
     ],
     [
@@ -61,14 +60,14 @@ const Settings = () => {
         icon: 'Twitter',
         thumbIcon: 'Star',
         thumbColor: '#4DB3FF',
-        action: () => {},
+        action: () => { },
       },
       {
         title: 'Leave a tip',
         icon: 'Twitter',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => {},
+        action: () => { },
       },
     ],
     [
