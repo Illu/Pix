@@ -9,7 +9,6 @@ import User from '../stores/User';
 import { useNavigation } from '@react-navigation/native';
 import Challenge from '../stores/Challenge';
 import Feed from '../stores/Feed';
-import { SORT } from '../constants';
 
 const ScrollView = styled.ScrollView`
   background: ${({ theme }) => theme.secondary};

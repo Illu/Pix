@@ -120,6 +120,8 @@ const Challenges = observer(() => {
                 }
               }}
               liked={userStore.user && post.likes.includes(userStore.user.uid)}
+              onReport={() => challengeStore.reportPost(post.id)}
+              reports={post.reports}
             />
           </View>
         ))}
