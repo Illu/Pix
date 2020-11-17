@@ -12,7 +12,7 @@ import User from '../stores/User';
 import Avatar from '../components/Avatar';
 import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
-import {SORT, STATES, TABBAR_HEIGHT} from '../constants';
+import {SORT, STATES} from '../constants';
 import styled from 'styled-components/native';
 import Challenge from '../stores/Challenge';
 import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
@@ -94,6 +94,7 @@ const Challenges = observer(() => {
           <RefreshControl
             refreshing={challengeStore.state === STATES.LOADING}
             onRefresh={load}
+            tintColor={colors.secondaryText}
           />
         }>
         <CurrentChallengeCard
@@ -121,9 +122,10 @@ const Challenges = observer(() => {
             />
           </View>
         ))}
-        {!challengeStore.challenges?.length && (
-          <Empty actionTitle="Add the first entry" />
-        )}
+        {!challengeStore.challenges?.length &&
+          challengeStore.state !== STATES.LOADING && (
+            <Empty actionTitle="Add the first entry" />
+          )}
       </ScrollView>
     </View>
   );
