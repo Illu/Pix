@@ -99,6 +99,7 @@ const Home = observer(() => {
               backgroundColor={post.data.backgroundColor}
               userName={post.user.displayName}
               likesCount={post.likesCount}
+              id={post.id}
               onLike={() => {
                 if (userStore.user?.uid) {
                   feedStore.likePost(
