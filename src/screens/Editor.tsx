@@ -1,8 +1,8 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
-import React, { useEffect, useState, useContext } from 'react';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
+import React, { useState, useContext } from 'react';
 import Canvas from '../components/editor/Canvas';
 import CustomHeader from '../components/CustomHeader';
-import { PIXEL_COUNT, TOOLS } from '../constants';
+import { TOOLS } from '../constants';
 import {
   DEFAULT_EDITOR_BACKGROUND_COLOR,
   DEFAULT_EDITOR_COLOR_PALETTE,
@@ -18,6 +18,8 @@ import Drafts from '../stores/Drafts';
 import Button from '../components/Button';
 import BottomSheet from 'reanimated-bottom-sheet';
 import Palettes from '../components/editor/Palettes';
+import ColorPicker from 'react-native-color-picker-ios';
+import { getInitialCanvasData } from '../helpers';
 
 const Wrapper = styled.View`
   background: ${({ theme }) => theme.secondary};
@@ -39,6 +41,8 @@ const ColorDrop = styled.TouchableOpacity`
   border-width: ${({ color }) => (color === '#FFFFFF' ? 1 : 0)}px;
   border-radius: 25px;
   margin-left: 10px;
+  align-items: center;
+  justify-content: center;
 `;
 
 const IconWrapper = styled.TouchableOpacity`
@@ -62,16 +66,12 @@ const OpacityView = styled(Animated.View)`
   z-index: 1;
 `;
 
-const initialData = Array.apply(null, {
-  length: PIXEL_COUNT * PIXEL_COUNT,
-}).map(() => ({ color: 'none' }));
-
 const Editor = ({ route }) => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const draftsStore = useContext(Drafts);
 
-  const [canvasData, setCanvasData] = useState(initialData);
+  const [canvasData, setCanvasData] = useState(getInitialCanvasData());
   const [selectedTool, setSelectedTool] = useState(TOOLS.PENCIL);
   const [displayDrawTab, setDisplayDrawTab] = useState(true);
   const [displayGrid, setdisplayGrid] = useState(true);
@@ -85,15 +85,16 @@ const Editor = ({ route }) => {
   );
 
   let fall = new Animated.Value(1);
-
-  useEffect(() => {
-    setCanvasData(route.params?.data?.pixels || initialData);
+  useFocusEffect(React.useCallback(() => {
+    setCanvasData(route.params?.data?.data?.pixels || getInitialCanvasData());
     setBackgroundColor(
-      route.params?.data?.backgroundColor || DEFAULT_EDITOR_BACKGROUND_COLOR,
+      route.params?.data?.data?.backgroundColor || DEFAULT_EDITOR_BACKGROUND_COLOR,
     );
-  }, []);
+  }, [route.params]))
 
   const goBack = () => {
+    setCanvasData(getInitialCanvasData())
+    setBackgroundColor(DEFAULT_EDITOR_BACKGROUND_COLOR)
     navigation.goBack();
   };
 
@@ -215,6 +216,17 @@ const Editor = ({ route }) => {
         </Row>
         <ScrollView horizontal style={{ maxHeight: 80 }}>
           <Row>
+            <ColorDrop color={colors.background} selected={false} onPress={() => {
+              ColorPicker.showColorPicker(
+                { supportsAlpha: false, initialColor: currentColor },
+                (color) => {
+                  setColorPalette([color, ...colorPalette])
+                  setCurrentColor(color)
+                }
+              );
+            }}>
+              <Icon name="Plus" color={colors.text} />
+            </ColorDrop>
             {colorPalette.map((color, index) => (
               <ColorDrop
                 key={index}
