@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import {
   ScrollView,
-  Text,
   View,
   RefreshControl,
   TouchableOpacity,
@@ -65,7 +64,7 @@ const Home = observer(() => {
   return (
     <>
       <CustomHeader
-        title="Pix"
+        title={userStore.isAdmin ? "🔨 Admin Mode" : "Pix"}
         rightComponent={userStore.user ? UserAvatar : OptionsLink}
       />
       <Row>
@@ -112,6 +111,8 @@ const Home = observer(() => {
                 }
               }}
               liked={userStore.user && post.likes.includes(userStore.user.uid)}
+              onReport={() => feedStore.reportPost(post.id)}
+              reports={post.reports}
             />
           </View>
         ))}

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
 import { Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { SCREEN_PADDING } from '../theme';
@@ -7,6 +7,8 @@ import PixelArt from './PixelArt';
 import { Pixel } from '../types';
 import Icon from './Icon';
 import { useTheme } from '@react-navigation/native';
+import User from '../stores/User';
+import firestore from '@react-native-firebase/firestore';
 
 const { width } = Dimensions.get('window');
 
@@ -50,6 +52,8 @@ interface Props {
   onLike(): void;
   liked: boolean;
   id: number;
+  onReport(): void;
+  reports?: number;
 }
 
 const FeedCard = ({
@@ -60,8 +64,11 @@ const FeedCard = ({
   liked,
   onLike,
   id,
+  onReport,
+  reports
 }: Props) => {
   const { colors } = useTheme();
+  const userStore = useContext(User)
 
   return (
     <Wrapper>
@@ -75,7 +82,7 @@ const FeedCard = ({
             [
               {
                 text: 'Report',
-                onPress: () => { },
+                onPress: onReport,
                 style: 'destructive',
               },
               {
@@ -83,6 +90,13 @@ const FeedCard = ({
                 style: 'cancel',
                 onPress: () => { },
               },
+              userStore.isAdmin && {
+                text: 'Delete',
+                style: 'destructive',
+                onPress: () => {
+                  firestore().collection('Posts').doc(`${id}`).delete().then(() => Alert.alert("💥", "Removed post"))
+                }
+              }
             ])
         }}>
           <Icon name="Dots" size={24} color={colors.text} />
@@ -100,7 +114,13 @@ const FeedCard = ({
           size={24}
         />
         <Likes>{likesCount}</Likes>
+        {userStore.isAdmin && reports && (
+          <>
+            <Likes>{"- "}{reports} Reports</Likes>
+          </>
+        )}
       </LikesRow>
+
     </Wrapper>
   );
 };

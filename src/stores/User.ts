@@ -11,19 +11,26 @@ class User {
     makeObservable(this, {
       state: observable,
       user: observable,
+      isAdmin: observable,
       posts: observable,
       onAuthStateChanged: action,
       loadPosts: action,
+      promote: action,
     });
   }
 
   user = null;
   posts = null;
+  isAdmin = false;
   state = STATES.IDLE;
 
   onAuthStateChanged(user) {
     this.user = user;
     this.state = STATES.SUCCESS;
+  }
+
+  promote() {
+    this.isAdmin = true;
   }
 
   async loadPosts() {

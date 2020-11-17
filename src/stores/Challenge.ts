@@ -1,8 +1,9 @@
-import {makeObservable, observable, action, runInAction} from 'mobx';
-import {createContext} from 'react';
-import {STATES} from '../constants';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { createContext } from 'react';
+import { Alert } from 'react-native';
+import { STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
-import {firebase} from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
 
 class Challenge {
   constructor() {
@@ -49,7 +50,7 @@ class Challenge {
         .get();
       const newChallenges = [];
       snapshot.forEach((doc) => {
-        newChallenges.push({...doc.data(), id: doc.id});
+        newChallenges.push({ ...doc.data(), id: doc.id });
       });
       runInAction(() => {
         this.state = STATES.SUCCESS;
@@ -84,6 +85,14 @@ class Challenge {
         this.challenges.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
+  }
+
+  async reportPost(postId) {
+    const postRef = firestore().collection('Posts').doc(postId);
+    await postRef.update({
+      reports: firebase.firestore.FieldValue.increment(1),
+    })
+    Alert.alert("Thank you for your report, you are making the App a friendlier place for everyone.");
   }
 }
 
