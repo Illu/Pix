@@ -1,19 +1,19 @@
 import React from 'react';
 import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import ActionMenu from '../components/ActionMenu';
-import {useState} from 'react';
-import {useContext} from 'react';
+import { useState } from 'react';
+import { useContext } from 'react';
 import User from '../../stores/User';
 import Avatar from '../../components/Avatar';
-import {SCREEN_PADDING} from '../../theme';
+import { SCREEN_PADDING } from '../../theme';
 import Button from '../../components/Button';
-import {BUTTON_WIDTH} from '../../constants';
+import { BUTTON_WIDTH } from '../../constants';
 
 const Wrapper = styled.ScrollView`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -25,7 +25,7 @@ const Label = styled.Text`
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -37,7 +37,7 @@ const ErrorText = styled.Text``;
 const EditProfile = () => {
   const navigation = useNavigation();
   const userStore = useContext(User);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const [error, setError] = useState('');
   const [loading, setLoading] = useState('');
@@ -61,13 +61,13 @@ const EditProfile = () => {
   };
 
   return (
-    <Wrapper contentContainerStyle={{alignItems: 'center'}}>
+    <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
       <Avatar size={119} />
       <Button
-        onPress={() => {}}
+        onPress={() => { navigation.navigate("EditAvatar") }}
         title="Edit profile picture"
         fill={false}
-        style={{width: 163, marginTop: 10, marginBottom: 30}}
+        style={{ width: 163, marginTop: 10, marginBottom: 30 }}
       />
       <Label>Username</Label>
       <TextInput
@@ -91,14 +91,14 @@ const EditProfile = () => {
         autoCapitalize="none"
         disabled
         placeholderTextColor={colors.secondaryText}
-        onChangeText={() => {}}
+        onChangeText={() => { }}
         secureTextEntry
       />
       <Button
         onPress={update}
         title="Save modifications"
         loading={loading}
-        style={{marginTop: 40}}
+        style={{ marginTop: 40 }}
       />
       <ErrorText>{error}</ErrorText>
     </Wrapper>

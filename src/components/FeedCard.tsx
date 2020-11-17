@@ -1,18 +1,18 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, Text} from 'react-native';
-import {SCREEN_PADDING} from '../theme';
+import { Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { SCREEN_PADDING } from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
-import {Pixel} from '../types';
+import { Pixel } from '../types';
 import Icon from './Icon';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  margin: ${({noMargins}) => (noMargins ? 0 : 5)}px 0;
+  margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -20,12 +20,12 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
 const Likes = styled.Text`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
@@ -39,7 +39,7 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 interface Props {
@@ -49,6 +49,7 @@ interface Props {
   userName: string;
   onLike(): void;
   liked: boolean;
+  id: number;
 }
 
 const FeedCard = ({
@@ -58,8 +59,9 @@ const FeedCard = ({
   likesCount = 0,
   liked,
   onLike,
+  id,
 }: Props) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Wrapper>
@@ -68,7 +70,23 @@ const FeedCard = ({
           <Avatar />
           <UserName>{userName}</UserName>
         </Row>
-        <Text>···</Text>
+        <TouchableOpacity onPress={() => {
+          Alert.alert("Options", `Help us get rid of low quality posts (such as innapropriate content or low-effort)\n\nID: ${id}`,
+            [
+              {
+                text: 'Report',
+                onPress: () => { },
+                style: 'destructive',
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel',
+                onPress: () => { },
+              },
+            ])
+        }}>
+          <Icon name="Dots" size={24} color={colors.text} />
+        </TouchableOpacity>
       </Row>
       <PixelArt
         data={data}
