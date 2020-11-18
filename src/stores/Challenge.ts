@@ -1,7 +1,7 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import { createContext } from 'react';
 import { Alert } from 'react-native';
-import { STATES } from '../constants';
+import { MONTHS, STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
 
@@ -22,7 +22,7 @@ class Challenge {
   state = STATES.IDLE;
 
   async loadCurrentChallenge() {
-    const currentMonth = 'Nov';
+    const currentMonth = MONTHS[new Date().getMonth()];
     const challengesData = await firestore().collection('Challenges').get();
     if (challengesData.empty) {
       this.state = STATES.ERROR;

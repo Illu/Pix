@@ -1,13 +1,21 @@
 import React from 'react';
 import styled from 'styled-components/native';
+import { MONTHS_FULL } from '../../constants';
+import LinearGradient from 'react-native-linear-gradient';
+import ChallengesBackgrounds from '../../../assets/images/challenges';
 
 const Wrapper = styled.ImageBackground`
   border-radius: 8px;
   margin-bottom: 10px;
   height: 180px;
-  background: ${({theme}) => theme.accent};
-  padding: 25px 15px;
+  background: ${({ theme }) => theme.accent};
   justify-content: center;
+  overflow: hidden;
+`;
+
+const ContentWrapper = styled(LinearGradient)`
+    padding: 25px 15px;
+    flex: 1;
 `;
 
 const TitleWrapper = styled.View`
@@ -41,22 +49,28 @@ interface Props {
   challengeTitle?: string;
 }
 
-const CurrentChallengeCard = ({challengeTitle}: Props) => (
-  <Wrapper>
-    <Month>December Challenge</Month>
-    {challengeTitle ? (
-      <>
-        <TitleWrapper>
-          <Title>{challengeTitle}</Title>
-        </TitleWrapper>
-        <Desc>
-          Participate in our challenge to win this month unique badge and get a
-          chance to enter the hall of fame !
+const currentMonth = MONTHS_FULL[new Date().getMonth()];
+
+const backgroundImage = ChallengesBackgrounds[currentMonth];
+
+const CurrentChallengeCard = ({ challengeTitle }: Props) => (
+  <Wrapper source={backgroundImage}>
+    <ContentWrapper colors={['#00000000', '#00000055']}>
+      <Month>{currentMonth} Challenge</Month>
+      {challengeTitle ? (
+        <>
+          <TitleWrapper>
+            <Title>{challengeTitle}</Title>
+          </TitleWrapper>
+          <Desc>
+            Participate in our challenge to win this month unique badge and get a
+            chance to enter the hall of fame !
         </Desc>
-      </>
-    ) : (
-      <Desc>Unable to get infos about this month challenge</Desc>
-    )}
+        </>
+      ) : (
+          <Desc>Unable to get infos about this month challenge</Desc>
+        )}
+    </ContentWrapper>
   </Wrapper>
 );
 

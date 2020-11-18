@@ -78,7 +78,7 @@ const FeedCard = ({
           <UserName>{userName}</UserName>
         </Row>
         <TouchableOpacity onPress={() => {
-          Alert.alert("Options", `Help us get rid of low quality posts (such as innapropriate content or low-effort)\n\nID: ${id}`,
+          Alert.alert("Options", `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''}`,
             [
               {
                 text: 'Report',
