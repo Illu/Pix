@@ -11,6 +11,7 @@ import { BUTTON_WIDTH, STATES } from '../../constants';
 import BottomSheet from 'reanimated-bottom-sheet';
 import EditAvatar from '../../components/settings/EditAvatar';
 import Animated from 'react-native-reanimated';
+import firestore from '@react-native-firebase/firestore';
 
 const Wrapper = styled.ScrollView`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -72,6 +73,9 @@ const EditProfile = () => {
     };
     auth()
       .currentUser.updateProfile(update)
+      .then(() => (
+        firestore().collection("Users").doc(userStore.user.uid).set(update)
+      ))
       .then(() => {
         setStatus(STATES.SUCCESS)
       })

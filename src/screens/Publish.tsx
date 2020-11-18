@@ -1,14 +1,15 @@
 import React, { useState, useContext } from 'react';
-import { Dimensions, Switch } from 'react-native';
+import { Dimensions, Switch, ActivityIndicator } from 'react-native';
 import PixelArt from '../components/PixelArt';
 import styled from 'styled-components/native';
 import CustomHeader from '../components/CustomHeader';
 import { SCREEN_PADDING } from '../theme';
 import firestore from '@react-native-firebase/firestore';
 import User from '../stores/User';
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import Challenge from '../stores/Challenge';
 import Feed from '../stores/Feed';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
 
 const ScrollView = styled.ScrollView`
   background: ${({ theme }) => theme.secondary};
@@ -63,6 +64,8 @@ const Publish = ({ route }) => {
   const feedStore = useContext(Feed);
   const [desc, setDesc] = useState('');
   const [tag, setTag] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const { colors } = useTheme();
   const navigation = useNavigation();
 
   const toggleSwitch = () => {
@@ -76,7 +79,9 @@ const Publish = ({ route }) => {
   };
 
   const sendPost = () => {
+    setLoading(true);
     const data = {
+      userRef: firestore().doc(`Users/${userStore.user.uid}`),
       user: {
         id: userStore.user.uid,
         displayName: userStore.user.displayName,
@@ -95,20 +100,21 @@ const Publish = ({ route }) => {
       .collection('Posts')
       .add(data)
       .then(() => {
-        console.log('post submitted!');
         if (tag) {
-          challengeStore.loadChallenges('timestamp');
+          // challengeStore.loadChallenges('timestamp');
           navigation.navigate("Challenges");//TODO: switch tab in challenges if needed
         } else {
-          feedStore.loadFeed('timestamp');
+          // feedStore.loadFeed('timestamp');
           navigation.navigate("Home"); //TODO: switch tab in home if needed
         }
+      }).catch(err => {
+        setLoading(false);
       });
   };
 
   const headerRight = (
-    <PublishButton onPress={sendPost}>
-      <PublishText>Publish</PublishText>
+    <PublishButton disabled={loading} onPress={sendPost}>
+      <PublishText>{loading ? <ActivityIndicator size="small" color={colors.secondary} /> : "Publish"}</PublishText>
     </PublishButton>
   );
 
