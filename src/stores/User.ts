@@ -13,6 +13,7 @@ class User {
       user: observable,
       isAdmin: observable,
       posts: observable,
+      userData: observable,
       onAuthStateChanged: action,
       loadPosts: action,
       promote: action,
@@ -20,12 +21,25 @@ class User {
   }
 
   user = null;
+  userData = null;
   posts = null;
   isAdmin = false;
   state = STATES.IDLE;
 
   onAuthStateChanged(user) {
     this.user = user;
+    if (user) {
+      firestore()
+        .collection('Users')
+        .doc(user.uid)
+        .get().then((data) => {
+          runInAction(() => {
+            this.userData = data.data();
+          })
+        })
+    } else {
+      this.userData = null;
+    }
     this.state = STATES.SUCCESS;
   }
 

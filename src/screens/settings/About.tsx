@@ -4,8 +4,30 @@ import User from '../../stores/User';
 import { Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
-const Wrapper = styled.ScrollView``;
-const Desc = styled.Text``;
+const Wrapper = styled.ScrollView`
+  padding: 10px 16px;
+`;
+
+const Label = styled.Text`
+  font-weight: 400;
+  font-size: 13px;
+  color: ${({ theme }) => theme.secondaryText};
+  margin-top: 20px;
+`;
+
+const DescWrapper = styled.View`
+  background: ${({ theme }) => theme.secondary};
+  padding: 15px;
+  border-radius: 8px;
+  margin-top: 5px;
+`;
+
+const Desc = styled.Text`
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 20px;
+  color: ${({ theme }) => theme.text};
+`;
 
 const About = () => {
   const userStore = useContext(User)
@@ -26,7 +48,18 @@ const About = () => {
 
   return (
     <Wrapper>
-      <Desc>About about about... about!</Desc>
+      <Label>WHAT IS PIX ?</Label>
+      <DescWrapper>
+        <Desc>
+          Pix is an online pixel art community. Share your creations with everyone to contribute to the app ! If you have any question or suggestion, feel free to contact us, we’ll be glad to hear from you !
+        </Desc>
+      </DescWrapper>
+      <Label>PRIVACY POLICY</Label>
+      <DescWrapper>
+        <Desc>
+          Find out how we deal with privacy here
+        </Desc>
+      </DescWrapper>
     </Wrapper>
   );
 };

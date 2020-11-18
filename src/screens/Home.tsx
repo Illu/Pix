@@ -51,7 +51,7 @@ const Home = observer(() => {
 
   const UserAvatar = (
     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-      <Avatar />
+      <Avatar id={userStore.userData?.avatar} />
     </TouchableOpacity>
   );
 
