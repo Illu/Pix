@@ -5,6 +5,7 @@ import { useNavigation } from '@react-navigation/native';
 import ActionMenu from '../components/ActionMenu';
 import { useContext } from 'react';
 import User from '../stores/User';
+import { observer } from 'mobx-react';
 
 const Wrapper = styled.ScrollView``;
 
@@ -12,7 +13,7 @@ const logout = () => {
   auth().signOut();
 };
 
-const Settings = () => {
+const Settings = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
   const items = [
@@ -86,6 +87,6 @@ const Settings = () => {
       <ActionMenu items={items} />
     </Wrapper>
   );
-};
+});
 
 export default Settings;

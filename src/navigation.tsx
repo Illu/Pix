@@ -49,11 +49,10 @@ const HomeStack = () => {
           ),
         })}
       />
-      <HomeNav.Screen name="EditProfile" component={EditProfile} />
-      <HomeNav.Screen name="EditAvatar" component={EditAvatar} />
+      <HomeNav.Screen name="EditProfile" component={EditProfile} options={{ headerTitle: "Edit your profile" }} />
       <HomeNav.Screen name="Settings" component={Settings} />
       <HomeNav.Screen name="About" component={About} />
-      <HomeNav.Screen name="Appearance" component={Appearance} />
+      <HomeNav.Screen name="Appearance" component={Appearance} options={{ headerTitle: "Theme" }} />
     </HomeNav.Navigator>
   );
 };
@@ -83,14 +82,16 @@ export const LoginStack = () => (
       name="LoginSelection"
       component={LoginSelection}
       options={({ navigation, route }) => ({
-        headerLeft: () => <Button onPress={navigation.goBack} title="X" />,
+        headerLeft: () => <Button onPress={navigation.goBack} title="Close" />,
+        headerTitle: "Login"
       })}
     />
-    <LoginNav.Screen name="Login" component={Login} />
-    <LoginNav.Screen name="AccountCreation" component={AccountCreation} />
+    <LoginNav.Screen name="Login" component={Login} options={{ headerTitle: "Sign in" }} />
+    <LoginNav.Screen name="AccountCreation" component={AccountCreation} options={{ headerTitle: "Create your account" }} />
     <LoginNav.Screen
       name="AccountPasswordCreation"
       component={AccountPasswordCreation}
+      options={{ headerTitle: "Create a password" }}
     />
   </LoginNav.Navigator>
 );
