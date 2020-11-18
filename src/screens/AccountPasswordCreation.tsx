@@ -39,7 +39,8 @@ const Label = styled.Text`
 `;
 
 const ErrorText = styled.Text`
-  color: red;
+  color: ${({ theme }) => theme.error};
+  margin-top: 10px;
 `;
 
 const AccountPasswordCreation = ({ route }) => {
@@ -77,7 +78,7 @@ const AccountPasswordCreation = ({ route }) => {
         }
 
         if (error.code === 'auth/invalid-email') {
-          setError('That email address is invalid!');
+          setError('Invalid email address!');
         }
         setLoading(false);
         console.error(error);
@@ -111,6 +112,7 @@ const AccountPasswordCreation = ({ route }) => {
         onPress={createAccount}
         loading={loading}
         title="Create my account"
+        disabled={password.length === 0 || passwordVerification.length === 0}
       />
       <Button
         onPress={navigation.goBack}

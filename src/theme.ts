@@ -1,4 +1,4 @@
-import {DarkTheme, DefaultTheme} from '@react-navigation/native';
+import { DarkTheme, DefaultTheme } from '@react-navigation/native';
 
 export const DEFAULT_EDITOR_BACKGROUND_COLOR = '#F4F4F4';
 export const DEFAULT_EDITOR_COLOR_PALETTE = 0; // Classic
@@ -18,6 +18,8 @@ export const lightTheme = {
     accent: '#4DB3FF',
     accentBackground: 'rgba(10, 132, 255, 0.1)',
     uiAccent: '#e5e5e5',
+    success: '#35CE8D',
+    error: '#ED6A5A'
   },
 };
 
@@ -34,6 +36,8 @@ export const darkTheme = {
     accent: '#4DB3FF',
     accentBackground: 'rgba(10, 132, 255, 0.1)',
     uiAccent: '#68707e',
+    success: '#35CE8D',
+    error: '#ED6A5A'
   },
 };
 
