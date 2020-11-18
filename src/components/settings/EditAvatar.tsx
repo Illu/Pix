@@ -3,7 +3,7 @@ import styled from 'styled-components';
 import Avatar from '../../components/Avatar';
 import { SCREEN_PADDING } from '../../theme';
 import { BUTTON_WIDTH } from '../../constants';
-import { Button, ScrollView } from 'react-native';
+import { View, ScrollView } from 'react-native';
 
 const Wrapper = styled.View`
   height: 500px;
@@ -19,7 +19,7 @@ const Label = styled.Text`
 `;
 
 const AvatarWrapper = styled.TouchableOpacity`
-
+  margin-right: 10px;
 `;
 
 const Header = styled.View`
@@ -34,7 +34,13 @@ const Header = styled.View`
 
 const Row = styled.View`
   flex-direction: row;
+  margin-bottom: 20px;
 `;
+
+const CATEGORIES = [
+  { name: 'Cats', images: ['cat-1', 'cat-2'] },
+  { name: 'Animals', images: ['animal-1'] }
+]
 
 const EditAvatar = (onSelect) => {
 
@@ -42,12 +48,18 @@ const EditAvatar = (onSelect) => {
     <Wrapper>
       <Header />
       <ScrollView>
-        <Label>Cats</Label>
-        <Row>
-          <AvatarWrapper>
-            <Avatar size={60} />
-          </AvatarWrapper>
-        </Row>
+        {CATEGORIES.map(category => (
+          <View key={category.name}>
+            <Label>{category.name}</Label>
+            <Row>
+              {category.images.map(imageId => (
+                <AvatarWrapper onPress={() => onSelect(imageId)}>
+                  <Avatar size={60} id={imageId} />
+                </AvatarWrapper>
+              ))}
+            </Row>
+          </View>
+        ))}
       </ScrollView>
     </Wrapper>
   );

@@ -1,5 +1,5 @@
 import React, { useState, useContext } from 'react';
-import { Dimensions, Switch, ActivityIndicator } from 'react-native';
+import { Dimensions, Switch, ActivityIndicator, KeyboardAvoidingView } from 'react-native';
 import PixelArt from '../components/PixelArt';
 import styled from 'styled-components/native';
 import CustomHeader from '../components/CustomHeader';
@@ -121,31 +121,33 @@ const Publish = ({ route }) => {
   return (
     <>
       <CustomHeader title="Publish" back rightComponent={headerRight} />
-      <ScrollView>
-        <PixelArt
-          data={canvasData}
-          backgroundColor={backgroundColor}
-          size={Dimensions.get('window').width}
-        />
-        <ContentWrapper>
-          <Label>A quick word about your masterpiece ?</Label>
-          <TextInput
-            value={desc}
-            onChangeText={(str) => str.length < 200 && setDesc(str)}
-            multiline></TextInput>
-          <Row>
-            <Label style={{ flex: 1 }}>
-              I’m participating in this month challenge (
+      <KeyboardAvoidingView behavior="padding" style={{ flex: 1, backgroundColor: colors.secondary }}>
+        <ScrollView>
+          <PixelArt
+            data={canvasData}
+            backgroundColor={backgroundColor}
+            size={Dimensions.get('window').width}
+          />
+          <ContentWrapper>
+            <Label>A quick word about your masterpiece ?</Label>
+            <TextInput
+              value={desc}
+              onChangeText={(str) => str.length < 200 && setDesc(str)}
+              multiline></TextInput>
+            <Row>
+              <Label style={{ flex: 1 }}>
+                I’m participating in this month challenge (
               {challengeStore.currentChallenge.title})
             </Label>
-            <Switch
-              style={{ marginLeft: 20 }}
-              onValueChange={toggleSwitch}
-              value={!!tag}
-            />
-          </Row>
-        </ContentWrapper>
-      </ScrollView>
+              <Switch
+                style={{ marginLeft: 20 }}
+                onValueChange={toggleSwitch}
+                value={!!tag}
+              />
+            </Row>
+          </ContentWrapper>
+        </ScrollView>
+      </KeyboardAvoidingView>
     </>
   );
 };

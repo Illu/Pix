@@ -1,8 +1,8 @@
 import AsyncStorage from '@react-native-community/async-storage';
-import {makeObservable, observable, action} from 'mobx';
-import {createContext} from 'react';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { createContext } from 'react';
 
-import {Themes} from '../types';
+import { Themes } from '../types';
 
 class AppState {
   constructor() {
@@ -33,10 +33,12 @@ class AppState {
       const value = await AsyncStorage.getItem('@Moonwalk:settings');
       if (value !== null) {
         const data = JSON.parse(value);
-        this.theme = data.theme;
-        this.appIcon = data.appIcon || 'Default';
+        runInAction(() => {
+          this.theme = data.theme;
+          this.appIcon = data.appIcon || 'Default';
+        })
       }
-    } catch (error) {}
+    } catch (error) { }
   };
 
   saveData = async () => {
@@ -48,7 +50,7 @@ class AppState {
           appIcon: this.appIcon,
         }),
       );
-    } catch (error) {}
+    } catch (error) { }
   };
 }
 

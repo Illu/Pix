@@ -63,6 +63,7 @@ const EditProfile = () => {
   const [status, setStatus] = useState(STATES.IDLE);
   const [username, setUsername] = useState(userStore.user.displayName);
   const [drawerShown, setDrawerShown] = useState(false);
+  const [avatar, setAvatar] = useState(userStore.userData?.avatar || 'cat-1')
 
   let fall = new Animated.Value(1);
 
@@ -70,6 +71,7 @@ const EditProfile = () => {
     setStatus(STATES.LOADING)
     const update = {
       displayName: username,
+      avatar
     };
     auth()
       .currentUser.updateProfile(update)
@@ -94,7 +96,7 @@ const EditProfile = () => {
   return (
     <>
       <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
-        <Avatar size={119} />
+        <Avatar size={119} id={avatar} />
         <Button
           onPress={() => {
             setDrawerShown(true);
@@ -150,7 +152,7 @@ const EditProfile = () => {
         initialSnap={1}
         borderRadius={10}
         renderContent={() => EditAvatar((newAvatar => {
-          if (newAvatar) { };
+          if (newAvatar) { setAvatar(newAvatar) };
           sheetRef.current.snapTo(1);
         }))}
         callbackNode={fall}
