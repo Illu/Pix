@@ -1,4 +1,4 @@
-import { useNavigation } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
 import styled from 'styled-components/native';
@@ -37,6 +37,7 @@ const Label = styled.Text`
   font-size: 11px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const ErrorText = styled.Text`
@@ -57,6 +58,7 @@ const Birb = require('../../assets/images/birb.png');
 
 const AccountPasswordCreation = ({ route }) => {
   const navigation = useNavigation();
+  const { colors } = useTheme();
 
   const [password, setPassword] = useState('');
   const [passwordVerification, setPasswordVerification] = useState('');
@@ -116,6 +118,7 @@ const AccountPasswordCreation = ({ route }) => {
           setError('');
           setPassword(str);
         }}
+        style={{ color: colors.text }}
         secureTextEntry
       />
       <Label>Confirm your password</Label>
@@ -125,6 +128,7 @@ const AccountPasswordCreation = ({ route }) => {
           setError('');
           setPasswordVerification(str);
         }}
+        style={{ color: colors.text }}
         returnKeyType="done"
         onSubmitEditing={createAccount}
         secureTextEntry

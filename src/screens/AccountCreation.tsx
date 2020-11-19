@@ -43,6 +43,7 @@ const Label = styled.Text`
   font-size: 11px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Image = styled.Image``;
@@ -72,6 +73,7 @@ const AccountCreation = () => {
         placeholder="Your username"
         autoCapitalize="none"
         onChangeText={setUsername}
+        style={{ color: colors.text }}
         autocompleteType="username"
       />
       <Label>Your email</Label>
@@ -82,6 +84,7 @@ const AccountCreation = () => {
         autoCapitalize="none"
         onSubmitEditing={() => navigation.navigate('AccountPasswordCreation', { username, email })}
         placeholderTextColor={colors.secondaryText}
+        style={{ color: colors.text }}
         onChangeText={setEmail}
         autoCompleteType="email"
       />

@@ -1,7 +1,7 @@
-import {makeObservable, observable, action, runInAction} from 'mobx';
-import {createContext} from 'react';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { createContext } from 'react';
 import auth from '@react-native-firebase/auth';
-import {STATES} from '../constants';
+import { STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
 
 class User {
@@ -40,6 +40,7 @@ class User {
         });
     } else {
       this.userData = null;
+      this.isAdmin = false;
     }
     this.state = STATES.SUCCESS;
   }

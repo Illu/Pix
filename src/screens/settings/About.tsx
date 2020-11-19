@@ -38,7 +38,7 @@ const About = () => {
         .collection('Admins')
         .get()
         .then((data) => {
-          if (data.docs.findIndex((user) => user.id === userStore.user.uid)) {
+          if (data.docs.findIndex((user) => user.id === userStore.user.uid) >= 0) {
             userStore.promote();
             Alert.alert(
               'The maker!',
