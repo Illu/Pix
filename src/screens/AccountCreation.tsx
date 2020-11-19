@@ -1,21 +1,20 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React from 'react';
-import {useState} from 'react';
-import {Text} from 'react-native';
+import { useState } from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import {BUTTON_WIDTH} from '../constants';
+import { BUTTON_WIDTH } from '../constants';
 
-const Wrapper = styled.View`
+const Wrapper = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -29,6 +28,14 @@ const IntroText = styled.Text`
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 30px;
+  color: ${({ theme }) => theme.secondaryText};
+`;
+
+const Title = styled.Text`
+  margin: 30px 0 15px 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.text};
 `;
 
 const Label = styled.Text`
@@ -38,17 +45,25 @@ const Label = styled.Text`
   width: ${BUTTON_WIDTH}px;
 `;
 
+const Image = styled.Image``;
+
+const Birb = require('../../assets/images/birb.png');
+
 const AccountCreation = () => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
   const [email, setEmail] = useState('');
 
   return (
-    <Wrapper>
+    <Wrapper behavior="padding">
+      <Image source={Birb} />
+      <Title>
+        Welcome to Pix!
+      </Title>
       <IntroText>
-        Create your account and enjoy the app and its community !
+        Create your account and enjoy the app and its community!
       </IntroText>
       <Label>First, choose your username</Label>
       <TextInput
@@ -63,14 +78,16 @@ const AccountCreation = () => {
       <TextInput
         placeholder="Your email"
         value={email}
+        returnKeyType="next"
         autoCapitalize="none"
+        onSubmitEditing={() => navigation.navigate('AccountPasswordCreation', { username, email })}
         placeholderTextColor={colors.secondaryText}
         onChangeText={setEmail}
         autoCompleteType="email"
       />
       <Button
         onPress={() =>
-          navigation.navigate('AccountPasswordCreation', {username, email})
+          navigation.navigate('AccountPasswordCreation', { username, email })
         }
         title="Next"
         disabled={username.length === 0 || email.length === 0}

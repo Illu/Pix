@@ -1,7 +1,7 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import User from '../../stores/User';
-import {Alert} from 'react-native';
+import { Alert } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
 
 const Wrapper = styled.ScrollView`
@@ -11,12 +11,12 @@ const Wrapper = styled.ScrollView`
 const Label = styled.Text`
   font-weight: 400;
   font-size: 13px;
-  color: ${({theme}) => theme.secondaryText};
+  color: ${({ theme }) => theme.secondaryText};
   margin-top: 20px;
 `;
 
 const DescWrapper = styled.View`
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   padding: 15px;
   border-radius: 8px;
   margin-top: 5px;
@@ -26,14 +26,14 @@ const Desc = styled.Text`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const About = () => {
   const userStore = useContext(User);
 
   useEffect(() => {
-    if (!userStore.isAdmin) {
+    if (!userStore.isAdmin && userStore.user) {
       firestore()
         .collection('Admins')
         .get()
@@ -43,7 +43,7 @@ const About = () => {
             Alert.alert(
               'The maker!',
               'You are now signed in as an admin, granting you total power on every post in the App.',
-              [{text: 'Cool!'}],
+              [{ text: 'Cool!' }],
             );
           }
         });

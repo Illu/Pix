@@ -1,39 +1,42 @@
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import {useState} from 'react';
+import { useState } from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import {BUTTON_WIDTH} from '../constants';
+import { BUTTON_WIDTH } from '../constants';
 import auth from '@react-native-firebase/auth';
 
-const Wrapper = styled.View`
+const Wrapper = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
   margin-bottom: 10px;
 `;
 
-const IntroText = styled.Text`
-  width: ${BUTTON_WIDTH}px;
-  text-align: center;
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 20px;
-  margin-bottom: 30px;
+const Title = styled.Text`
+  margin: 30px 0 40px 0;
+  font-size: 32px;
+  font-weight: 600;
+  color: ${({ theme }) => theme.text};
 `;
 
 const ErrorText = styled.Text`
   color: red;
 `;
+
+const Image = styled.Image``;
+
+
+const Chick = require('../../assets/images/chick.png');
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -41,7 +44,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const login = () => {
     setLoading(true);
@@ -62,10 +65,11 @@ const Login = () => {
       });
   };
   return (
-    <Wrapper>
-      <IntroText>
-        Welcome to Pix, your brand new pixel art community !
-      </IntroText>
+    <Wrapper behavior="padding">
+      <Image source={Chick} />
+      <Title>
+        Welcome back!
+      </Title>
       <TextInput
         value={email}
         placeholder="Your email"
