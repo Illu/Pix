@@ -1,20 +1,20 @@
-import React, {useContext} from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, TouchableOpacity, Alert} from 'react-native';
-import {SCREEN_PADDING} from '../theme';
+import { Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { SCREEN_PADDING } from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
-import {Pixel} from '../types';
+import { Pixel } from '../types';
 import Icon from './Icon';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import User from '../stores/User';
 import firestore from '@react-native-firebase/firestore';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  margin: ${({noMargins}) => (noMargins ? 0 : 5)}px 0;
+  margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -22,12 +22,12 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
 const Likes = styled.Text`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
@@ -41,7 +41,7 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 interface Props {
@@ -54,6 +54,7 @@ interface Props {
   id: number;
   onReport(): void;
   reports?: number;
+  avatar?: string;
 }
 
 const FeedCard = ({
@@ -66,23 +67,36 @@ const FeedCard = ({
   id,
   onReport,
   reports,
+  avatar = "cat-1",
 }: Props) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const userStore = useContext(User);
 
   return (
     <Wrapper>
       <Row>
         <Row noMargins>
-          <Avatar />
+          <Avatar id={avatar} />
           <UserName>{userName}</UserName>
         </Row>
         <TouchableOpacity
           onPress={() => {
+            if (!userStore.user) {
+              Alert.alert('Warning', 'You must log in to interact with a publication.', [{
+                text: 'Log in or Create an account',
+                onPress: onLike,
+                style: 'default',
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel',
+                onPress: () => { },
+              }])
+              return;
+            }
             Alert.alert(
               'Options',
-              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${
-                userStore.isAdmin ? `\n\nID: ${id}` : ''
+              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''
               }`,
               [
                 {
@@ -93,7 +107,7 @@ const FeedCard = ({
                 {
                   text: 'Cancel',
                   style: 'cancel',
-                  onPress: () => {},
+                  onPress: () => { },
                 },
                 userStore.isAdmin && {
                   text: 'Delete',

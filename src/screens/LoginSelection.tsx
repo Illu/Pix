@@ -2,6 +2,7 @@ import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
+import { Platform } from 'react-native';
 import { BUTTON_WIDTH } from '../constants';
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
@@ -77,19 +78,20 @@ const LoginSelection = () => {
         fill={false}
         title="Sign in"
       />
-
-      <AppleButton
-        buttonStyle={AppleButton.Style.WHITE_OUTLINE}
-        buttonType={AppleButton.Type.SIGN_IN}
-        style={{
-          marginTop: 10,
-          width: BUTTON_WIDTH,
-          height: 45,
-        }}
-        onPress={() =>
-          onAppleButtonPress().then(() => alert('Apple sign-in complete!'))
-        }
-      />
+      {Platform.OS === 'ios' && (
+        <AppleButton
+          buttonStyle={AppleButton.Style.WHITE_OUTLINE}
+          buttonType={AppleButton.Type.SIGN_IN}
+          style={{
+            marginTop: 10,
+            width: BUTTON_WIDTH,
+            height: 45,
+          }}
+          onPress={() =>
+            onAppleButtonPress().then(() => alert('Apple sign-in complete!'))
+          }
+        />
+      )}
     </Wrapper>
   );
 };
