@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components';
 import Avatar from '../../components/Avatar';
-import { SCREEN_PADDING } from '../../theme';
-import { BUTTON_WIDTH } from '../../constants';
-import { View, ScrollView } from 'react-native';
+import {SCREEN_PADDING} from '../../theme';
+import {BUTTON_WIDTH} from '../../constants';
+import {View, ScrollView} from 'react-native';
 
 const Wrapper = styled.View`
   height: 500px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -26,11 +26,10 @@ const Header = styled.View`
   width: 40px;
   height: 8px;
   border-radius: 4px;
-  background: ${({ theme }) => theme.secondaryText};
+  background: ${({theme}) => theme.secondaryText};
   margin-bottom: 20px;
   align-self: center;
 `;
-
 
 const Row = styled.View`
   flex-direction: row;
@@ -38,22 +37,21 @@ const Row = styled.View`
 `;
 
 const CATEGORIES = [
-  { name: 'Cats', images: ['cat-1', 'cat-2'] },
-  { name: 'Animals', images: ['animal-1'] }
-]
+  {name: 'Cats', images: ['cat-1', 'cat-2']},
+  {name: 'Animals', images: ['animal-1']},
+];
 
 const EditAvatar = (onSelect) => {
-
   return (
     <Wrapper>
       <Header />
       <ScrollView>
-        {CATEGORIES.map(category => (
+        {CATEGORIES.map((category) => (
           <View key={category.name}>
             <Label>{category.name}</Label>
             <Row>
-              {category.images.map(imageId => (
-                <AvatarWrapper onPress={() => onSelect(imageId)}>
+              {category.images.map((imageId) => (
+                <AvatarWrapper key={imageId} onPress={() => onSelect(imageId)}>
                   <Avatar size={60} id={imageId} />
                 </AvatarWrapper>
               ))}

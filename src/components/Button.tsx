@@ -1,24 +1,24 @@
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import React from 'react';
-import { ActivityIndicator } from 'react-native';
-import { ViewStyleProp } from 'react-native/Libraries/StyleSheet/StyleSheet';
+import {ActivityIndicator} from 'react-native';
+import {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
 import styled from 'styled-components/native';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 
 const Wrapper = styled.TouchableOpacity`
   width: ${BUTTON_WIDTH}px;
   padding: 10px;
-  background: ${({ theme, fill }) => (fill ? theme.accent : 'transparent')};
+  background: ${({theme, fill}) => (fill ? theme.accent : 'transparent')};
   border-radius: 4px;
   align-items: center;
-  border-width: ${({ fill }) => (fill ? 0 : 1)}px;
-  border-color: ${({ theme }) => theme.secondaryText};
-  opacity: ${({ disabled }) => disabled ? 0.5 : 1};
+  border-width: ${({fill}) => (fill ? 0 : 1)}px;
+  border-color: ${({theme}) => theme.secondaryText};
+  opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
 `;
 
 const Title = styled.Text`
   font-weight: 600;
-  color: ${({ theme, fill }) => (fill ? theme.secondary : theme.secondaryText)};
+  color: ${({theme, fill}) => (fill ? theme.secondary : theme.secondaryText)};
 `;
 
 interface Props {
@@ -38,11 +38,11 @@ const Button = ({
   loading = false,
   disabled = false,
 }: Props) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <Wrapper
-      style={{ ...style }}
+      style={{...style}}
       onPress={onPress}
       fill={fill}
       disabled={disabled || loading}>
@@ -51,8 +51,8 @@ const Button = ({
           color={fill ? colors.secondary : colors.secondaryText}
         />
       ) : (
-          <Title fill={fill}>{title}</Title>
-        )}
+        <Title fill={fill}>{title}</Title>
+      )}
     </Wrapper>
   );
 };

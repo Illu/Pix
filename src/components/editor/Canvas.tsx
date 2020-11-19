@@ -10,6 +10,7 @@ import {
   TOOLS,
 } from '../../constants';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {dropBucket} from '../../helpers';
 
 const Wrapper = styled.View`
   background: ${({backgroundColor}) => backgroundColor};
@@ -78,10 +79,20 @@ const Canvas = ({
     ) {
       return;
     }
-    const newData = data;
-    newData[arrayPosition] = {
-      color: selectedTool === TOOLS.PENCIL ? currentColor : 'none',
-    };
+    let newData = data;
+    if (selectedTool === TOOLS.BUCKET) {
+      newData = dropBucket(
+        newData,
+        arrayPosition,
+        currentColor,
+        data[arrayPosition].color,
+        newData,
+      );
+    } else {
+      newData[arrayPosition] = {
+        color: selectedTool === TOOLS.PENCIL ? currentColor : 'none',
+      };
+    }
     updateData([...newData]);
   };
 
