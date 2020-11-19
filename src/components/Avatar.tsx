@@ -79,7 +79,7 @@ const Wrapper = styled.View`
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  background: ${({ backgroundColor }) => backgroundColor};
+  background: ${({ backgroundColor }) => backgroundColor || "#FFFFFF"};
   border-color: ${({ theme }) => theme.text};
   border-width: ${({ border }) => (border ? 1 : 0)}px;
 `;
@@ -99,8 +99,8 @@ const Avatar = ({ size = 32, withBorder = false, id = 'cat-1' }: Props) => (
   <Wrapper
     size={size}
     border={withBorder}
-    backgroundColor={AVATARS[id].backgroundColor}>
-    <Image source={AVATARS[id].image} />
+    backgroundColor={AVATARS[id]?.backgroundColor}>
+    <Image source={AVATARS[id]?.image} />
   </Wrapper>
 );
 
