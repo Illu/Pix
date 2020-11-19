@@ -13,9 +13,10 @@ const Wrapper = styled.View`
 
 const Label = styled.Text`
   font-weight: 600;
-  font-size: 11px;
+  font-size: 14px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
+  color: ${({ theme }) => theme.text};
 `;
 
 const AvatarWrapper = styled.TouchableOpacity`

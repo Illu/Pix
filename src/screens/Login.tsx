@@ -1,6 +1,6 @@
 import { useTheme } from '@react-navigation/native';
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
+import { Alert, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
 import { BUTTON_WIDTH } from '../constants';
@@ -35,6 +35,10 @@ const ErrorText = styled.Text`
 
 const Image = styled.Image``;
 
+const ResetPassword = styled.Text`
+  color: ${({ theme }) => theme.text};
+  margin-bottom: 30px;
+`;
 
 const Chick = require('../../assets/images/chick.png');
 
@@ -64,6 +68,23 @@ const Login = () => {
         console.error(error);
       });
   };
+
+  const resetPassword = () => {
+    if (email.length === 0) {
+      Alert.alert("Please fill the email field to reset your password");
+      return;
+    }
+    setLoading(true);
+    auth().sendPasswordResetEmail(email).then(() => {
+      Alert.alert("Check your mailbox!", `We sent you an email to ${email} to help you reset your password.`)
+      setLoading(false);
+    }).catch(err => {
+      Alert.alert("Error 😢", `We tried to send an email to ${email} but something unexpected happened. Make sure the address is valid.`)
+      setLoading(false)
+    });
+
+  }
+
   return (
     <Wrapper behavior="padding">
       <Image source={Chick} />
@@ -76,6 +97,7 @@ const Login = () => {
         placeholderTextColor={colors.secondaryText}
         autoCapitalize="none"
         onChangeText={setEmail}
+        style={{ color: colors.text }}
         autocompleteType="username"
       />
       <TextInput
@@ -83,10 +105,14 @@ const Login = () => {
         placeholder="Your password"
         autoCapitalize="none"
         placeholderTextColor={colors.secondaryText}
+        style={{ color: colors.text }}
         onChangeText={setPassword}
         autoCompleteType="password"
         secureTextEntry
       />
+      <TouchableOpacity onPress={resetPassword} disabled={loading}>
+        <ResetPassword>Reset your password</ResetPassword>
+      </TouchableOpacity>
       <Button onPress={login} loading={loading} title="Sign in" />
       <ErrorText>{error}</ErrorText>
     </Wrapper>
