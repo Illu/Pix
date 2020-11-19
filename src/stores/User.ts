@@ -1,7 +1,7 @@
-import { makeObservable, observable, action, runInAction } from 'mobx';
-import { createContext } from 'react';
+import {makeObservable, observable, action, runInAction} from 'mobx';
+import {createContext} from 'react';
 import auth from '@react-native-firebase/auth';
-import { STATES } from '../constants';
+import {STATES} from '../constants';
 import firestore from '@react-native-firebase/firestore';
 
 class User {
@@ -32,11 +32,12 @@ class User {
       firestore()
         .collection('Users')
         .doc(user.uid)
-        .get().then((data) => {
+        .get()
+        .then((data) => {
           runInAction(() => {
             this.userData = data.data();
-          })
-        })
+          });
+        });
     } else {
       this.userData = null;
     }

@@ -1,29 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import {
-  ScrollView,
-  View,
-  RefreshControl,
-  TouchableOpacity,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {ScrollView, View, RefreshControl, TouchableOpacity} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
-import { SORT, STATES } from '../constants';
-import { SCREEN_PADDING } from '../theme';
+import {SORT, STATES} from '../constants';
+import {SCREEN_PADDING} from '../theme';
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
 import Avatar from '../components/Avatar';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { useContext } from 'react';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {useContext} from 'react';
 import User from '../stores/User';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import Feed from '../stores/Feed';
 import Icon from '../components/Icon';
 import Empty from '../components/Empty';
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -33,7 +28,7 @@ const Home = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
   const feedStore = useContext(Feed);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const [sort, setSort] = useState(SORT.TRENDING);
 
   useEffect(() => {
@@ -64,7 +59,7 @@ const Home = observer(() => {
   return (
     <>
       <CustomHeader
-        title={userStore.isAdmin ? "🔨 Admin Mode" : "Pix"}
+        title={userStore.isAdmin ? '🔨 Admin Mode' : 'Pix'}
         rightComponent={userStore.user ? UserAvatar : OptionsLink}
       />
       <Row>
@@ -83,7 +78,7 @@ const Home = observer(() => {
         />
       </Row>
       <ScrollView
-        contentContainerStyle={{ padding: SCREEN_PADDING }}
+        contentContainerStyle={{padding: SCREEN_PADDING}}
         refreshControl={
           <RefreshControl
             refreshing={feedStore.state === STATES.LOADING}

@@ -1,10 +1,10 @@
 import React from 'react';
-import { Button, TouchableOpacity } from 'react-native';
+import {Button, TouchableOpacity} from 'react-native';
 import Home from './screens/Home';
 import Challenges from './screens/Challenges';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import {createStackNavigator} from '@react-navigation/stack';
+import {createNativeStackNavigator} from 'react-native-screens/native-stack';
 import Tabbar from './components/Tabbar';
 import Editor from './screens/Editor';
 import Publish from './screens/Publish';
@@ -16,7 +16,7 @@ import AccountCreation from './screens/AccountCreation';
 import AccountPasswordCreation from './screens/AccountPasswordCreation';
 import EditProfile from './screens/settings/EditProfile';
 import Icon from './components/Icon';
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import About from './screens/settings/About';
 import Appearance from './screens/settings/Appearance';
 import EditAvatar from './screens/settings/EditAvatar';
@@ -29,19 +29,19 @@ const EditorNav = createNativeStackNavigator();
 const LoginNav = createNativeStackNavigator();
 
 const HomeStack = () => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   return (
     <HomeNav.Navigator>
       <HomeNav.Screen
         name="Home"
-        options={{ headerShown: false }}
+        options={{headerShown: false}}
         component={Home}
       />
       <HomeNav.Screen
         name="Profile"
         component={Profile}
-        options={({ navigation, route }) => ({
+        options={({navigation, route}) => ({
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
               <Icon name="Settings" size={25} color={colors.text} />
@@ -49,10 +49,18 @@ const HomeStack = () => {
           ),
         })}
       />
-      <HomeNav.Screen name="EditProfile" component={EditProfile} options={{ headerTitle: "Edit your profile" }} />
+      <HomeNav.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{headerTitle: 'Edit your profile'}}
+      />
       <HomeNav.Screen name="Settings" component={Settings} />
       <HomeNav.Screen name="About" component={About} />
-      <HomeNav.Screen name="Appearance" component={Appearance} options={{ headerTitle: "Theme" }} />
+      <HomeNav.Screen
+        name="Appearance"
+        component={Appearance}
+        options={{headerTitle: 'Theme'}}
+      />
     </HomeNav.Navigator>
   );
 };
@@ -62,7 +70,7 @@ const ChallengesStack = () => (
     <ChallengesNav.Screen
       name="Challenges"
       component={Challenges}
-      options={{ headerShown: false }}
+      options={{headerShown: false}}
     />
     {/* TODO: Duplicate Profile & settings screens here */}
   </ChallengesNav.Navigator>
@@ -81,17 +89,25 @@ export const LoginStack = () => (
     <LoginNav.Screen
       name="LoginSelection"
       component={LoginSelection}
-      options={({ navigation, route }) => ({
+      options={({navigation, route}) => ({
         headerLeft: () => <Button onPress={navigation.goBack} title="Close" />,
-        headerTitle: "Login"
+        headerTitle: 'Login',
       })}
     />
-    <LoginNav.Screen name="Login" component={Login} options={{ headerTitle: "Sign in" }} />
-    <LoginNav.Screen name="AccountCreation" component={AccountCreation} options={{ headerTitle: "Create your account" }} />
+    <LoginNav.Screen
+      name="Login"
+      component={Login}
+      options={{headerTitle: 'Sign in'}}
+    />
+    <LoginNav.Screen
+      name="AccountCreation"
+      component={AccountCreation}
+      options={{headerTitle: 'Create your account'}}
+    />
     <LoginNav.Screen
       name="AccountPasswordCreation"
       component={AccountPasswordCreation}
-      options={{ headerTitle: "Create a password" }}
+      options={{headerTitle: 'Create a password'}}
     />
   </LoginNav.Navigator>
 );
@@ -101,12 +117,12 @@ export const EditorStack = () => (
     <EditorNav.Screen
       name="Edit"
       component={Editor}
-      options={{ headerShown: false, stackPresentation: 'modal' }}
+      options={{headerShown: false, stackPresentation: 'modal'}}
     />
     <EditorNav.Screen
       name="Publish"
       component={Publish}
-      options={{ headerShown: false }}
+      options={{headerShown: false}}
     />
   </EditorNav.Navigator>
 );

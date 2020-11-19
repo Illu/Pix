@@ -1,20 +1,20 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, TouchableOpacity, Alert } from 'react-native';
-import { SCREEN_PADDING } from '../theme';
+import {Dimensions, TouchableOpacity, Alert} from 'react-native';
+import {SCREEN_PADDING} from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
-import { Pixel } from '../types';
+import {Pixel} from '../types';
 import Icon from './Icon';
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import User from '../stores/User';
 import firestore from '@react-native-firebase/firestore';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
+  margin: ${({noMargins}) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -22,12 +22,12 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
 const Likes = styled.Text`
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
@@ -41,7 +41,7 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 interface Props {
@@ -65,10 +65,10 @@ const FeedCard = ({
   onLike,
   id,
   onReport,
-  reports
+  reports,
 }: Props) => {
-  const { colors } = useTheme();
-  const userStore = useContext(User)
+  const {colors} = useTheme();
+  const userStore = useContext(User);
 
   return (
     <Wrapper>
@@ -77,28 +77,38 @@ const FeedCard = ({
           <Avatar />
           <UserName>{userName}</UserName>
         </Row>
-        <TouchableOpacity onPress={() => {
-          Alert.alert("Options", `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''}`,
-            [
-              {
-                text: 'Report',
-                onPress: onReport,
-                style: 'destructive',
-              },
-              {
-                text: 'Cancel',
-                style: 'cancel',
-                onPress: () => { },
-              },
-              userStore.isAdmin && {
-                text: 'Delete',
-                style: 'destructive',
-                onPress: () => {
-                  firestore().collection('Posts').doc(`${id}`).delete().then(() => Alert.alert("💥", "Removed post"))
-                }
-              }
-            ])
-        }}>
+        <TouchableOpacity
+          onPress={() => {
+            Alert.alert(
+              'Options',
+              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${
+                userStore.isAdmin ? `\n\nID: ${id}` : ''
+              }`,
+              [
+                {
+                  text: 'Report',
+                  onPress: onReport,
+                  style: 'destructive',
+                },
+                {
+                  text: 'Cancel',
+                  style: 'cancel',
+                  onPress: () => {},
+                },
+                userStore.isAdmin && {
+                  text: 'Delete',
+                  style: 'destructive',
+                  onPress: () => {
+                    firestore()
+                      .collection('Posts')
+                      .doc(`${id}`)
+                      .delete()
+                      .then(() => Alert.alert('💥', 'Removed post'));
+                  },
+                },
+              ],
+            );
+          }}>
           <Icon name="Dots" size={24} color={colors.text} />
         </TouchableOpacity>
       </Row>
@@ -116,11 +126,13 @@ const FeedCard = ({
         <Likes>{likesCount}</Likes>
         {userStore.isAdmin && reports && (
           <>
-            <Likes>{"- "}{reports} Reports</Likes>
+            <Likes>
+              {'- '}
+              {reports} Reports
+            </Likes>
           </>
         )}
       </LikesRow>
-
     </Wrapper>
   );
 };
