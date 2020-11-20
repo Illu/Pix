@@ -134,7 +134,7 @@ class Challenge {
       reports: firebase.firestore.FieldValue.increment(1),
     });
     Alert.alert(
-      'Thank you for your report, you are making the App a friendlier place for everyone.',
+      'Thank you for your report!', 'You are making the App a friendlier place for everyone.',
     );
   }
 }

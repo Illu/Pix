@@ -81,6 +81,7 @@ const Home = observer(() => {
       liked={userStore.user && item.likes.includes(userStore.user.uid)}
       onReport={() => feedStore.reportPost(item.id)}
       reports={item.reports}
+      desc={item.desc}
     />
   );
 

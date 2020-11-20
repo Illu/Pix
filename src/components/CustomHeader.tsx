@@ -1,19 +1,20 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React from 'react';
-import {TouchableOpacity} from 'react-native';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import { TouchableOpacity } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import styled from 'styled-components';
-import {HEADER_HEIGHT} from '../constants';
+import { HEADER_HEIGHT } from '../constants';
 import Icon from './Icon';
 
 const Wrapper = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: space-between;
-  height: ${({insetTop}) => HEADER_HEIGHT + insetTop}px;
+  height: ${({ insetTop }) => HEADER_HEIGHT + insetTop}px;
   padding: 0 10px;
-  padding-top: ${({insetTop}) => insetTop}px;
-  background: ${({theme}) => theme.secondary};
+  padding-top: ${({ insetTop }) => insetTop}px;
+  background: ${({ theme }) => theme.secondary};
+  z-index: 2;
 `;
 
 const SectionWrapper = styled.View`
@@ -23,13 +24,13 @@ const SectionWrapper = styled.View`
 const Title = styled.Text`
   font-weight: 600;
   font-size: 15px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const BackText = styled.Text`
   font-weight: 400;
   font-size: 14px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const EmptyPlaceholder = styled.View`
@@ -43,6 +44,7 @@ interface Props {
   rightComponent?: React.Component;
   back?: boolean;
   close?: boolean;
+  backAction?(): void;
 }
 
 const CustomHeader = ({
@@ -52,10 +54,11 @@ const CustomHeader = ({
   rightComponent,
   back,
   close,
+  backAction,
 }: Props) => {
   const navigation = useNavigation();
   const insets = useSafeAreaInsets();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Wrapper insetTop={insets.top}>
@@ -64,8 +67,8 @@ const CustomHeader = ({
           leftComponent
         ) : back || close ? (
           <TouchableOpacity
-            onPress={navigation.goBack}
-            style={{flexDirection: 'row', alignItems: 'center'}}>
+            onPress={backAction ? backAction : navigation.goBack}
+            style={{ flexDirection: 'row', alignItems: 'center' }}>
             <Icon
               name={back ? 'ChevronLeft' : 'Cross'}
               color={colors.text}
@@ -74,13 +77,13 @@ const CustomHeader = ({
             <BackText>{back ? 'Back' : ''}</BackText>
           </TouchableOpacity>
         ) : (
-          <EmptyPlaceholder />
-        )}
+              <EmptyPlaceholder />
+            )}
       </SectionWrapper>
-      <SectionWrapper style={{alignItems: 'center'}}>
+      <SectionWrapper style={{ alignItems: 'center' }}>
         <Title>{title}</Title>
       </SectionWrapper>
-      <SectionWrapper style={{alignItems: 'flex-end'}}>
+      <SectionWrapper style={{ alignItems: 'flex-end' }}>
         {rightComponent ? (
           rightComponent
         ) : action ? (
@@ -88,8 +91,8 @@ const CustomHeader = ({
             <Icon name="ArrowRight" color={colors.accent} size={24} />
           </TouchableOpacity>
         ) : (
-          <EmptyPlaceholder />
-        )}
+              <EmptyPlaceholder />
+            )}
       </SectionWrapper>
     </Wrapper>
   );
