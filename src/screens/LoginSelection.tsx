@@ -1,18 +1,18 @@
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { Platform } from 'react-native';
-import { BUTTON_WIDTH } from '../constants';
-import { AppleButton } from '@invertase/react-native-apple-authentication';
+import {Platform} from 'react-native';
+import {BUTTON_WIDTH} from '../constants';
+import {AppleButton} from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
-import { appleAuth } from '@invertase/react-native-apple-authentication';
+import {appleAuth} from '@invertase/react-native-apple-authentication';
 
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
   flex: 1;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const IntroText = styled.Text`
@@ -22,7 +22,7 @@ const IntroText = styled.Text`
   font-size: 15px;
   line-height: 20px;
   margin-bottom: 40px;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({theme}) => theme.secondaryText};
 `;
 
 const Image = styled.Image``;
@@ -31,7 +31,7 @@ const Title = styled.Text`
   margin: 30px 0 15px 0;
   font-size: 32px;
   font-weight: 600;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Koala = require('../../assets/images/koala.png');
@@ -50,7 +50,7 @@ const LoginSelection = () => {
     }
 
     // Create a Firebase credential from the response
-    const { identityToken, nonce } = appleAuthRequestResponse;
+    const {identityToken, nonce} = appleAuthRequestResponse;
     const appleCredential = auth.AppleAuthProvider.credential(
       identityToken,
       nonce,
@@ -66,12 +66,13 @@ const LoginSelection = () => {
       <Image source={Koala} />
       <Title>Hello there!</Title>
       <IntroText>
-        Log in or create an account to share your work and fully enjoy the app and its community.
+        Log in or create an account to share your work and fully enjoy the app
+        and its community.
       </IntroText>
       <Button
         onPress={() => navigation.navigate('AccountCreation')}
         title="Create an account"
-        style={{ marginBottom: 10 }}
+        style={{marginBottom: 10}}
       />
       <Button
         onPress={() => navigation.navigate('Login')}

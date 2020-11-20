@@ -1,9 +1,11 @@
-import {makeObservable, observable, action, runInAction} from 'mobx';
-import {createContext} from 'react';
-import {Alert} from 'react-native';
-import {STATES} from '../constants';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { createContext } from 'react';
+import { Alert } from 'react-native';
+import { STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
-import {firebase} from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
+
+const PAGE_ITEMS = 5;
 
 class Feed {
   constructor() {
@@ -11,25 +13,32 @@ class Feed {
       state: observable,
       feed: observable,
       loadFeed: action,
+      loadMore: action,
       likePost: action,
+      clearFeed: action
     });
   }
 
   feed = null;
   state = STATES.IDLE;
+  lastSnapshot = null;
 
-  async loadFeed(order: 'timestamp' | 'likesCount' = 'likesCount') {
+  async loadFeed(
+    order: 'timestamp' | 'likesCount' = 'likesCount',
+  ) {
     this.state = STATES.LOADING;
     try {
       const snapshot = await firestore()
         .collection('Posts')
         .orderBy(order, 'desc')
-        .limit(10)
+        .limit(PAGE_ITEMS)
         .get();
+
       const newFeed = [];
-      snapshot.forEach((doc) => {
-        newFeed.push({...doc.data(), id: doc.id});
+      snapshot.forEach((doc, i) => {
+        newFeed.push({ ...doc.data(), id: doc.id });
       });
+      this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
       runInAction(() => {
         this.state = STATES.SUCCESS;
         this.feed = [...newFeed];
@@ -39,6 +48,35 @@ class Feed {
       runInAction(() => {
         this.state = STATES.ERROR;
       });
+    }
+  }
+
+  async loadMore(order: 'timestamp' | 'likesCount') {
+    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND) {
+      this.state = STATES.LOADING_BACKGROUND;
+      try {
+        const snapshot = await firestore()
+          .collection('Posts')
+          .orderBy(order, 'desc')
+          .startAfter(this.lastSnapshot)
+          .limit(PAGE_ITEMS)
+          .get();
+
+        const newFeed = [];
+        snapshot.forEach(doc => {
+          newFeed.push({ ...doc.data(), id: doc.id });
+        });
+        this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+        runInAction(() => {
+          this.state = STATES.SUCCESS;
+          this.feed = [...this.feed, ...newFeed];
+        });
+      } catch (err) {
+        console.log('err', err);
+        runInAction(() => {
+          this.state = STATES.ERROR;
+        });
+      }
     }
   }
 
@@ -64,6 +102,11 @@ class Feed {
         this.feed.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
+  }
+
+  clearFeed() {
+    this.feed = null;
+    this.lastSnapshot = null;
   }
 
   async reportPost(postId) {

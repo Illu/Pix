@@ -1,20 +1,20 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import {useNavigation, useTheme} from '@react-navigation/native';
 import React from 'react';
-import { useState } from 'react';
+import {useState} from 'react';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 
 const Wrapper = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -28,14 +28,14 @@ const IntroText = styled.Text`
   font-size: 14px;
   line-height: 20px;
   margin-bottom: 30px;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({theme}) => theme.secondaryText};
 `;
 
 const Title = styled.Text`
   margin: 30px 0 15px 0;
   font-size: 32px;
   font-weight: 600;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Label = styled.Text`
@@ -43,7 +43,7 @@ const Label = styled.Text`
   font-size: 11px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Image = styled.Image``;
@@ -51,7 +51,7 @@ const Image = styled.Image``;
 const Birb = require('../../assets/images/birb.png');
 
 const AccountCreation = () => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const navigation = useNavigation();
 
   const [username, setUsername] = useState('');
@@ -60,9 +60,7 @@ const AccountCreation = () => {
   return (
     <Wrapper behavior="padding">
       <Image source={Birb} />
-      <Title>
-        Welcome to Pix!
-      </Title>
+      <Title>Welcome to Pix!</Title>
       <IntroText>
         Create your account and enjoy the app and its community!
       </IntroText>
@@ -73,7 +71,7 @@ const AccountCreation = () => {
         placeholder="Your username"
         autoCapitalize="none"
         onChangeText={setUsername}
-        style={{ color: colors.text }}
+        style={{color: colors.text}}
         autocompleteType="username"
       />
       <Label>Your email</Label>
@@ -82,15 +80,17 @@ const AccountCreation = () => {
         value={email}
         returnKeyType="next"
         autoCapitalize="none"
-        onSubmitEditing={() => navigation.navigate('AccountPasswordCreation', { username, email })}
+        onSubmitEditing={() =>
+          navigation.navigate('AccountPasswordCreation', {username, email})
+        }
         placeholderTextColor={colors.secondaryText}
-        style={{ color: colors.text }}
+        style={{color: colors.text}}
         onChangeText={setEmail}
         autoCompleteType="email"
       />
       <Button
         onPress={() =>
-          navigation.navigate('AccountPasswordCreation', { username, email })
+          navigation.navigate('AccountPasswordCreation', {username, email})
         }
         title="Next"
         disabled={username.length === 0 || email.length === 0}

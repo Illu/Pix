@@ -1,9 +1,11 @@
-import {makeObservable, observable, action, runInAction} from 'mobx';
-import {createContext} from 'react';
-import {Alert} from 'react-native';
-import {MONTHS, STATES} from '../constants';
+import { makeObservable, observable, action, runInAction } from 'mobx';
+import { createContext } from 'react';
+import { Alert } from 'react-native';
+import { MONTHS, STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
-import {firebase} from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
+
+const PAGE_ITEMS = 5;
 
 class Challenge {
   constructor() {
@@ -14,11 +16,14 @@ class Challenge {
       likePost: action,
       loadChallenges: action,
       loadCurrentChallenge: action,
+      loadMore: action,
+      clearChallenges: action,
     });
   }
 
   challenges = null;
   currentChallenge = null;
+  lastSnapshot = null;
   state = STATES.IDLE;
 
   async loadCurrentChallenge() {
@@ -46,12 +51,13 @@ class Challenge {
         .collection('Posts')
         .where('tag', '==', challengeId)
         .orderBy(order, 'desc')
-        .limit(10)
+        .limit(PAGE_ITEMS)
         .get();
       const newChallenges = [];
       snapshot.forEach((doc) => {
-        newChallenges.push({...doc.data(), id: doc.id});
+        newChallenges.push({ ...doc.data(), id: doc.id });
       });
+      this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
       runInAction(() => {
         this.state = STATES.SUCCESS;
         this.challenges = [...newChallenges];
@@ -60,6 +66,36 @@ class Challenge {
       runInAction(() => {
         this.state = STATES.ERROR;
       });
+    }
+  }
+
+  async loadMore(order: 'timestamp' | 'likesCount', challengeId) {
+    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND) {
+      this.state = STATES.LOADING_BACKGROUND;
+      try {
+        const snapshot = await firestore()
+          .collection('Posts')
+          .where('tag', '==', challengeId)
+          .orderBy(order, 'desc')
+          .startAfter(this.lastSnapshot)
+          .limit(PAGE_ITEMS)
+          .get();
+
+        const newFeed = [];
+        snapshot.forEach(doc => {
+          newFeed.push({ ...doc.data(), id: doc.id });
+        });
+        this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
+        runInAction(() => {
+          this.state = STATES.SUCCESS;
+          this.challenges = [...this.challenges, ...newFeed];
+        });
+      } catch (err) {
+        console.log('err', err);
+        runInAction(() => {
+          this.state = STATES.ERROR;
+        });
+      }
     }
   }
 
@@ -85,6 +121,11 @@ class Challenge {
         this.challenges.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
+  }
+
+  clearChallenges() {
+    this.challenges = null;
+    this.lastSnapshot = null;
   }
 
   async reportPost(postId) {
