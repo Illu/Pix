@@ -44,6 +44,12 @@ const UserName = styled.Text`
   color: ${({ theme }) => theme.text};
 `;
 
+const Desc = styled.Text`
+  color: ${({ theme }) => theme.secondaryText};
+  font-size: 14px;
+  font-weight: 400;
+`;
+
 interface Props {
   data: Pixel[];
   backgroundColor: string;
@@ -55,6 +61,7 @@ interface Props {
   onReport(): void;
   reports?: number;
   avatar?: string;
+  desc?: string;
 }
 
 const FeedCard = ({
@@ -67,6 +74,7 @@ const FeedCard = ({
   id,
   onReport,
   reports,
+  desc = '',
   avatar = 'cat-1',
 }: Props) => {
   const { colors } = useTheme();
@@ -160,6 +168,7 @@ const FeedCard = ({
           </>
         )}
       </LikesRow>
+      {!!desc && <Desc>{desc}</Desc>}
     </Wrapper>
   );
 };
