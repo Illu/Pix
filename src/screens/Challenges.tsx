@@ -1,11 +1,11 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useContext, useState, useEffect } from 'react';
 import {
-  ScrollView,
   View,
   TouchableOpacity,
   Pressable,
   RefreshControl,
+  FlatList,
 } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import User from '../stores/User';
@@ -44,6 +44,7 @@ const Challenges = observer(() => {
   };
 
   const changeSort = (newSort: SORT) => {
+    challengeStore.clearChallenges();
     setSort(newSort);
     challengeStore.loadChallenges(
       newSort === SORT.SUBMISSIONS ? 'timestamp' : 'likesCount',
@@ -67,6 +68,31 @@ const Challenges = observer(() => {
     </Pressable>
   );
 
+  const ListItem = ({ item }) => (
+    <FeedCard
+      id={item.id}
+      data={item.data.pixels}
+      backgroundColor={item.data.backgroundColor}
+      userName={item.user.displayName}
+      likesCount={item.likesCount}
+      onLike={() => {
+        if (userStore.user?.uid) {
+          challengeStore.likePost(
+            item.id,
+            userStore.user.uid,
+            item.likes || [],
+          );
+        } else {
+          navigation.navigate('EditorModal');
+        }
+      }}
+      liked={userStore.user && item.likes.includes(userStore.user.uid)}
+      onReport={() => challengeStore.reportPost(item.id)}
+      reports={item.reports}
+      avatar={item.user.avatar}
+    />
+  );
+
   return (
     <View style={{ flex: 1 }}>
       <CustomHeader
@@ -88,7 +114,7 @@ const Challenges = observer(() => {
           icon="Star"
         />
       </Row>
-      <ScrollView
+      <FlatList
         contentContainerStyle={{ padding: SCREEN_PADDING }}
         refreshControl={
           <RefreshControl
@@ -96,41 +122,21 @@ const Challenges = observer(() => {
             onRefresh={load}
             tintColor={colors.secondaryText}
           />
-        }>
-        <CurrentChallengeCard
-          challengeTitle={challengeStore.currentChallenge?.title}
-        />
-        {challengeStore.challenges?.map((post) => (
-          <View key={post.id}>
-            <FeedCard
-              id={post.id}
-              data={post.data.pixels}
-              backgroundColor={post.data.backgroundColor}
-              userName={post.user.displayName}
-              likesCount={post.likesCount}
-              onLike={() => {
-                if (userStore.user?.uid) {
-                  challengeStore.likePost(
-                    post.id,
-                    userStore.user.uid,
-                    post.likes || [],
-                  );
-                } else {
-                  navigation.navigate('EditorModal');
-                }
-              }}
-              liked={userStore.user && post.likes.includes(userStore.user.uid)}
-              onReport={() => challengeStore.reportPost(post.id)}
-              reports={post.reports}
-              avatar={post.user.avatar}
-            />
-          </View>
-        ))}
-        {!challengeStore.challenges?.length &&
-          challengeStore.state !== STATES.LOADING && (
-            <Empty actionTitle="Add the first entry" />
-          )}
-      </ScrollView>
+        }
+        ListHeaderComponent={
+          <CurrentChallengeCard
+            challengeTitle={challengeStore.currentChallenge?.title}
+          />
+        }
+        data={challengeStore.challenges}
+        renderItem={ListItem}
+        keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0.1}
+        onEndReached={() => challengeStore.loadMore(sort === SORT.SUBMISSIONS ? 'timestamp' : 'likesCount',
+          challengeStore.currentChallenge?.id)}
+        removeClippedSubviews
+        ListEmptyComponent={() => challengeStore.state !== STATES.LOADING && <Empty actionTitle="Add the first entry" />}
+      />
     </View>
   );
 });

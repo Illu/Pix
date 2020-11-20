@@ -1,8 +1,9 @@
-import {Dimensions} from 'react-native';
+import { Dimensions } from 'react-native';
 
 export enum STATES {
   IDLE,
   LOADING,
+  LOADING_BACKGROUND,
   SUCCESS,
   ERROR,
 }

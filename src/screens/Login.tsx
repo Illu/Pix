@@ -1,21 +1,21 @@
-import { useTheme } from '@react-navigation/native';
-import React, { useState } from 'react';
-import { Alert, TouchableOpacity } from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {Alert, TouchableOpacity} from 'react-native';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import { BUTTON_WIDTH } from '../constants';
+import {BUTTON_WIDTH} from '../constants';
 import auth from '@react-native-firebase/auth';
 
 const Wrapper = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -26,7 +26,7 @@ const Title = styled.Text`
   margin: 30px 0 40px 0;
   font-size: 32px;
   font-weight: 600;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const ErrorText = styled.Text`
@@ -36,7 +36,7 @@ const ErrorText = styled.Text`
 const Image = styled.Image``;
 
 const ResetPassword = styled.Text`
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   margin-bottom: 30px;
 `;
 
@@ -48,7 +48,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   const login = () => {
     setLoading(true);
@@ -71,33 +71,39 @@ const Login = () => {
 
   const resetPassword = () => {
     if (email.length === 0) {
-      Alert.alert("Please fill the email field to reset your password");
+      Alert.alert('Please fill the email field to reset your password');
       return;
     }
     setLoading(true);
-    auth().sendPasswordResetEmail(email).then(() => {
-      Alert.alert("Check your mailbox!", `We sent you an email to ${email} to help you reset your password.`)
-      setLoading(false);
-    }).catch(err => {
-      Alert.alert("Error 😢", `We tried to send an email to ${email} but something unexpected happened. Make sure the address is valid.`)
-      setLoading(false)
-    });
-
-  }
+    auth()
+      .sendPasswordResetEmail(email)
+      .then(() => {
+        Alert.alert(
+          'Check your mailbox!',
+          `We sent you an email to ${email} to help you reset your password.`,
+        );
+        setLoading(false);
+      })
+      .catch((err) => {
+        Alert.alert(
+          'Error 😢',
+          `We tried to send an email to ${email} but something unexpected happened. Make sure the address is valid.`,
+        );
+        setLoading(false);
+      });
+  };
 
   return (
     <Wrapper behavior="padding">
       <Image source={Chick} />
-      <Title>
-        Welcome back!
-      </Title>
+      <Title>Welcome back!</Title>
       <TextInput
         value={email}
         placeholder="Your email"
         placeholderTextColor={colors.secondaryText}
         autoCapitalize="none"
         onChangeText={setEmail}
-        style={{ color: colors.text }}
+        style={{color: colors.text}}
         autocompleteType="username"
       />
       <TextInput
@@ -105,7 +111,7 @@ const Login = () => {
         placeholder="Your password"
         autoCapitalize="none"
         placeholderTextColor={colors.secondaryText}
-        style={{ color: colors.text }}
+        style={{color: colors.text}}
         onChangeText={setPassword}
         autoCompleteType="password"
         secureTextEntry

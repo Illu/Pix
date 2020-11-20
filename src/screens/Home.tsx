@@ -1,5 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { ScrollView, View, RefreshControl, TouchableOpacity } from 'react-native';
+import {
+  RefreshControl,
+  TouchableOpacity,
+  FlatList,
+} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
 import { SORT, STATES } from '../constants';
@@ -36,10 +40,13 @@ const Home = observer(() => {
   }, []);
 
   const load = () => {
-    feedStore.loadFeed(sort === SORT.NEW ? 'timestamp' : 'likesCount');
+    if (feedStore.state !== STATES.LOADING) {
+      feedStore.loadFeed(sort === SORT.NEW ? 'timestamp' : 'likesCount');
+    }
   };
 
   const changeSort = (newSort: SORT) => {
+    feedStore.clearFeed();
     setSort(newSort);
     feedStore.loadFeed(newSort === SORT.NEW ? 'timestamp' : 'likesCount');
   };
@@ -54,6 +61,27 @@ const Home = observer(() => {
     <Pressable onPress={() => navigation.navigate('Settings')}>
       <Icon name="Settings" size={25} color={colors.text} />
     </Pressable>
+  );
+
+  const ListItem = ({ item }) => (
+    <FeedCard
+      data={item.data.pixels}
+      backgroundColor={item.data.backgroundColor}
+      userName={item.user.displayName}
+      likesCount={item.likesCount}
+      id={item.id}
+      onLike={() => {
+        if (userStore.user?.uid) {
+          feedStore.likePost(item.id, userStore.user.uid, item.likes || []);
+        } else {
+          navigation.navigate('EditorModal');
+        }
+      }}
+      avatar={item.user.avatar}
+      liked={userStore.user && item.likes.includes(userStore.user.uid)}
+      onReport={() => feedStore.reportPost(item.id)}
+      reports={item.reports}
+    />
   );
 
   return (
@@ -77,7 +105,7 @@ const Home = observer(() => {
           icon="Star"
         />
       </Row>
-      <ScrollView
+      <FlatList
         contentContainerStyle={{ padding: SCREEN_PADDING }}
         refreshControl={
           <RefreshControl
@@ -85,37 +113,15 @@ const Home = observer(() => {
             onRefresh={load}
             tintColor={colors.secondaryText}
           />
-        }>
-        {feedStore.feed?.map((post) => (
-          <View key={post.id}>
-            <FeedCard
-              data={post.data.pixels}
-              backgroundColor={post.data.backgroundColor}
-              userName={post.user.displayName}
-              likesCount={post.likesCount}
-              id={post.id}
-              onLike={() => {
-                if (userStore.user?.uid) {
-                  feedStore.likePost(
-                    post.id,
-                    userStore.user.uid,
-                    post.likes || [],
-                  );
-                } else {
-                  navigation.navigate('EditorModal');
-                }
-              }}
-              avatar={post.user.avatar}
-              liked={userStore.user && post.likes.includes(userStore.user.uid)}
-              onReport={() => feedStore.reportPost(post.id)}
-              reports={post.reports}
-            />
-          </View>
-        ))}
-        {!feedStore.feed?.length && feedStore.state !== STATES.LOADING && (
-          <Empty actionTitle="Add the first ever pixel art!" />
-        )}
-      </ScrollView>
+        }
+        data={feedStore.feed}
+        renderItem={ListItem}
+        keyExtractor={(item) => item.id}
+        onEndReachedThreshold={0.1}
+        ListEmptyComponent={() => feedStore.state !== STATES.LOADING && <Empty actionTitle="Add the first ever pixel art!" />}
+        onEndReached={() => feedStore.loadMore(sort === SORT.NEW ? 'timestamp' : 'likesCount')}
+        removeClippedSubviews
+      />
     </>
   );
 });
