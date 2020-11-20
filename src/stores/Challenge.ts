@@ -70,7 +70,7 @@ class Challenge {
   }
 
   async loadMore(order: 'timestamp' | 'likesCount', challengeId) {
-    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND) {
+    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()

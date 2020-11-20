@@ -52,7 +52,7 @@ class Feed {
   }
 
   async loadMore(order: 'timestamp' | 'likesCount') {
-    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND) {
+    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()
