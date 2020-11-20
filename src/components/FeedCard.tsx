@@ -1,20 +1,20 @@
-import React, {useContext} from 'react';
+import React, { useContext, useState } from 'react';
 import styled from 'styled-components/native';
-import {Dimensions, TouchableOpacity, Alert} from 'react-native';
-import {SCREEN_PADDING} from '../theme';
+import { Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { SCREEN_PADDING } from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
-import {Pixel} from '../types';
+import { Pixel } from '../types';
 import Icon from './Icon';
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import User from '../stores/User';
 import firestore from '@react-native-firebase/firestore';
 
-const {width} = Dimensions.get('window');
+const { width } = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  margin: ${({noMargins}) => (noMargins ? 0 : 5)}px 0;
+  margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -22,12 +22,12 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
 const Likes = styled.Text`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
@@ -41,7 +41,7 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 interface Props {
@@ -69,8 +69,12 @@ const FeedCard = ({
   reports,
   avatar = 'cat-1',
 }: Props) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const userStore = useContext(User);
+
+  // Avoid re-rendering the whole flatlist for liking a post
+  const [localLiked, setLocalLiked] = useState(liked)
+  const localLikesCount = likesCount + (liked ? -1 : 0) + (localLiked ? 1 : 0);
 
   return (
     <Wrapper>
@@ -94,7 +98,7 @@ const FeedCard = ({
                   {
                     text: 'Cancel',
                     style: 'cancel',
-                    onPress: () => {},
+                    onPress: () => { },
                   },
                 ],
               );
@@ -102,8 +106,7 @@ const FeedCard = ({
             }
             Alert.alert(
               'Options',
-              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${
-                userStore.isAdmin ? `\n\nID: ${id}` : ''
+              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''
               }`,
               [
                 {
@@ -114,7 +117,7 @@ const FeedCard = ({
                 {
                   text: 'Cancel',
                   style: 'cancel',
-                  onPress: () => {},
+                  onPress: () => { },
                 },
                 userStore.isAdmin && {
                   text: 'Delete',
@@ -138,13 +141,16 @@ const FeedCard = ({
         backgroundColor={backgroundColor}
         size={width - SCREEN_PADDING * 4}
       />
-      <LikesRow onPress={onLike}>
+      <LikesRow onPress={() => {
+        setLocalLiked(!localLiked)
+        onLike();
+      }}>
         <Icon
-          name={liked ? 'HeartFull' : 'Heart'}
-          color={liked ? '#ED6A5A' : colors.text}
+          name={localLiked ? 'HeartFull' : 'Heart'}
+          color={localLiked ? '#ED6A5A' : colors.text}
           size={24}
         />
-        <Likes>{likesCount}</Likes>
+        <Likes>{localLikesCount}</Likes>
         {userStore.isAdmin && reports && (
           <>
             <Likes>
