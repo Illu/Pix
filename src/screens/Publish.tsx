@@ -4,6 +4,7 @@ import {
   Switch,
   ActivityIndicator,
   KeyboardAvoidingView,
+  Alert
 } from 'react-native';
 import PixelArt from '../components/PixelArt';
 import styled from 'styled-components/native';
@@ -109,6 +110,9 @@ const Publish = ({ route }) => {
         if (tag) {
           // challengeStore.loadChallenges('timestamp');
           navigation.navigate('Challenges'); //TODO: switch tab in challenges if needed
+          if (!userStore.userData.badges.includes(tag)) {
+            userStore.addBadge(tag)
+          }
         } else {
           // feedStore.loadFeed('timestamp');
           navigation.navigate('Home'); //TODO: switch tab in home if needed

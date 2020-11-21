@@ -31,6 +31,11 @@ const Row = styled.View`
   margin-bottom: 15px;
 `;
 
+const BadgesRow = styled.View`
+  flex-direction: row;
+  margin-top: 5px;
+`;
+
 const UserName = styled.Text`
   font-size: 14px;
   font-weight: 600;
@@ -109,6 +114,9 @@ const Profile = observer(() => {
               {userStore.posts?.length || 'no'} post
               {userStore.posts?.length === 1 ? '' : 's'}
             </PostsInfos>
+            <BadgesRow>
+              {userStore.userData?.badges?.map(badge => <Avatar key={badge} id={badge} />)}
+            </BadgesRow>
           </InfosWrapper>
           <EditButton onPress={() => navigation.navigate('EditProfile')}>
             <Icon name="Edit" color={colors.text} size={24} />

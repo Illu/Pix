@@ -77,11 +77,12 @@ const EditProfile = () => {
     const update = {
       displayName: username,
       avatar,
+      badges: [],
     };
     auth()
       .currentUser.updateProfile(update)
       .then(() =>
-        firestore().collection('Users').doc(userStore.user.uid).set(update),
+        firestore().collection('Users').doc(userStore.user.uid).update(update),
       )
       .then(() => {
         setStatus(STATES.SUCCESS);
@@ -131,6 +132,7 @@ const EditProfile = () => {
         <TextInput
           value={username}
           placeholder="New username"
+          maxLength={20}
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
           onChangeText={setUsername}
@@ -139,7 +141,7 @@ const EditProfile = () => {
         <Label>Your email</Label>
         <TextInput
           value={userStore.user.email}
-          placeholder="New username"
+          placeholder="New email"
           editable={false}
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
