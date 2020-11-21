@@ -1,10 +1,10 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import { MONTHS_FULL } from '../../constants';
 import LinearGradient from 'react-native-linear-gradient';
-import ChallengesBackgrounds from '../../../assets/images/challenges';
 import { useNavigation } from '@react-navigation/native';
+import storage from '@react-native-firebase/storage';
 
 const Wrapper = styled.ImageBackground`
   border-radius: 8px;
@@ -60,12 +60,17 @@ interface Props {
 
 const currentMonth = MONTHS_FULL[new Date().getMonth()];
 
-const backgroundImage = ChallengesBackgrounds[currentMonth];
-
 const CurrentChallengeCard = ({ challengeTitle }: Props) => {
+
+  const [challengeImageURL, setChallengeImageURL] = useState(null);
+
+  useEffect(() => {
+    storage().ref(`challenges/${currentMonth.toLowerCase()}.png`).getDownloadURL().then(setChallengeImageURL)
+  }, [])
+
   const navigation = useNavigation();
   return (
-    <Wrapper source={backgroundImage}>
+    <Wrapper source={{ uri: challengeImageURL }} resizeMode="cover" >
       <ContentWrapper colors={['#00000000', '#00000055']}>
         <Month>{currentMonth} Challenge</Month>
         {challengeTitle ? (
