@@ -70,18 +70,67 @@ export const AVATARS = {
     image: require('../../assets/images/avatars/other-2.png'),
     backgroundColor: '#FFFDE6',
   },
+  //BADGES
+  'Jan': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Feb': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Mar': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Apr': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'May': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Jun': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Jul': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Aug': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Sep': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Oct': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Nov': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
+  'Dec': {
+    image: require('../../assets/images/badges/jan.png'),
+    backgroundColor: "#EBFBF4",
+  },
 };
 
 const Wrapper = styled.View`
-  width: ${({size}) => size}px;
-  height: ${({size}) => size}px;
-  border-radius: ${({size}) => size / 2}px;
+  width: ${({ size }) => size}px;
+  height: ${({ size }) => size}px;
+  border-radius: ${({ size }) => size / 2}px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  background: ${({backgroundColor}) => backgroundColor || '#FFFFFF'};
-  border-color: ${({theme}) => theme.text};
-  border-width: ${({border}) => (border ? 1 : 0)}px;
+  background: ${({ backgroundColor }) => backgroundColor || '#FFFFFF'};
+  border-color: ${({ theme }) => theme.text};
+  border-width: ${({ border }) => (border ? 1 : 0)}px;
 `;
 
 const Image = styled.Image`
@@ -95,7 +144,7 @@ interface Props {
   id?: string;
 }
 
-const Avatar = ({size = 32, withBorder = false, id = 'cat-1'}: Props) => (
+const Avatar = ({ size = 32, withBorder = false, id = 'cat-1' }: Props) => (
   <Wrapper
     size={size}
     border={withBorder}
