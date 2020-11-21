@@ -1,27 +1,28 @@
-import React, {useContext, useEffect} from 'react';
+import React, { useContext, useEffect } from 'react';
 import styled from 'styled-components';
 import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Alert
 } from 'react-native';
 import Avatar from '../components/Avatar';
-import {SCREEN_PADDING} from '../theme';
+import { SCREEN_PADDING } from '../theme';
 import IconButton from '../components/IconButton';
-import {useState} from 'react';
+import { useState } from 'react';
 import PixelArt from '../components/PixelArt';
-import {observer} from 'mobx-react-lite';
+import { observer } from 'mobx-react-lite';
 import User from '../stores/User';
-import {useNavigation, useTheme} from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
 import Empty from '../components/Empty';
-import {STATES} from '../constants';
+import { STATES } from '../constants';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const Row = styled.View`
@@ -33,13 +34,13 @@ const Row = styled.View`
 const UserName = styled.Text`
   font-size: 14px;
   font-weight: 600;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const PostsInfos = styled.Text`
   font-weight: 400;
   font-size: 12px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const InfosWrapper = styled.View`
@@ -49,6 +50,7 @@ const InfosWrapper = styled.View`
 
 const EditButton = styled.TouchableOpacity`
   align-self: flex-start;
+  margin-right: 10px;
 `;
 
 const ButtonsRow = styled.View`
@@ -69,7 +71,7 @@ const Profile = observer(() => {
   const userStore = useContext(User);
   const draftsStore = useContext(Drafts);
   const navigation = useNavigation();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   useEffect(() => {
     userStore.loadPosts();
@@ -84,13 +86,15 @@ const Profile = observer(() => {
 
   const displayedData = showDrafts ? draftsStore.drafts : userStore.posts;
 
-  const openArt = (index: number) => {
+  const openArt = (index: number, post?: any) => {
     if (showDrafts) {
       navigation.navigate('EditorModal', {
         screen: 'Edit',
-        params: {data: draftsStore.drafts[index]},
+        params: { data: draftsStore.drafts[index] },
       });
       draftsStore.removeDraft(index);
+    } else {
+      Alert.alert("Infos", `This post has ${post?.likesCount || 0} likes and ${post?.reports || 0} reports`)
     }
   };
 
@@ -128,18 +132,18 @@ const Profile = observer(() => {
         </ButtonsRow>
       </HeaderWrapper>
       {userStore.state === STATES.LOADING && (
-        <ActivityIndicator style={{margin: 50}} />
+        <ActivityIndicator style={{ margin: 50 }} />
       )}
       <ScrollView>
         <PostWrapper>
           {displayedData?.map((post, index) => (
-            <TouchableOpacity key={index} onPress={() => openArt(index)}>
+            <TouchableOpacity key={index} onPress={() => openArt(index, post)}>
               <PixelArt
                 size={postSize}
                 data={post.data.pixels}
                 backgroundColor={post.data.backgroundColor}
                 rounded
-                style={{marginBottom: 10}}
+                style={{ marginBottom: 10 }}
               />
             </TouchableOpacity>
           ))}

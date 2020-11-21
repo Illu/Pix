@@ -90,6 +90,7 @@ const Challenges = observer(() => {
       onReport={() => challengeStore.reportPost(item.id)}
       reports={item.reports}
       avatar={item.user.avatar}
+      desc={item.desc}
     />
   );
 

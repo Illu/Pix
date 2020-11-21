@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import ActionMenu from '../components/ActionMenu';
-import {useContext} from 'react';
+import { Alert, Linking } from 'react-native';
 import User from '../stores/User';
-import {observer} from 'mobx-react';
+import { observer } from 'mobx-react';
 
 const Wrapper = styled.ScrollView``;
 
@@ -63,24 +63,50 @@ const Settings = observer(() => {
         icon: 'Twitter',
         thumbIcon: 'Star',
         thumbColor: '#4DB3FF',
-        action: () => {},
+        action: () => { },
+      },
+      {
+        title: 'Contact me',
+        icon: 'Twitter',
+        thumbIcon: 'Pencil',
+        thumbColor: '#ED6A5A',
+        action: () => {
+          Alert.alert("Contact", "Whether you have a feature request, a bug report, or just want to say hello, you can always reach me on Twitter or by sending me an email.",
+            [
+              {
+                text: 'Send a Twitter message',
+                onPress: () => { Linking.openURL("https://twitter.com/MaximeNory") },
+                style: 'default',
+              },
+              {
+                text: 'Send me an email',
+                onPress: () => { },
+                style: 'default',
+              },
+              {
+                text: 'Cancel',
+                style: 'cancel'
+              },
+            ],
+          )
+        },
       },
       {
         title: 'Leave a tip',
         icon: 'Twitter',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => {},
+        action: () => { },
       },
     ],
     [
       {
-        title: 'Help',
+        title: 'Licenses',
         icon: 'ChevronRight',
-        thumbIcon: 'Help',
-        thumbColor: '#ED6A5A',
-        action: () => navigation.navigate('Licenses'),
-      },
+        thumbIcon: 'Bucket',
+        thumbColor: '#35CE8D',
+        action: () => navigation.navigate('Help'),
+      }
     ],
   ];
 
