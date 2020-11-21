@@ -95,7 +95,7 @@ const Profile = observer(() => {
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
-  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts.slice(0, postsDisplayed);
+  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts?.slice(0, postsDisplayed);
 
   const openArt = (index: number, post?: any) => {
     if (showDrafts) {

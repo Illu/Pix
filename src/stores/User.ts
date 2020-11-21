@@ -58,6 +58,7 @@ class User {
     const snapshot = await firestore()
       .collection('Posts')
       .where('user.id', '==', this.user.uid)
+      .orderBy('timestamp', 'desc')
       .get();
     const newPosts = [];
     snapshot.forEach((doc) => {
