@@ -1,12 +1,13 @@
 import React from 'react';
 import styled from 'styled-components/native';
 import Icon from './Icon';
+import { useTheme } from '@react-navigation/native';
 
 const Wrapper = styled.TouchableOpacity`
   flex-direction: row;
   height: 30px;
   border-radius: 15px;
-  background: ${({active}) => (active ? '#35CE8D' : '#fff')};
+  background: ${({ active }) => (active ? '#35CE8D' : '#fff')};
   width: 130px;
   margin: 0px 10px;
   align-items: center;
@@ -19,66 +20,54 @@ const Title = styled.Text`
   margin-left: 10px;
 `;
 
-export const ICONBUTTON_COLORS = {
-  green: {
-    active: {
-      background: '#EBFBF4',
-      color: '#35CE8D',
-    },
-    disabled: {
-      color: '#2B2D42',
-      background: '#FFFFFF',
-    },
-  },
-  yellow: {
-    active: {
-      background: '#FFFDE6',
-      color: '#FFB800',
-    },
-    disabled: {
-      color: '#2B2D42',
-      background: '#FFFFFF',
-    },
-  },
-};
-
 interface Props {
   title: string;
   onPress(): void;
   active: boolean;
-  color?: 'green' | 'yellow';
+  color?: 'green' | 'yellow' | 'accent';
   icon: string;
 }
 
-const IconButton = ({title, onPress, active, color = 'green', icon}: Props) => {
-  const colors =
+const IconButton = ({ title, onPress, active, color = 'green', icon }: Props) => {
+  const { colors } = useTheme();
+  const localColors =
     color === 'green'
       ? active
         ? {
-            background: '#EBFBF4',
-            color: '#35CE8D',
-          }
-        : {
-            color: '#2B2D42',
-            background: '#FFFFFF',
-          }
-      : active
-      ? {
-          background: '#FFFDE6',
-          color: '#FFB800',
+          background: colors.greenBackground,
+          color: colors.green,
         }
-      : {
-          color: '#2B2D42',
-          background: '#FFFFFF',
-        };
+        : {
+          color: colors.text,
+          background: colors.secondaryBackground,
+        }
+      : color === "accent"
+        ? active
+          ? {
+            background: colors.accent,
+            color: "#FFF",
+          }
+          : {
+            background: colors.background,
+            color: colors.text,
+          } :
+        active
+          ? {
+            background: colors.yellowBackground,
+            color: colors.yellow,
+          }
+          : {
+            color: colors.text,
+            background: colors.secondaryBackground,
+          };
 
   return (
     <Wrapper
       onPress={onPress}
       active={active}
-      style={{backgroundColor: colors.background}}>
-      <Icon name={icon} color={colors.color} size={16} />
-      <Title style={{color: colors.color}}>{title}</Title>
+      style={{ backgroundColor: localColors.background }}>
+      <Icon name={icon} color={localColors.color} size={16} />
+      <Title style={{ color: localColors.color }}>{title}</Title>
     </Wrapper>
   );
 };

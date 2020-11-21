@@ -166,16 +166,18 @@ const Editor = ({ route }) => {
         />
         <Row>
           <IconButton
-            icon="Star"
+            icon="Palette"
             title="Draw"
             onPress={() => setDisplayDrawTab(true)}
             active={displayDrawTab}
+            color="accent"
           />
           <IconButton
-            icon="Star"
+            icon="Bucket"
             title="Background"
             onPress={() => setDisplayDrawTab(false)}
             active={!displayDrawTab}
+            color="accent"
           />
         </Row>
         <Row style={{ justifyContent: 'space-around' }}>
