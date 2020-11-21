@@ -91,6 +91,7 @@ const Challenges = observer(() => {
       reports={item.reports}
       avatar={item.user.avatar}
       desc={item.desc}
+      userRef={item.userRef}
     />
   );
 
