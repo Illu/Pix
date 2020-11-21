@@ -20,6 +20,7 @@ import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
 import Empty from '../components/Empty';
 import { STATES } from '../constants';
+import Button from '../components/Button';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -62,6 +63,7 @@ const EditButton = styled.TouchableOpacity`
 const ButtonsRow = styled.View`
   flex-direction: row;
   align-items: center;
+  width: 100%;
   justify-content: center;
 `;
 
@@ -74,6 +76,7 @@ const PostWrapper = styled.View`
 
 const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
+  const [postsDisplayed, setPostDisplayed] = useState(4);
   const userStore = useContext(User);
   const draftsStore = useContext(Drafts);
   const navigation = useNavigation();
@@ -92,7 +95,7 @@ const Profile = observer(() => {
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
-  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts;
+  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts.slice(0, postsDisplayed);
 
   const openArt = (index: number, post?: any) => {
     if (showDrafts) {
@@ -159,6 +162,12 @@ const Profile = observer(() => {
             </TouchableOpacity>
           ))}
           {!displayedData || (displayedData.length === 0 && <Empty />)}
+          {!showDrafts && displayedData && postsDisplayed < userStore.posts.length && (
+            <ButtonsRow style={{ marginTop: 15 }}>
+              <Button fill title="Show more" onPress={() => setPostDisplayed(postsDisplayed + 4)} />
+            </ButtonsRow>
+          )}
+
         </PostWrapper>
       </ScrollView>
     </>

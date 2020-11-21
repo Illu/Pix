@@ -26,13 +26,6 @@ const Settings = observer(() => {
         action: () => navigation.navigate('Appearance'),
       },
       {
-        title: 'App Icon',
-        thumbIcon: 'Edit',
-        thumbColor: '#FFB800',
-        icon: 'ChevronRight',
-        action: () => navigation.navigate('Appearance'),
-      },
-      {
         title: 'Account',
         icon: 'ChevronRight',
         thumbIcon: 'Account',
