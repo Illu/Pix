@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import styled from 'styled-components/native';
 import { Dimensions, TouchableOpacity, Alert } from 'react-native';
 import { SCREEN_PADDING } from '../theme';
@@ -50,6 +50,21 @@ const Desc = styled.Text`
   font-weight: 400;
 `;
 
+const LoadingAvatar = styled.View`
+  height: 32px;
+  width: 32px;
+  border-radius: 16px;
+  background: ${({ theme }) => theme.background};
+  margin-right: 10px;
+`;
+
+const LoadingUserName = styled.View`
+  height: 16px;
+  width: 100px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.background};
+`;
+
 interface Props {
   data: Pixel[];
   backgroundColor: string;
@@ -62,6 +77,7 @@ interface Props {
   reports?: number;
   avatar?: string;
   desc?: string;
+  userRef: any;
 }
 
 const FeedCard = ({
@@ -76,20 +92,48 @@ const FeedCard = ({
   reports,
   desc = '',
   avatar = 'cat-1',
+  userRef,
 }: Props) => {
   const { colors } = useTheme();
   const userStore = useContext(User);
+
+  const [userInfos, setUserInfos] = useState({ avatar, displayName: userName })
+  const [loading, setLoading] = useState(false)
 
   // Avoid re-rendering the whole flatlist for liking a post
   const [localLiked, setLocalLiked] = useState(liked)
   const localLikesCount = likesCount + (liked ? -1 : 0) + (localLiked ? 1 : 0);
 
+  useEffect(() => {
+    if (userRef) {
+      setLoading(true)
+      userRef
+        .get()
+        .then((data) => {
+          const { displayName, avatar } = data.data();
+          setUserInfos({ displayName, avatar })
+        })
+        .finally(() => {
+          setLoading(false)
+        })
+    }
+  }, [])
+
   return (
     <Wrapper>
       <Row>
         <Row noMargins>
-          <Avatar id={avatar} />
-          <UserName>{userName}</UserName>
+          {loading ? (
+            <>
+              <LoadingAvatar />
+              <LoadingUserName />
+            </>
+          ) : (
+              <>
+                <Avatar id={userInfos.avatar} size={32} />
+                <UserName>{userInfos.displayName}</UserName>
+              </>
+            )}
         </Row>
         <TouchableOpacity
           onPress={() => {
@@ -168,8 +212,8 @@ const FeedCard = ({
           </>
         )}
       </LikesRow>
-      {!!desc && <Desc>{desc}</Desc>}
-    </Wrapper>
+      { !!desc && <Desc>{desc}</Desc>}
+    </Wrapper >
   );
 };
 

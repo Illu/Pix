@@ -82,6 +82,7 @@ const Home = observer(() => {
       onReport={() => feedStore.reportPost(item.id)}
       reports={item.reports}
       desc={item.desc}
+      userRef={item.userRef}
     />
   );
 
