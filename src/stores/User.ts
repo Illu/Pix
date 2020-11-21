@@ -54,6 +54,7 @@ class User {
 
   async loadPosts() {
     this.state = STATES.LOADING;
+    // TODO: add limit ? (profile is slow to render when the user has a lot of posts)
     const snapshot = await firestore()
       .collection('Posts')
       .where('user.id', '==', this.user.uid)
