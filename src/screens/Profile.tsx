@@ -5,7 +5,8 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Alert
+  Alert,
+  InteractionManager
 } from 'react-native';
 import Avatar from '../components/Avatar';
 import { SCREEN_PADDING } from '../theme';
@@ -79,7 +80,9 @@ const Profile = observer(() => {
   const { colors } = useTheme();
 
   useEffect(() => {
-    userStore.loadPosts();
+    InteractionManager.runAfterInteractions(() => {
+      userStore.loadPosts();
+    })
   }, []);
 
   if (!userStore.user) {
