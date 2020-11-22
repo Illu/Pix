@@ -1,21 +1,21 @@
-import {useTheme} from '@react-navigation/native';
-import React, {useState} from 'react';
-import {Alert, TouchableOpacity} from 'react-native';
+import { useTheme } from '@react-navigation/native';
+import React, { useState } from 'react';
+import { Alert, TouchableOpacity } from 'react-native';
 import styled from 'styled-components/native';
 import Button from '../components/Button';
-import {BUTTON_WIDTH} from '../constants';
+import { BUTTON_WIDTH } from '../constants';
 import auth from '@react-native-firebase/auth';
 
 const Wrapper = styled.KeyboardAvoidingView`
   align-items: center;
   justify-content: center;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   flex: 1;
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 12px;
@@ -26,18 +26,21 @@ const Title = styled.Text`
   margin: 30px 0 40px 0;
   font-size: 32px;
   font-weight: 600;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const ErrorText = styled.Text`
-  color: red;
+  color: ${({ theme }) => theme.error};
+  margin-top: 10px;
 `;
 
 const Image = styled.Image``;
 
 const ResetPassword = styled.Text`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   margin-bottom: 30px;
+  text-decoration: underline;
+  text-decoration-color: ${({ theme }) => theme.text};
 `;
 
 const Chick = require('../../assets/images/chick.png');
@@ -48,7 +51,7 @@ const Login = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const login = () => {
     setLoading(true);
@@ -103,17 +106,20 @@ const Login = () => {
         placeholderTextColor={colors.secondaryText}
         autoCapitalize="none"
         onChangeText={setEmail}
-        style={{color: colors.text}}
-        autocompleteType="username"
+        style={{ color: colors.text }}
+        autocompleteType="email"
+        keyboardType="email-address"
       />
       <TextInput
         value={password}
         placeholder="Your password"
         autoCapitalize="none"
         placeholderTextColor={colors.secondaryText}
-        style={{color: colors.text}}
+        style={{ color: colors.text }}
         onChangeText={setPassword}
         autoCompleteType="password"
+        returnKeyType="done"
+        onSubmitEditing={login}
         secureTextEntry
       />
       <TouchableOpacity onPress={resetPassword} disabled={loading}>
