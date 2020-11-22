@@ -71,7 +71,7 @@ const CurrentChallengeCard = ({ challengeTitle }: Props) => {
   const navigation = useNavigation();
   return (
     <Wrapper source={{ uri: challengeImageURL }} resizeMode="cover" >
-      <ContentWrapper colors={['#00000000', '#00000055']}>
+      <ContentWrapper colors={['#00000000', '#00000099']}>
         <Month>{currentMonth} Challenge</Month>
         {challengeTitle ? (
           <>

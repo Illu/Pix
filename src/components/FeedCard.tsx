@@ -194,7 +194,9 @@ const FeedCard = ({
         size={width - SCREEN_PADDING * 4}
       />
       <LikesRow onPress={() => {
-        setLocalLiked(!localLiked)
+        if (userStore.user) {
+          setLocalLiked(!localLiked)
+        }
         onLike();
       }}>
         <Icon

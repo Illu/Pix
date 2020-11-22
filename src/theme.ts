@@ -35,7 +35,7 @@ export const darkTheme = {
     background: '#000',
     placeholderText: '#666',
     inputBackground: '#1e2022',
-    secondaryText: '#7A7A7A',
+    secondaryText: '#9A9A9A',
     secondary: '#1a1d1e',
     accent: '#4DB3FF',
     accentBackground: 'rgba(10, 132, 255, 0.1)',

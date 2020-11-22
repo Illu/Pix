@@ -87,7 +87,8 @@ const AccountCreation = () => {
         placeholderTextColor={colors.secondaryText}
         style={{ color: colors.text }}
         onChangeText={setEmail}
-        autoCompleteType="email"
+        autocompleteType="email"
+        keyboardType="email-address"
       />
       <Button
         onPress={() =>
