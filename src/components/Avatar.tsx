@@ -1,5 +1,8 @@
-import React from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import styled from 'styled-components/native';
+import storage from '@react-native-firebase/storage';
+import Images from '../stores/Images';
+import { observer } from 'mobx-react-lite';
 
 export const AVATARS = {
   'animal-1': {
@@ -128,7 +131,7 @@ const Wrapper = styled.View`
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  background: ${({ backgroundColor }) => backgroundColor || '#FFFFFF'};
+  background: #FFFFFF;
   border-color: ${({ theme }) => theme.text};
   border-width: ${({ border }) => (border ? 1 : 0)}px;
 `;
@@ -141,16 +144,31 @@ const Image = styled.Image`
 interface Props {
   size?: number;
   withBorder?: boolean;
-  id?: string;
+  name?: string;
+  cloudRef?: any;
 }
 
-const Avatar = ({ size = 32, withBorder = false, id = 'cat-1' }: Props) => (
-  <Wrapper
-    size={size}
-    border={withBorder}
-    backgroundColor={AVATARS[id]?.backgroundColor}>
-    <Image source={AVATARS[id]?.image} />
-  </Wrapper>
-);
+const Avatar = observer(({ size = 32, withBorder = false, name = 'cat-1', cloudRef }: Props) => {
+
+  const [uri, setUri] = useState(null)
+
+  const imagesStore = useContext(Images)
+
+  useEffect(() => {
+    if (cloudRef) {
+      storage().ref(cloudRef).getDownloadURL().then(url => setUri(url));
+    }
+  }, [])
+
+  const source = cloudRef ? uri : { uri: imagesStore?.avatars[name]?.url || null };
+
+  return (
+    <Wrapper
+      size={size}
+      border={withBorder}>
+      <Image source={source} />
+    </Wrapper>
+  )
+});
 
 export default Avatar;

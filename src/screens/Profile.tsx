@@ -21,6 +21,7 @@ import Drafts from '../stores/Drafts';
 import Empty from '../components/Empty';
 import { STATES } from '../constants';
 import Button from '../components/Button';
+import Images from '../stores/Images';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -78,6 +79,7 @@ const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
   const [postsDisplayed, setPostDisplayed] = useState(4);
   const userStore = useContext(User);
+  const imagesStore = useContext(Images);
   const draftsStore = useContext(Drafts);
   const navigation = useNavigation();
   const { colors } = useTheme();
@@ -111,7 +113,7 @@ const Profile = observer(() => {
     <>
       <HeaderWrapper>
         <Row>
-          <Avatar size={119} id={userStore.userData?.avatar} />
+          <Avatar size={119} name={userStore.userData?.avatar} />
           <InfosWrapper>
             <UserName>{userStore.user.displayName}</UserName>
             <PostsInfos>
@@ -119,7 +121,7 @@ const Profile = observer(() => {
               {userStore.posts?.length === 1 ? '' : 's'}
             </PostsInfos>
             <BadgesRow>
-              {userStore.userData?.badges?.map(badge => <Avatar key={badge} id={badge} />)}
+              {userStore.userData?.badges?.map(badge => <Avatar key={badge} cloudRef={`badges/${badge.toLowerCase()}.png`} />)}
             </BadgesRow>
           </InfosWrapper>
           <EditButton onPress={() => navigation.navigate('EditProfile')}>

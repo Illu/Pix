@@ -130,7 +130,7 @@ const FeedCard = ({
             </>
           ) : (
               <>
-                <Avatar id={userInfos.avatar} size={32} />
+                <Avatar name={userInfos.avatar} size={32} />
                 <UserName>{userInfos.displayName}</UserName>
               </>
             )}
