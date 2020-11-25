@@ -1,14 +1,15 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import styled from 'styled-components';
 import Avatar from '../../components/Avatar';
-import {SCREEN_PADDING} from '../../theme';
-import {BUTTON_WIDTH} from '../../constants';
-import {View, ScrollView} from 'react-native';
+import { SCREEN_PADDING } from '../../theme';
+import { BUTTON_WIDTH } from '../../constants';
+import { View, ScrollView } from 'react-native';
+import Images from '../../stores/Images';
 
 const Wrapper = styled.View`
   height: 500px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -16,7 +17,7 @@ const Label = styled.Text`
   font-size: 14px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const AvatarWrapper = styled.TouchableOpacity`
@@ -27,7 +28,7 @@ const Header = styled.View`
   width: 40px;
   height: 8px;
   border-radius: 4px;
-  background: ${({theme}) => theme.secondaryText};
+  background: ${({ theme }) => theme.secondaryText};
   margin-bottom: 20px;
   align-self: center;
 `;
@@ -37,37 +38,25 @@ const Row = styled.View`
   margin-bottom: 20px;
 `;
 
-const CATEGORIES = [
-  {name: 'Cats', images: ['cat-1', 'cat-2', 'cat-3', 'cat-4']},
-  {name: 'Birds', images: ['bird-1', 'bird-2', 'bird-3']},
-  {
-    name: 'Animals',
-    images: ['animal-1', 'animal-2', 'animal-3', 'animal-4', 'animal-5'],
-  },
-  {name: 'Plants', images: ['plant-1', 'plant-2', 'plant-3']},
-  {name: 'Other', images: ['other-1', 'other-2']},
-];
 
-const EditAvatar = (onSelect) => {
-  return (
-    <Wrapper>
-      <Header />
-      <ScrollView>
-        {CATEGORIES.map((category) => (
-          <View key={category.name}>
-            <Label>{category.name}</Label>
-            <Row>
-              {category.images.map((imageId) => (
-                <AvatarWrapper key={imageId} onPress={() => onSelect(imageId)}>
-                  <Avatar size={60} id={imageId} />
-                </AvatarWrapper>
-              ))}
-            </Row>
-          </View>
-        ))}
-      </ScrollView>
-    </Wrapper>
-  );
-};
+const EditAvatar = (categories, onSelect) => (
+  <Wrapper>
+    <Header />
+    <ScrollView>
+      {Object.keys(categories)?.map((key, index) => (
+        <View key={key + index}>
+          <Label>{key[0].toUpperCase() + key.slice(1)}</Label>
+          <Row>
+            {categories[key]?.map((name, index) => (
+              <AvatarWrapper key={index} onPress={() => onSelect(name)}>
+                <Avatar size={60} name={name} />
+              </AvatarWrapper>
+            ))}
+          </Row>
+        </View>
+      ))}
+    </ScrollView>
+  </Wrapper>
+);
 
 export default EditAvatar;

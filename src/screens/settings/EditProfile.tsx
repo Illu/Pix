@@ -12,6 +12,7 @@ import BottomSheet from 'reanimated-bottom-sheet';
 import EditAvatar from '../../components/settings/EditAvatar';
 import Animated from 'react-native-reanimated';
 import firestore from '@react-native-firebase/firestore';
+import Images from '../../stores/Images';
 
 const Wrapper = styled.ScrollView`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -48,6 +49,8 @@ const Footer = styled.Text`
 
 const ResetPassword = styled.Text`
   color: ${({ theme }) => theme.text};
+  text-decoration: underline;
+  text-decoration-color: ${({ theme }) => theme.text};
 `;
 
 const OpacityView = styled(Animated.View)`
@@ -63,6 +66,7 @@ const OpacityView = styled(Animated.View)`
 
 const EditProfile = () => {
   const userStore = useContext(User);
+  const imagesStore = useContext(Images);
   const { colors } = useTheme();
 
   const [status, setStatus] = useState(STATES.IDLE);
@@ -108,6 +112,13 @@ const EditProfile = () => {
       });
   };
 
+  const setNewAvatar = (newAvatar) => {
+    if (newAvatar) {
+      setAvatar(newAvatar);
+    }
+    sheetRef.current.snapTo(1);
+  }
+
   const sheetRef = React.useRef(null);
 
   const animatedShadowOpacity = Animated.interpolate(fall, {
@@ -115,10 +126,22 @@ const EditProfile = () => {
     outputRange: [0.5, 0],
   });
 
+  const categories = {};
+
+  Object.keys(imagesStore.avatars).forEach((key, index) => {
+    const avatar = imagesStore.avatars[key]
+    if (avatar) {
+      if (!categories[avatar.category]) {
+        categories[avatar.category] = [];
+      }
+      categories[avatar.category].push(key)
+    }
+  })
+
   return (
     <>
       <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
-        <Avatar size={119} id={avatar} />
+        <Avatar size={119} name={avatar} />
         <Button
           onPress={() => {
             setDrawerShown(true);
@@ -189,12 +212,7 @@ const EditProfile = () => {
         initialSnap={1}
         borderRadius={10}
         renderContent={() =>
-          EditAvatar((newAvatar) => {
-            if (newAvatar) {
-              setAvatar(newAvatar);
-            }
-            sheetRef.current.snapTo(1);
-          })
+          EditAvatar(categories, setNewAvatar)
         }
         callbackNode={fall}
         onCloseEnd={() => setDrawerShown(false)}
