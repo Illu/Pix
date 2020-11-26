@@ -1,13 +1,13 @@
-import React, { useState, useContext } from 'react';
+import React, {useState, useContext} from 'react';
 import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
-import { useTheme } from '@react-navigation/native';
-import { Alert, TouchableOpacity } from 'react-native';
+import {useTheme} from '@react-navigation/native';
+import {Alert, TouchableOpacity} from 'react-native';
 import User from '../../stores/User';
 import Avatar from '../../components/Avatar';
-import { SCREEN_PADDING } from '../../theme';
+import {SCREEN_PADDING} from '../../theme';
 import Button from '../../components/Button';
-import { BUTTON_WIDTH, STATES } from '../../constants';
+import {BUTTON_WIDTH, STATES} from '../../constants';
 import BottomSheet from 'reanimated-bottom-sheet';
 import EditAvatar from '../../components/settings/EditAvatar';
 import Animated from 'react-native-reanimated';
@@ -16,7 +16,7 @@ import Images from '../../stores/Images';
 
 const Wrapper = styled.ScrollView`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -24,12 +24,12 @@ const Label = styled.Text`
   font-size: 14px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 14px;
@@ -38,19 +38,19 @@ const TextInput = styled.TextInput`
 
 const StatusText = styled.Text`
   margin-top: 10px;
-  color: ${({ color }) => color};
+  color: ${({color}) => color};
   text-align: center;
 `;
 
 const Footer = styled.Text`
-  color: ${({ theme }) => theme.inputBackground};
+  color: ${({theme}) => theme.inputBackground};
   margin: 50px 0;
 `;
 
 const ResetPassword = styled.Text`
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   text-decoration: underline;
-  text-decoration-color: ${({ theme }) => theme.text};
+  text-decoration-color: ${({theme}) => theme.text};
 `;
 
 const OpacityView = styled(Animated.View)`
@@ -67,7 +67,7 @@ const OpacityView = styled(Animated.View)`
 const EditProfile = () => {
   const userStore = useContext(User);
   const imagesStore = useContext(Images);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   const [status, setStatus] = useState(STATES.IDLE);
   const [username, setUsername] = useState(userStore.user.displayName);
@@ -117,7 +117,7 @@ const EditProfile = () => {
       setAvatar(newAvatar);
     }
     sheetRef.current.snapTo(1);
-  }
+  };
 
   const sheetRef = React.useRef(null);
 
@@ -129,18 +129,18 @@ const EditProfile = () => {
   const categories = {};
 
   Object.keys(imagesStore.avatars).forEach((key, index) => {
-    const avatar = imagesStore.avatars[key]
+    const avatar = imagesStore.avatars[key];
     if (avatar) {
       if (!categories[avatar.category]) {
         categories[avatar.category] = [];
       }
-      categories[avatar.category].push(key)
+      categories[avatar.category].push(key);
     }
-  })
+  });
 
   return (
     <>
-      <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
+      <Wrapper contentContainerStyle={{alignItems: 'center'}}>
         <Avatar size={119} name={avatar} />
         <Button
           onPress={() => {
@@ -149,7 +149,7 @@ const EditProfile = () => {
           }}
           title="Edit profile picture"
           fill={false}
-          style={{ width: 163, marginTop: 10, marginBottom: 30 }}
+          style={{width: 163, marginTop: 10, marginBottom: 30}}
         />
         <Label>Username</Label>
         <TextInput
@@ -159,7 +159,7 @@ const EditProfile = () => {
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
           onChangeText={setUsername}
-          style={{ color: colors.text }}
+          style={{color: colors.text}}
         />
         <Label>Your email</Label>
         <TextInput
@@ -169,7 +169,7 @@ const EditProfile = () => {
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
           onChangeText={setUsername}
-          style={{ color: colors.secondaryText }}
+          style={{color: colors.secondaryText}}
         />
         <Label>Your password</Label>
         <TextInput
@@ -177,9 +177,9 @@ const EditProfile = () => {
           autoCapitalize="none"
           editable={false}
           placeholderTextColor={colors.secondaryText}
-          onChangeText={() => { }}
+          onChangeText={() => {}}
           secureTextEntry
-          style={{ color: colors.secondaryText }}
+          style={{color: colors.secondaryText}}
         />
         <TouchableOpacity
           onPress={resetPassword}
@@ -190,7 +190,7 @@ const EditProfile = () => {
           onPress={update}
           title="Save modifications"
           loading={status === STATES.LOADING}
-          style={{ marginTop: 40 }}
+          style={{marginTop: 40}}
           disabled={status === STATES.LOADING}
         />
         {status === STATES.ERROR && (
@@ -211,9 +211,7 @@ const EditProfile = () => {
         snapPoints={[500, 0]}
         initialSnap={1}
         borderRadius={10}
-        renderContent={() =>
-          EditAvatar(categories, setNewAvatar)
-        }
+        renderContent={() => EditAvatar(categories, setNewAvatar)}
         callbackNode={fall}
         onCloseEnd={() => setDrawerShown(false)}
       />

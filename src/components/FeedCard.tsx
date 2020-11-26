@@ -1,20 +1,20 @@
-import React, { useContext, useState, useEffect } from 'react';
+import React, {useContext, useState, useEffect} from 'react';
 import styled from 'styled-components/native';
-import { Dimensions, TouchableOpacity, Alert } from 'react-native';
-import { SCREEN_PADDING } from '../theme';
+import {Dimensions, TouchableOpacity, Alert} from 'react-native';
+import {SCREEN_PADDING} from '../theme';
 import Avatar from './Avatar';
 import PixelArt from './PixelArt';
-import { Pixel } from '../types';
+import {Pixel} from '../types';
 import Icon from './Icon';
-import { useTheme } from '@react-navigation/native';
+import {useTheme} from '@react-navigation/native';
 import User from '../stores/User';
 import firestore from '@react-native-firebase/firestore';
 
-const { width } = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const Row = styled.View`
   flex-direction: row;
-  margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
+  margin: ${({noMargins}) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
   justify-content: space-between;
 `;
@@ -22,12 +22,12 @@ const Row = styled.View`
 const Wrapper = styled.View`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
 const Likes = styled.Text`
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
@@ -41,11 +41,11 @@ const LikesRow = styled.Pressable`
 
 const UserName = styled.Text`
   margin-left: 10px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Desc = styled.Text`
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({theme}) => theme.secondaryText};
   font-size: 14px;
   font-weight: 400;
 `;
@@ -54,7 +54,7 @@ const LoadingAvatar = styled.View`
   height: 32px;
   width: 32px;
   border-radius: 16px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
   margin-right: 10px;
 `;
 
@@ -62,7 +62,7 @@ const LoadingUserName = styled.View`
   height: 16px;
   width: 100px;
   border-radius: 8px;
-  background: ${({ theme }) => theme.background};
+  background: ${({theme}) => theme.background};
 `;
 
 interface Props {
@@ -94,30 +94,30 @@ const FeedCard = ({
   avatar = 'cat-1',
   userRef,
 }: Props) => {
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const userStore = useContext(User);
 
-  const [userInfos, setUserInfos] = useState({ avatar, displayName: userName })
-  const [loading, setLoading] = useState(false)
+  const [userInfos, setUserInfos] = useState({avatar, displayName: userName});
+  const [loading, setLoading] = useState(false);
 
   // Avoid re-rendering the whole flatlist for liking a post
-  const [localLiked, setLocalLiked] = useState(liked)
+  const [localLiked, setLocalLiked] = useState(liked);
   const localLikesCount = likesCount + (liked ? -1 : 0) + (localLiked ? 1 : 0);
 
   useEffect(() => {
     if (userRef) {
-      setLoading(true)
+      setLoading(true);
       userRef
         .get()
         .then((data) => {
-          const { displayName, avatar } = data.data();
-          setUserInfos({ displayName, avatar })
+          const {displayName, avatar} = data.data();
+          setUserInfos({displayName, avatar});
         })
         .finally(() => {
-          setLoading(false)
-        })
+          setLoading(false);
+        });
     }
-  }, [])
+  }, []);
 
   return (
     <Wrapper>
@@ -129,11 +129,11 @@ const FeedCard = ({
               <LoadingUserName />
             </>
           ) : (
-              <>
-                <Avatar name={userInfos.avatar} size={32} />
-                <UserName>{userInfos.displayName}</UserName>
-              </>
-            )}
+            <>
+              <Avatar name={userInfos.avatar} size={32} />
+              <UserName>{userInfos.displayName}</UserName>
+            </>
+          )}
         </Row>
         <TouchableOpacity
           onPress={() => {
@@ -150,7 +150,7 @@ const FeedCard = ({
                   {
                     text: 'Cancel',
                     style: 'cancel',
-                    onPress: () => { },
+                    onPress: () => {},
                   },
                 ],
               );
@@ -158,7 +158,8 @@ const FeedCard = ({
             }
             Alert.alert(
               'Options',
-              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''
+              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${
+                userStore.isAdmin ? `\n\nID: ${id}` : ''
               }`,
               [
                 {
@@ -169,7 +170,7 @@ const FeedCard = ({
                 {
                   text: 'Cancel',
                   style: 'cancel',
-                  onPress: () => { },
+                  onPress: () => {},
                 },
                 userStore.isAdmin && {
                   text: 'Delete',
@@ -193,12 +194,13 @@ const FeedCard = ({
         backgroundColor={backgroundColor}
         size={width - SCREEN_PADDING * 4}
       />
-      <LikesRow onPress={() => {
-        if (userStore.user) {
-          setLocalLiked(!localLiked)
-        }
-        onLike();
-      }}>
+      <LikesRow
+        onPress={() => {
+          if (userStore.user) {
+            setLocalLiked(!localLiked);
+          }
+          onLike();
+        }}>
         <Icon
           name={localLiked ? 'HeartFull' : 'Heart'}
           color={localLiked ? '#ED6A5A' : colors.text}
@@ -214,8 +216,8 @@ const FeedCard = ({
           </>
         )}
       </LikesRow>
-      { !!desc && <Desc>{desc}</Desc>}
-    </Wrapper >
+      {!!desc && <Desc>{desc}</Desc>}
+    </Wrapper>
   );
 };
 

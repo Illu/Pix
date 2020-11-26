@@ -1,9 +1,9 @@
-import { makeObservable, observable, action, runInAction } from 'mobx';
-import { createContext } from 'react';
-import { Alert } from 'react-native';
-import { MONTHS, SORT, STATES } from '../constants';
+import {makeObservable, observable, action, runInAction} from 'mobx';
+import {createContext} from 'react';
+import {Alert} from 'react-native';
+import {MONTHS, SORT, STATES} from '../constants';
 import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/auth';
 
 const PAGE_ITEMS = 5;
 
@@ -46,7 +46,7 @@ class Challenge {
 
   async loadChallenges() {
     this.state = STATES.LOADING;
-    console.log("loading for challenge", this.currentChallenge)
+    console.log('loading for challenge', this.currentChallenge);
     try {
       const snapshot = await firestore()
         .collection('Posts')
@@ -56,7 +56,7 @@ class Challenge {
         .get();
       const newChallenges = [];
       snapshot.forEach((doc) => {
-        newChallenges.push({ ...doc.data(), id: doc.id });
+        newChallenges.push({...doc.data(), id: doc.id});
       });
       this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
       runInAction(() => {
@@ -64,7 +64,7 @@ class Challenge {
         this.challenges = [...newChallenges];
       });
     } catch (err) {
-      console.log("ERr!!", err)
+      console.log('ERr!!', err);
       runInAction(() => {
         this.state = STATES.ERROR;
       });
@@ -72,7 +72,11 @@ class Challenge {
   }
 
   async loadMore() {
-    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
+    if (
+      this.state !== STATES.LOADING &&
+      this.state !== STATES.LOADING_BACKGROUND &&
+      this.lastSnapshot
+    ) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()
@@ -84,8 +88,8 @@ class Challenge {
           .get();
 
         const newFeed = [];
-        snapshot.forEach(doc => {
-          newFeed.push({ ...doc.data(), id: doc.id });
+        snapshot.forEach((doc) => {
+          newFeed.push({...doc.data(), id: doc.id});
         });
         this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
         runInAction(() => {
@@ -140,7 +144,8 @@ class Challenge {
       reports: firebase.firestore.FieldValue.increment(1),
     });
     Alert.alert(
-      'Thank you for your report!', 'You are making the App a friendlier place for everyone.',
+      'Thank you for your report!',
+      'You are making the App a friendlier place for everyone.',
     );
   }
 }

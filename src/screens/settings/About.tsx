@@ -1,9 +1,9 @@
-import React, { useContext, useEffect } from 'react';
+import React, {useContext, useEffect} from 'react';
 import styled from 'styled-components';
 import User from '../../stores/User';
-import { Alert, View } from 'react-native';
+import {Alert, View} from 'react-native';
 import firestore from '@react-native-firebase/firestore';
-import { version } from '../../../package.json';
+import {version} from '../../../package.json';
 import Avatar from '../../components/Avatar';
 
 const Wrapper = styled.ScrollView`
@@ -13,12 +13,12 @@ const Wrapper = styled.ScrollView`
 const Label = styled.Text`
   font-weight: 400;
   font-size: 13px;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({theme}) => theme.secondaryText};
   margin-top: 20px;
 `;
 
 const DescWrapper = styled.View`
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   padding: 15px;
   border-radius: 8px;
   margin-top: 5px;
@@ -28,7 +28,7 @@ const Desc = styled.Text`
   font-weight: 500;
   font-size: 14px;
   line-height: 20px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const Header = styled.View`
@@ -40,11 +40,11 @@ const Header = styled.View`
 
 const InfosText = styled.Text`
   font-size: 16px;
-  color: ${({ theme }) => theme.secondaryText};
+  color: ${({theme}) => theme.secondaryText};
 `;
 
 const InfosTitle = styled(InfosText)`
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
   font-weight: 600;
 `;
 
@@ -74,7 +74,7 @@ const About = () => {
             Alert.alert(
               'The maker!',
               'You are now signed in as an admin, granting you total power on every post in the App.',
-              [{ text: 'Cool!' }],
+              [{text: 'Cool!'}],
             );
           }
         });

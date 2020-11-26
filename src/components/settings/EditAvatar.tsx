@@ -1,15 +1,15 @@
-import React, { useContext } from 'react';
+import React, {useContext} from 'react';
 import styled from 'styled-components';
 import Avatar from '../../components/Avatar';
-import { SCREEN_PADDING } from '../../theme';
-import { BUTTON_WIDTH } from '../../constants';
-import { View, ScrollView } from 'react-native';
+import {SCREEN_PADDING} from '../../theme';
+import {BUTTON_WIDTH} from '../../constants';
+import {View, ScrollView} from 'react-native';
 import Images from '../../stores/Images';
 
 const Wrapper = styled.View`
   height: 500px;
   padding: ${SCREEN_PADDING}px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -17,7 +17,7 @@ const Label = styled.Text`
   font-size: 14px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
-  color: ${({ theme }) => theme.text};
+  color: ${({theme}) => theme.text};
 `;
 
 const AvatarWrapper = styled.TouchableOpacity`
@@ -28,7 +28,7 @@ const Header = styled.View`
   width: 40px;
   height: 8px;
   border-radius: 4px;
-  background: ${({ theme }) => theme.secondaryText};
+  background: ${({theme}) => theme.secondaryText};
   margin-bottom: 20px;
   align-self: center;
 `;
@@ -37,7 +37,6 @@ const Row = styled.View`
   flex-direction: row;
   margin-bottom: 20px;
 `;
-
 
 const EditAvatar = (categories, onSelect) => (
   <Wrapper>

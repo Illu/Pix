@@ -19,7 +19,7 @@ class User {
       onAuthStateChanged: action,
       loadPosts: action,
       promote: action,
-      addBadge: action
+      addBadge: action,
     });
   }
 
@@ -61,7 +61,7 @@ class User {
       .get();
     const newPosts = [];
     snapshot.forEach((doc) => {
-      newPosts.push(doc.data());
+      newPosts.push({ ...doc.data(), id: doc.id });
     });
     runInAction(() => {
       this.state = STATES.SUCCESS;
@@ -71,11 +71,18 @@ class User {
 
   addBadge(badge: string) {
     if (this.userData.badges && !this.userData.badges.includes(badge)) {
-      const badgesRef = firestore().collection('Users').doc(this.user.uid)
-      badgesRef.update({
-        badges: firebase.firestore.FieldValue.arrayUnion(badge)
-      }).then(() => Alert.alert("Contrats! 🎉", "You’ve earned a brand new badge for your participation in this month challenge!"))
-      this.userData.badges.push(badge)
+      const badgesRef = firestore().collection('Users').doc(this.user.uid);
+      badgesRef
+        .update({
+          badges: firebase.firestore.FieldValue.arrayUnion(badge),
+        })
+        .then(() =>
+          Alert.alert(
+            'Contrats! 🎉',
+            'You’ve earned a brand new badge for your participation in this month challenge!',
+          ),
+        );
+      this.userData.badges.push(badge);
     }
   }
 }

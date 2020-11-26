@@ -1,9 +1,9 @@
-import { makeObservable, observable, action, runInAction } from 'mobx';
-import { createContext } from 'react';
-import { Alert } from 'react-native';
-import { STATES } from '../constants';
+import {makeObservable, observable, action, runInAction} from 'mobx';
+import {createContext} from 'react';
+import {Alert} from 'react-native';
+import {STATES} from '../constants';
 import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/auth';
+import {firebase} from '@react-native-firebase/auth';
 
 const PAGE_ITEMS = 5;
 
@@ -17,7 +17,7 @@ class Feed {
       loadMore: action,
       likePost: action,
       clearFeed: action,
-      changeSort: action
+      changeSort: action,
     });
   }
 
@@ -37,7 +37,7 @@ class Feed {
 
       const newFeed = [];
       snapshot.forEach((doc) => {
-        newFeed.push({ ...doc.data(), id: doc.id });
+        newFeed.push({...doc.data(), id: doc.id});
       });
       this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
       runInAction(() => {
@@ -53,7 +53,11 @@ class Feed {
   }
 
   async loadMore() {
-    if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
+    if (
+      this.state !== STATES.LOADING &&
+      this.state !== STATES.LOADING_BACKGROUND &&
+      this.lastSnapshot
+    ) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()
@@ -64,8 +68,8 @@ class Feed {
           .get();
 
         const newFeed = [];
-        snapshot.forEach(doc => {
-          newFeed.push({ ...doc.data(), id: doc.id });
+        snapshot.forEach((doc) => {
+          newFeed.push({...doc.data(), id: doc.id});
         });
         this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
         runInAction(() => {
