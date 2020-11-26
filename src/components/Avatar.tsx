@@ -3,6 +3,7 @@ import styled from 'styled-components/native';
 import storage from '@react-native-firebase/storage';
 import Images from '../stores/Images';
 import { observer } from 'mobx-react-lite';
+import FastImage from 'react-native-fast-image'
 
 export const AVATARS = {
   'animal-1': {
@@ -136,7 +137,7 @@ const Wrapper = styled.View`
   border-width: ${({ border }) => (border ? 1 : 0)}px;
 `;
 
-const Image = styled.Image`
+const Image = styled(FastImage)`
   width: 50%;
   height: 50%;
 `;

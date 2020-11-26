@@ -1,4 +1,4 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
+import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
 import React, { useContext, useState, useEffect } from 'react';
 import {
   View,
@@ -29,7 +29,7 @@ const Row = styled.View`
   justify-content: center;
 `;
 
-const Challenges = observer(() => {
+const Challenges = observer(({ route }) => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const userStore = useContext(User);
@@ -58,7 +58,7 @@ const Challenges = observer(() => {
 
   const UserAvatar = (
     <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
-      <Avatar id={userStore.userData?.avatar} />
+      <Avatar name={userStore.userData?.avatar} />
     </TouchableOpacity>
   );
 

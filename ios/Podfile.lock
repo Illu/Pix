@@ -232,23 +232,23 @@ PODS:
     - React-Core (= 0.63.3)
     - React-jsi (= 0.63.3)
     - ReactCommon/turbomodule/core (= 0.63.3)
-  - Firebase/Auth (7.0.0):
+  - Firebase/Auth (7.1.0):
     - Firebase/CoreOnly
-    - FirebaseAuth (~> 7.0.0)
-  - Firebase/CoreOnly (7.0.0):
-    - FirebaseCore (= 7.0.0)
-  - Firebase/Firestore (7.0.0):
+    - FirebaseAuth (~> 7.1.0)
+  - Firebase/CoreOnly (7.1.0):
+    - FirebaseCore (= 7.1.0)
+  - Firebase/Firestore (7.1.0):
     - Firebase/CoreOnly
-    - FirebaseFirestore (~> 7.0.0)
-  - Firebase/Storage (7.0.0):
+    - FirebaseFirestore (~> 7.1.0)
+  - Firebase/Storage (7.1.0):
     - Firebase/CoreOnly
-    - FirebaseStorage (~> 7.0.0)
-  - FirebaseAuth (7.0.0):
+    - FirebaseStorage (~> 7.1.0)
+  - FirebaseAuth (7.1.0):
     - FirebaseCore (~> 7.0)
     - GoogleUtilities/AppDelegateSwizzler (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
-  - FirebaseCore (7.0.0):
+  - FirebaseCore (7.1.0):
     - FirebaseCoreDiagnostics (~> 7.0)
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
@@ -257,7 +257,7 @@ PODS:
     - GoogleUtilities/Environment (~> 7.0)
     - GoogleUtilities/Logger (~> 7.0)
     - nanopb (~> 2.30906.0)
-  - FirebaseFirestore (7.0.0):
+  - FirebaseFirestore (7.1.0):
     - abseil/algorithm (= 0.20200225.0)
     - abseil/base (= 0.20200225.0)
     - abseil/memory (= 0.20200225.0)
@@ -269,7 +269,7 @@ PODS:
     - "gRPC-C++ (~> 1.28.0)"
     - leveldb-library (~> 1.22)
     - nanopb (~> 2.30906.0)
-  - FirebaseStorage (7.0.0):
+  - FirebaseStorage (7.1.0):
     - FirebaseCore (~> 7.0)
     - GTMSessionFetcher/Core (~> 1.4)
   - Flipper (0.54.0):
@@ -330,20 +330,20 @@ PODS:
   - glog (0.3.5)
   - GoogleDataTransport (8.0.1):
     - nanopb (~> 2.30906.0)
-  - GoogleUtilities/AppDelegateSwizzler (7.1.0):
+  - GoogleUtilities/AppDelegateSwizzler (7.1.1):
     - GoogleUtilities/Environment
     - GoogleUtilities/Logger
     - GoogleUtilities/Network
-  - GoogleUtilities/Environment (7.1.0):
+  - GoogleUtilities/Environment (7.1.1):
     - PromisesObjC (~> 1.2)
-  - GoogleUtilities/Logger (7.1.0):
+  - GoogleUtilities/Logger (7.1.1):
     - GoogleUtilities/Environment
-  - GoogleUtilities/Network (7.1.0):
+  - GoogleUtilities/Network (7.1.1):
     - GoogleUtilities/Logger
     - "GoogleUtilities/NSData+zlib"
     - GoogleUtilities/Reachability
-  - "GoogleUtilities/NSData+zlib (7.1.0)"
-  - GoogleUtilities/Reachability (7.1.0):
+  - "GoogleUtilities/NSData+zlib (7.1.1)"
+  - GoogleUtilities/Reachability (7.1.1):
     - GoogleUtilities/Logger
   - "gRPC-C++ (1.28.2)":
     - "gRPC-C++/Implementation (= 1.28.2)"
@@ -371,6 +371,15 @@ PODS:
   - gRPC-Core/Interface (1.28.2)
   - GTMSessionFetcher/Core (1.5.0)
   - leveldb-library (1.22)
+  - libwebp (1.1.0):
+    - libwebp/demux (= 1.1.0)
+    - libwebp/mux (= 1.1.0)
+    - libwebp/webp (= 1.1.0)
+  - libwebp/demux (1.1.0):
+    - libwebp/webp
+  - libwebp/mux (1.1.0):
+    - libwebp/demux
+  - libwebp/webp (1.1.0)
   - nanopb (2.30906.0):
     - nanopb/decode (= 2.30906.0)
     - nanopb/encode (= 2.30906.0)
@@ -618,19 +627,23 @@ PODS:
     - React-Core
   - RNCMaskedView (0.1.10):
     - React
-  - RNFBApp (9.0.0):
-    - Firebase/CoreOnly (~> 7.0.0)
+  - RNFastImage (8.3.4):
+    - React-Core
+    - SDWebImage (~> 5.8)
+    - SDWebImageWebPCoder (~> 0.6.1)
+  - RNFBApp (10.0.0):
+    - Firebase/CoreOnly (~> 7.1.0)
     - React-Core
   - RNFBAuth (9.3.5):
-    - Firebase/Auth (~> 7.0.0)
+    - Firebase/Auth (~> 7.1.0)
     - React-Core
     - RNFBApp
   - RNFBFirestore (7.10.3):
-    - Firebase/Firestore (~> 7.0.0)
+    - Firebase/Firestore (~> 7.1.0)
     - React-Core
     - RNFBApp
   - RNFBStorage (10.0.0):
-    - Firebase/Storage (~> 7.0.0)
+    - Firebase/Storage (~> 7.1.0)
     - React-Core
     - RNFBApp
   - RNGestureHandler (1.8.0):
@@ -641,6 +654,12 @@ PODS:
     - React-Core
   - RNSVG (12.1.0):
     - React
+  - SDWebImage (5.10.0):
+    - SDWebImage/Core (= 5.10.0)
+  - SDWebImage/Core (5.10.0)
+  - SDWebImageWebPCoder (0.6.1):
+    - libwebp (~> 1.0)
+    - SDWebImage/Core (~> 5.7)
   - Yoga (1.14.0)
   - YogaKit (1.18.1):
     - Yoga (~> 1.14)
@@ -699,6 +718,7 @@ DEPENDENCIES:
   - "RNAppleAuthentication (from `../node_modules/@invertase/react-native-apple-authentication`)"
   - "RNCAsyncStorage (from `../node_modules/@react-native-community/async-storage`)"
   - "RNCMaskedView (from `../node_modules/@react-native-community/masked-view`)"
+  - RNFastImage (from `../node_modules/react-native-fast-image`)
   - "RNFBApp (from `../node_modules/@react-native-firebase/app`)"
   - "RNFBAuth (from `../node_modules/@react-native-firebase/auth`)"
   - "RNFBFirestore (from `../node_modules/@react-native-firebase/firestore`)"
@@ -735,9 +755,12 @@ SPEC REPOS:
     - gRPC-Core
     - GTMSessionFetcher
     - leveldb-library
+    - libwebp
     - nanopb
     - OpenSSL-Universal
     - PromisesObjC
+    - SDWebImage
+    - SDWebImageWebPCoder
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -805,6 +828,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/async-storage"
   RNCMaskedView:
     :path: "../node_modules/@react-native-community/masked-view"
+  RNFastImage:
+    :path: "../node_modules/react-native-fast-image"
   RNFBApp:
     :path: "../node_modules/@react-native-firebase/app"
   RNFBAuth:
@@ -834,12 +859,12 @@ SPEC CHECKSUMS:
   DoubleConversion: cde416483dac037923206447da6e1454df403714
   FBLazyVector: 878b59e31113e289e275165efbe4b54fa614d43d
   FBReactNativeSpec: 7da9338acfb98d4ef9e5536805a0704572d33c2f
-  Firebase: 50be68416f50eb4eb2ecb0e78acab9a051ef95df
-  FirebaseAuth: 228dd0faa5b5263eaa8c63518b16faef438289a3
-  FirebaseCore: cf3122185fce1cf71cedbbc498ea84d2b3e7cb69
+  Firebase: 78e8dd2e39d653de6270432ad84fe8b59f7bf4e8
+  FirebaseAuth: f82c2cfcc1c107bb0a97735cdbce4eb2a601f710
+  FirebaseCore: 20046127eef0fcb8fa25df7fc12f7b97d4e48611
   FirebaseCoreDiagnostics: 872cdb9b749b23346dddd5c1014d1babd2257de3
-  FirebaseFirestore: 969dd448250bee681d0e2d0af89cbb76ef955bb0
-  FirebaseStorage: ea52bc7a1cb540406ed1e1acfc2bf3946621ed34
+  FirebaseFirestore: bbf303f0638a93e6ecb38433aad283cebdfece5f
+  FirebaseStorage: 80e2cd5200791540ca544f4dcac5e6b56994fc97
   Flipper: be611d4b742d8c87fbae2ca5f44603a02539e365
   Flipper-DoubleConversion: 38631e41ef4f9b12861c67d17cb5518d06badc41
   Flipper-Folly: e4493b013c02d9347d5e0cb4d128680239f6c78a
@@ -850,11 +875,12 @@ SPEC CHECKSUMS:
   Folly: aeb27d02cdff07ca01f8a8a5a6dd5bcaf6be6f70
   glog: 2ad46e202fbaa5641fceb4b2af37dcd88fd8762d
   GoogleDataTransport: e4085e6762f36a6141738f46b0153473ce57fb18
-  GoogleUtilities: f734da554aade8cc7928a31c2f3311897933a1bd
+  GoogleUtilities: 3dc4ff0d5e4840e2fa8eef0889620e8c33d4218c
   "gRPC-C++": 13d8ccef97d5c3c441b7e3c529ef28ebee86fad2
   gRPC-Core: 4afa11bfbedf7cdecd04de535a9e046893404ed5
   GTMSessionFetcher: b3503b20a988c4e20cc189aa798fd18220133f52
   leveldb-library: 55d93ee664b4007aac644a782d11da33fba316f7
+  libwebp: 946cb3063cea9236285f7e9a8505d806d30e07f3
   nanopb: 1bf24dd71191072e120b83dd02d08f3da0d65e53
   OpenSSL-Universal: ff34003318d5e1163e9529b08470708e389ffcdd
   PromisesObjC: 8c196f5a328c2cba3e74624585467a557dcb482f
@@ -884,14 +910,17 @@ SPEC CHECKSUMS:
   RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
-  RNFBApp: 2810471bdc092151f20f16a9f8915b1ad70325b2
-  RNFBAuth: 005fc073e59f272bac33a5b5a2f9ffd77dbeebc9
-  RNFBFirestore: be5e266c0134a30766bf0568e258e6692c50294a
-  RNFBStorage: cb70b781341ff6d663b99c0b620b0f7333b144b3
+  RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
+  RNFBApp: dd793eec42bce8d09391bd95e42f2ed7511e7fef
+  RNFBAuth: 9960e830b91418c44bdf9b5e5da1deac8fccdb37
+  RNFBFirestore: 965c5847a398d26e56367d3b26c4b8289b88f4f8
+  RNFBStorage: 4a54067b318427ec4741ebca6d9e88b138149202
   RNGestureHandler: 7a5833d0f788dbd107fbb913e09aa0c1ff333c39
   RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
   RNScreens: 2e278a90eb15092ed261d4f2271e3fc9b60d08d4
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
+  SDWebImage: 9169792e9eec3e45bba2a0c02f74bf8bd922d1ee
+  SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
