@@ -6338,6 +6338,11 @@ react-native-color-picker-ios@^0.1.2:
   resolved "https://registry.yarnpkg.com/react-native-color-picker-ios/-/react-native-color-picker-ios-0.1.2.tgz#8e74ea9ea57040744964d66a95216a6bff3ff741"
   integrity sha512-P+GPATGexpqi6nRg48dxggvboYBIdD7bU1qJfftgdF3Ac05OoKBHsnavgHx+LllrxNhsOHf4HlZ2QNzkFCWSeA==
 
+react-native-fast-image@^8.3.4:
+  version "8.3.4"
+  resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.4.tgz#79edca177e30311b19d59ff335625bcbe22650d7"
+  integrity sha512-LpzAdjUphihUpVEBn5fEv5AILe55rHav0YiZroPZ1rumKDhAl4u2cG01ku2Pb7l8sayjTsNu7FuURAlXUUDsow==
+
 react-native-gesture-handler@^1.8.0:
   version "1.8.0"
   resolved "https://registry.yarnpkg.com/react-native-gesture-handler/-/react-native-gesture-handler-1.8.0.tgz#18f61f51da50320f938957b0ee79bc58f47449dc"

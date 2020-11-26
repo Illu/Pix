@@ -22,7 +22,7 @@ const ScrollView = styled.ScrollView`
 const Row = styled.View`
   flex-direction: row;
   justify-content: space-between;
-  margin-top: 10px;
+  margin-bottom: 15px;
 `;
 
 const PublishButton = styled.TouchableOpacity`
@@ -35,14 +35,14 @@ const PublishButton = styled.TouchableOpacity`
 `;
 
 const PublishText = styled.Text`
-  color: ${({ theme }) => theme.secondary};
+  color: ${({ theme }) => theme.text};
   font-size: 14px;
   font-weight: 600;
 `;
 
 const ContentWrapper = styled.View`
   padding: ${SCREEN_PADDING}px;
-  margin-top: 15px;
+  margin-top: 10px;
 `;
 
 const Label = styled.Text`
@@ -54,7 +54,7 @@ const Label = styled.Text`
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({ theme }) => theme.background};
   border: 1px;
   border-color: ${({ theme }) => theme.uiAccent};
   color: ${({ theme }) => theme.text};
@@ -125,13 +125,9 @@ const Publish = ({ route }) => {
 
   const headerRight = (
     <PublishButton disabled={loading} onPress={sendPost}>
-      <PublishText>
-        {loading ? (
-          <ActivityIndicator size="small" color={colors.secondary} />
-        ) : (
-            'Publish'
-          )}
-      </PublishText>
+      {loading ? <ActivityIndicator size="small" color={colors.text} /> : (
+        <PublishText>Publish</PublishText>
+      )}
     </PublishButton>
   );
 
@@ -149,11 +145,6 @@ const Publish = ({ route }) => {
             size={Dimensions.get('window').width}
           />
           <ContentWrapper>
-            <Label>A quick word about your masterpiece? (optional)</Label>
-            <TextInput
-              value={desc}
-              onChangeText={(str) => str.length < 200 && setDesc(str)}
-              multiline />
             <Row>
               <Label style={{ flex: 1 }}>
                 I’m participating in this month challenge (
@@ -166,6 +157,12 @@ const Publish = ({ route }) => {
                 trackColor={{ true: colors.accent }}
               />
             </Row>
+            <Label>A quick word about your masterpiece? (optional)</Label>
+            <TextInput
+              value={desc}
+              onChangeText={(str) => str.length < 200 && setDesc(str)}
+              multiline />
+
           </ContentWrapper>
         </ScrollView>
       </KeyboardAvoidingView>
