@@ -1,5 +1,5 @@
-import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
-import React, { useContext, useState, useEffect } from 'react';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import React, { useContext, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
@@ -12,7 +12,7 @@ import User from '../stores/User';
 import Avatar from '../components/Avatar';
 import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
-import { SORT, STATES } from '../constants';
+import { STATES } from '../constants';
 import styled from 'styled-components/native';
 import Challenge from '../stores/Challenge';
 import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
@@ -29,27 +29,19 @@ const Row = styled.View`
   justify-content: center;
 `;
 
-const Challenges = observer(({ route }) => {
+const Challenges = observer(() => {
   const navigation = useNavigation();
   const { colors } = useTheme();
   const userStore = useContext(User);
   const challengeStore = useContext(Challenge);
-  const [sort, setSort] = useState(SORT.SUBMISSIONS);
 
   const load = () => {
-    challengeStore.loadChallenges(
-      sort === SORT.SUBMISSIONS ? 'timestamp' : 'likesCount',
-      challengeStore.currentChallenge?.id,
-    );
+    challengeStore.loadChallenges();
   };
 
-  const changeSort = (newSort: SORT) => {
-    challengeStore.clearChallenges();
-    setSort(newSort);
-    challengeStore.loadChallenges(
-      newSort === SORT.SUBMISSIONS ? 'timestamp' : 'likesCount',
-      challengeStore.currentChallenge?.id,
-    );
+  const changeSort = (newSort: 'timestamp' | 'likesCount') => {
+    challengeStore.changeSort(newSort);
+    challengeStore.loadChallenges();
   };
 
   useEffect(() => {
@@ -104,14 +96,14 @@ const Challenges = observer(({ route }) => {
       <Row>
         <IconButton
           title="Submissions"
-          onPress={() => changeSort(SORT.SUBMISSIONS)}
-          active={sort === SORT.SUBMISSIONS}
+          onPress={() => changeSort('timestamp')}
+          active={challengeStore.sort === 'timestamp'}
           icon="TrendingUp"
         />
         <IconButton
           title="Hall of fame"
-          onPress={() => changeSort(SORT.HALL_OF_FAME)}
-          active={sort === SORT.HALL_OF_FAME}
+          onPress={() => changeSort('likesCount')}
+          active={challengeStore.sort === 'likesCount'}
           color="yellow"
           icon="Star"
         />
@@ -134,8 +126,7 @@ const Challenges = observer(({ route }) => {
         renderItem={ListItem}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.1}
-        onEndReached={() => challengeStore.loadMore(sort === SORT.SUBMISSIONS ? 'timestamp' : 'likesCount',
-          challengeStore.currentChallenge?.id)}
+        onEndReached={() => challengeStore.loadMore()}
         removeClippedSubviews
         ListEmptyComponent={() => challengeStore.state !== STATES.LOADING && <Empty actionTitle="Add the first entry" />}
       />

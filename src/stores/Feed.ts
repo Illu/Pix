@@ -12,30 +12,31 @@ class Feed {
     makeObservable(this, {
       state: observable,
       feed: observable,
+      sort: observable,
       loadFeed: action,
       loadMore: action,
       likePost: action,
-      clearFeed: action
+      clearFeed: action,
+      changeSort: action
     });
   }
 
   feed = null;
   state = STATES.IDLE;
   lastSnapshot = null;
+  sort: 'timestamp' | 'likesCount' = 'likesCount';
 
-  async loadFeed(
-    order: 'timestamp' | 'likesCount' = 'likesCount',
-  ) {
+  async loadFeed() {
     this.state = STATES.LOADING;
     try {
       const snapshot = await firestore()
         .collection('Posts')
-        .orderBy(order, 'desc')
+        .orderBy(this.sort, 'desc')
         .limit(PAGE_ITEMS)
         .get();
 
       const newFeed = [];
-      snapshot.forEach((doc, i) => {
+      snapshot.forEach((doc) => {
         newFeed.push({ ...doc.data(), id: doc.id });
       });
       this.lastSnapshot = snapshot.docs[snapshot.docs.length - 1];
@@ -51,13 +52,13 @@ class Feed {
     }
   }
 
-  async loadMore(order: 'timestamp' | 'likesCount') {
+  async loadMore() {
     if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()
           .collection('Posts')
-          .orderBy(order, 'desc')
+          .orderBy(this.sort, 'desc')
           .startAfter(this.lastSnapshot)
           .limit(PAGE_ITEMS)
           .get();
@@ -102,6 +103,10 @@ class Feed {
         this.feed.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
+  }
+
+  changeSort(newSort: 'timestamp' | 'likesCount') {
+    this.sort = newSort;
   }
 
   clearFeed() {
