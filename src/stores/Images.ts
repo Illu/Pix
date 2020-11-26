@@ -53,7 +53,9 @@ class Images {
           )}s`,
           url
         }
-        this.avatars[name] = avatarData
+        runInAction(() => {
+          this.avatars[name] = avatarData
+        })
       })
     })
   }

@@ -1,7 +1,7 @@
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import { createContext } from 'react';
 import { Alert } from 'react-native';
-import { MONTHS, STATES } from '../constants';
+import { MONTHS, SORT, STATES } from '../constants';
 import firestore from '@react-native-firebase/firestore';
 import { firebase } from '@react-native-firebase/auth';
 
@@ -13,10 +13,12 @@ class Challenge {
       state: observable,
       currentChallenge: observable,
       challenges: observable,
+      sort: observable,
       likePost: action,
       loadChallenges: action,
       loadCurrentChallenge: action,
       loadMore: action,
+      changeSort: action,
       clearChallenges: action,
     });
   }
@@ -24,6 +26,7 @@ class Challenge {
   challenges = null;
   currentChallenge = null;
   lastSnapshot = null;
+  sort: 'timestamp' | 'likesCount' = 'timestamp';
   state = STATES.IDLE;
 
   async loadCurrentChallenge() {
@@ -41,16 +44,14 @@ class Challenge {
     });
   }
 
-  async loadChallenges(
-    order: 'timestamp' | 'likesCount' = 'likesCount',
-    challengeId,
-  ) {
+  async loadChallenges() {
     this.state = STATES.LOADING;
+    console.log("loading for challenge", this.currentChallenge)
     try {
       const snapshot = await firestore()
         .collection('Posts')
-        .where('tag', '==', challengeId)
-        .orderBy(order, 'desc')
+        .where('tag', '==', this.currentChallenge.id)
+        .orderBy(this.sort, 'desc')
         .limit(PAGE_ITEMS)
         .get();
       const newChallenges = [];
@@ -63,20 +64,21 @@ class Challenge {
         this.challenges = [...newChallenges];
       });
     } catch (err) {
+      console.log("ERr!!", err)
       runInAction(() => {
         this.state = STATES.ERROR;
       });
     }
   }
 
-  async loadMore(order: 'timestamp' | 'likesCount', challengeId) {
+  async loadMore() {
     if (this.state !== STATES.LOADING && this.state !== STATES.LOADING_BACKGROUND && this.lastSnapshot) {
       this.state = STATES.LOADING_BACKGROUND;
       try {
         const snapshot = await firestore()
           .collection('Posts')
-          .where('tag', '==', challengeId)
-          .orderBy(order, 'desc')
+          .where('tag', '==', this.currentChallenge.id)
+          .orderBy(this.sort, 'desc')
           .startAfter(this.lastSnapshot)
           .limit(PAGE_ITEMS)
           .get();
@@ -121,6 +123,10 @@ class Challenge {
         this.challenges.findIndex((i) => i.id === postId)
       ].likesCount = newPostData.data().likesCount;
     });
+  }
+
+  changeSort(newSort: 'timestamp' | 'likesCount') {
+    this.sort = newSort;
   }
 
   clearChallenges() {

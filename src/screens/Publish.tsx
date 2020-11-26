@@ -3,8 +3,7 @@ import {
   Dimensions,
   Switch,
   ActivityIndicator,
-  KeyboardAvoidingView,
-  Alert
+  KeyboardAvoidingView
 } from 'react-native';
 import PixelArt from '../components/PixelArt';
 import styled from 'styled-components/native';
@@ -14,6 +13,7 @@ import firestore from '@react-native-firebase/firestore';
 import User from '../stores/User';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import Challenge from '../stores/Challenge';
+import Feed from '../stores/Feed';
 
 const ScrollView = styled.ScrollView`
   background: ${({ theme }) => theme.secondary};
@@ -68,6 +68,7 @@ const Publish = ({ route }) => {
   const { canvasData, backgroundColor } = route.params;
   const userStore = useContext(User);
   const challengeStore = useContext(Challenge);
+  const feedStore = useContext(Feed);
   const [desc, setDesc] = useState('');
   const [tag, setTag] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -108,14 +109,16 @@ const Publish = ({ route }) => {
       .add(data)
       .then(() => {
         if (tag) {
-          // challengeStore.loadChallenges('timestamp');
-          navigation.navigate('Challenges'); //TODO: switch tab in challenges if needed
+          challengeStore.changeSort('timestamp');
+          challengeStore.loadChallenges();
+          navigation.navigate('Challenges');
           if (!userStore.userData.badges.includes(tag)) {
             userStore.addBadge(tag)
           }
         } else {
-          // feedStore.loadFeed('timestamp');
-          navigation.navigate('Home'); //TODO: switch tab in home if needed
+          feedStore.changeSort('timestamp');
+          feedStore.loadFeed();
+          navigation.navigate('Home');
         }
       })
       .catch((err) => {

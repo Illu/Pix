@@ -8,11 +8,11 @@ export enum STATES {
   ERROR,
 }
 
-export enum SORT {
-  TRENDING,
-  NEW,
-  SUBMISSIONS,
-  HALL_OF_FAME,
+export const SORT = {
+  TRENDING: 'likesCount',
+  NEW: 'timestamp',
+  SUBMISSIONS: 'timestamp',
+  HALL_OF_FAME: 'likesCount',
 }
 
 export enum TOOLS {

@@ -6,7 +6,7 @@ import {
 } from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
-import { SORT, STATES } from '../constants';
+import { STATES } from '../constants';
 import { SCREEN_PADDING } from '../theme';
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
@@ -33,7 +33,6 @@ const Home = observer(() => {
   const userStore = useContext(User);
   const feedStore = useContext(Feed);
   const { colors } = useTheme();
-  const [sort, setSort] = useState(SORT.TRENDING);
 
   useEffect(() => {
     feedStore.loadFeed();
@@ -41,14 +40,13 @@ const Home = observer(() => {
 
   const load = () => {
     if (feedStore.state !== STATES.LOADING) {
-      feedStore.loadFeed(sort === SORT.NEW ? 'timestamp' : 'likesCount');
+      feedStore.loadFeed();
     }
   };
 
-  const changeSort = (newSort: SORT) => {
-    feedStore.clearFeed();
-    setSort(newSort);
-    feedStore.loadFeed(newSort === SORT.NEW ? 'timestamp' : 'likesCount');
+  const changeSort = (newSort: 'timestamp' | 'likesCount') => {
+    feedStore.changeSort(newSort);
+    feedStore.loadFeed();
   };
 
   const UserAvatar = (
@@ -95,14 +93,14 @@ const Home = observer(() => {
       <Row>
         <IconButton
           title="Trending"
-          onPress={() => changeSort(SORT.TRENDING)}
-          active={sort === SORT.TRENDING}
+          onPress={() => changeSort('likesCount')}
+          active={feedStore.sort === 'likesCount'}
           icon="TrendingUp"
         />
         <IconButton
           title="New"
-          onPress={() => changeSort(SORT.NEW)}
-          active={sort === SORT.NEW}
+          onPress={() => changeSort('timestamp')}
+          active={feedStore.sort === 'timestamp'}
           color="yellow"
           icon="Star"
         />
@@ -121,7 +119,7 @@ const Home = observer(() => {
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.1}
         ListEmptyComponent={() => feedStore.state !== STATES.LOADING && <Empty actionTitle="Add the first ever pixel art!" />}
-        onEndReached={() => feedStore.loadMore(sort === SORT.NEW ? 'timestamp' : 'likesCount')}
+        onEndReached={() => feedStore.loadMore()}
         removeClippedSubviews
       />
     </>
