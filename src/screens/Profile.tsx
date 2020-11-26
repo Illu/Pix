@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   Alert,
-  InteractionManager
+  InteractionManager,
 } from 'react-native';
 import Avatar from '../components/Avatar';
 import { SCREEN_PADDING } from '../theme';
@@ -15,13 +15,18 @@ import { useState } from 'react';
 import PixelArt from '../components/PixelArt';
 import { observer } from 'mobx-react-lite';
 import User from '../stores/User';
-import { useFocusEffect, useNavigation, useTheme } from '@react-navigation/native';
+import {
+  useFocusEffect,
+  useNavigation,
+  useTheme,
+} from '@react-navigation/native';
 import Icon from '../components/Icon';
 import Drafts from '../stores/Drafts';
 import Empty from '../components/Empty';
 import { STATES } from '../constants';
 import Button from '../components/Button';
 import Images from '../stores/Images';
+import firestore from '@react-native-firebase/firestore';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -79,7 +84,6 @@ const Profile = observer(() => {
   const [showDrafts, setShowDrafts] = useState(false);
   const [postsDisplayed, setPostDisplayed] = useState(4);
   const userStore = useContext(User);
-  const imagesStore = useContext(Images);
   const draftsStore = useContext(Drafts);
   const navigation = useNavigation();
   const { colors } = useTheme();
@@ -95,7 +99,9 @@ const Profile = observer(() => {
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
-  const displayedData = showDrafts ? draftsStore.drafts : userStore.posts?.slice(0, postsDisplayed);
+  const displayedData = showDrafts
+    ? draftsStore.drafts
+    : userStore.posts?.slice(0, postsDisplayed);
 
   const openArt = (index: number, post?: any) => {
     if (showDrafts) {
@@ -105,7 +111,23 @@ const Profile = observer(() => {
       });
       draftsStore.removeDraft(index);
     } else {
-      Alert.alert("Infos", `This post has ${post?.likesCount || 0} likes and ${post?.reports || 0} reports`)
+      Alert.alert(
+        'Infos',
+        `This post has ${post?.likesCount || 0} likes and ${post?.reports || 0
+        } reports`,
+        [{
+          text: 'Delete this post', style: 'destructive', onPress: () => {
+            firestore()
+              .collection('Posts')
+              .doc(post.id)
+              .delete()
+              .then(() => {
+                userStore.loadPosts();
+                Alert.alert('💥', 'Removed post')
+              });
+          }
+        }, { text: 'Cancel', style: 'cancel' }]
+      );
     }
   };
 
@@ -121,7 +143,12 @@ const Profile = observer(() => {
               {userStore.posts?.length === 1 ? '' : 's'}
             </PostsInfos>
             <BadgesRow>
-              {userStore.userData?.badges?.map(badge => <Avatar key={badge} cloudRef={`badges/${badge.toLowerCase()}.png`} />)}
+              {userStore.userData?.badges?.map((badge) => (
+                <Avatar
+                  key={badge}
+                  cloudRef={`badges/${badge.toLowerCase()}.png`}
+                />
+              ))}
             </BadgesRow>
           </InfosWrapper>
           <EditButton onPress={() => navigation.navigate('EditProfile')}>
@@ -162,12 +189,17 @@ const Profile = observer(() => {
             </TouchableOpacity>
           ))}
           {!displayedData || (displayedData.length === 0 && <Empty />)}
-          {!showDrafts && displayedData && postsDisplayed < userStore.posts.length && (
-            <ButtonsRow style={{ marginTop: 15 }}>
-              <Button fill title="Show more" onPress={() => setPostDisplayed(postsDisplayed + 4)} />
-            </ButtonsRow>
-          )}
-
+          {!showDrafts &&
+            displayedData &&
+            postsDisplayed < userStore.posts.length && (
+              <ButtonsRow style={{ marginTop: 15 }}>
+                <Button
+                  fill
+                  title="Show more"
+                  onPress={() => setPostDisplayed(postsDisplayed + 4)}
+                />
+              </ButtonsRow>
+            )}
         </PostWrapper>
       </ScrollView>
     </>

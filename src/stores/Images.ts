@@ -1,17 +1,16 @@
-import { makeObservable, observable, action, runInAction } from 'mobx';
-import { createContext } from 'react';
-import { STATES } from '../constants';
+import {makeObservable, observable, action, runInAction} from 'mobx';
+import {createContext} from 'react';
+import {STATES} from '../constants';
 import firestore from '@react-native-firebase/firestore';
 import storage from '@react-native-firebase/storage';
-import { listFilesAndDirectories } from '../helpers';
-
+import {listFilesAndDirectories} from '../helpers';
 
 class Images {
   constructor() {
     makeObservable(this, {
       state: observable,
       avatars: observable,
-      loadAvatarsURLs: action
+      loadAvatarsURLs: action,
     });
   }
 
@@ -21,11 +20,11 @@ class Images {
   avatarPaths = [];
 
   listFilesAndDirectories(reference, pageToken?) {
-    return reference.list({ pageToken }).then(result => {
-      result.items.forEach(ref => {
+    return reference.list({pageToken}).then((result) => {
+      result.items.forEach((ref) => {
         // Only store avatar paths (needed for profile edition)
         if (ref.fullPath.includes('avatars')) {
-          this.avatarPaths.push(ref.fullPath)
+          this.avatarPaths.push(ref.fullPath);
         }
       });
       if (result.nextPageToken) {
@@ -40,24 +39,24 @@ class Images {
     this.listFilesAndDirectories(reference).then(() => {
       this.avatarPaths.forEach(async (avatarPath) => {
         const name = avatarPath.substring(
-          avatarPath.lastIndexOf("/") + 1,
-          avatarPath.lastIndexOf(".")
+          avatarPath.lastIndexOf('/') + 1,
+          avatarPath.lastIndexOf('.'),
         );
-        const url = await storage().ref(avatarPath).getDownloadURL()
+        const url = await storage().ref(avatarPath).getDownloadURL();
 
         const avatarData = {
           cloudPath: avatarPath,
           category: `${avatarPath.substring(
-            avatarPath.lastIndexOf("/") + 1,
-            avatarPath.lastIndexOf("-")
+            avatarPath.lastIndexOf('/') + 1,
+            avatarPath.lastIndexOf('-'),
           )}s`,
-          url
-        }
+          url,
+        };
         runInAction(() => {
-          this.avatars[name] = avatarData
-        })
-      })
-    })
+          this.avatars[name] = avatarData;
+        });
+      });
+    });
   }
 }
 

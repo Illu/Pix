@@ -1,4 +1,4 @@
-import { Dimensions } from 'react-native';
+import {Dimensions} from 'react-native';
 
 export enum STATES {
   IDLE,
@@ -13,7 +13,7 @@ export const SORT = {
   NEW: 'timestamp',
   SUBMISSIONS: 'timestamp',
   HALL_OF_FAME: 'likesCount',
-}
+};
 
 export enum TOOLS {
   PENCIL,

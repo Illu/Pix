@@ -1,9 +1,9 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import styled from 'styled-components/native';
 import storage from '@react-native-firebase/storage';
 import Images from '../stores/Images';
-import { observer } from 'mobx-react-lite';
-import FastImage from 'react-native-fast-image'
+import {observer} from 'mobx-react-lite';
+import FastImage from 'react-native-fast-image';
 
 export const AVATARS = {
   'animal-1': {
@@ -75,66 +75,66 @@ export const AVATARS = {
     backgroundColor: '#FFFDE6',
   },
   //BADGES
-  'Jan': {
+  Jan: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Feb': {
+  Feb: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Mar': {
+  Mar: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Apr': {
+  Apr: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'May': {
+  May: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Jun': {
+  Jun: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Jul': {
+  Jul: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Aug': {
+  Aug: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Sep': {
+  Sep: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Oct': {
+  Oct: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Nov': {
+  Nov: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
-  'Dec': {
+  Dec: {
     image: require('../../assets/images/badges/jan.png'),
-    backgroundColor: "#EBFBF4",
+    backgroundColor: '#EBFBF4',
   },
 };
 
 const Wrapper = styled.View`
-  width: ${({ size }) => size}px;
-  height: ${({ size }) => size}px;
-  border-radius: ${({ size }) => size / 2}px;
+  width: ${({size}) => size}px;
+  height: ${({size}) => size}px;
+  border-radius: ${({size}) => size / 2}px;
   overflow: hidden;
   align-items: center;
   justify-content: center;
-  background: #FFFFFF;
-  border-color: ${({ theme }) => theme.text};
-  border-width: ${({ border }) => (border ? 1 : 0)}px;
+  background: #ffffff;
+  border-color: ${({theme}) => theme.text};
+  border-width: ${({border}) => (border ? 1 : 0)}px;
 `;
 
 const Image = styled(FastImage)`
@@ -149,27 +149,31 @@ interface Props {
   cloudRef?: any;
 }
 
-const Avatar = observer(({ size = 32, withBorder = false, name = 'cat-1', cloudRef }: Props) => {
+const Avatar = observer(
+  ({size = 32, withBorder = false, name = 'cat-1', cloudRef}: Props) => {
+    const [uri, setUri] = useState(null);
 
-  const [uri, setUri] = useState(null)
+    const imagesStore = useContext(Images);
 
-  const imagesStore = useContext(Images)
+    useEffect(() => {
+      if (cloudRef) {
+        storage()
+          .ref(cloudRef)
+          .getDownloadURL()
+          .then((url) => setUri(url));
+      }
+    }, []);
 
-  useEffect(() => {
-    if (cloudRef) {
-      storage().ref(cloudRef).getDownloadURL().then(url => setUri(url));
-    }
-  }, [])
+    const source = cloudRef
+      ? uri
+      : {uri: imagesStore?.avatars[name]?.url || null};
 
-  const source = cloudRef ? uri : { uri: imagesStore?.avatars[name]?.url || null };
-
-  return (
-    <Wrapper
-      size={size}
-      border={withBorder}>
-      <Image source={source} />
-    </Wrapper>
-  )
-});
+    return (
+      <Wrapper size={size} border={withBorder}>
+        <Image source={source} />
+      </Wrapper>
+    );
+  },
+);
 
 export default Avatar;

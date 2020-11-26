@@ -1,28 +1,24 @@
-import React, { useEffect, useState } from 'react';
-import {
-  RefreshControl,
-  TouchableOpacity,
-  FlatList,
-} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {RefreshControl, TouchableOpacity, FlatList} from 'react-native';
 import CustomHeader from '../components/CustomHeader';
 import FeedCard from '../components/FeedCard';
-import { STATES } from '../constants';
-import { SCREEN_PADDING } from '../theme';
+import {STATES} from '../constants';
+import {SCREEN_PADDING} from '../theme';
 import styled from 'styled-components/native';
 import IconButton from '../components/IconButton';
 import Avatar from '../components/Avatar';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import { useNavigation, useTheme } from '@react-navigation/native';
-import { useContext } from 'react';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import {useContext} from 'react';
 import User from '../stores/User';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 import Feed from '../stores/Feed';
 import Icon from '../components/Icon';
 import Empty from '../components/Empty';
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -32,7 +28,7 @@ const Home = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
   const feedStore = useContext(Feed);
-  const { colors } = useTheme();
+  const {colors} = useTheme();
 
   useEffect(() => {
     feedStore.loadFeed();
@@ -61,7 +57,7 @@ const Home = observer(() => {
     </Pressable>
   );
 
-  const ListItem = ({ item }) => (
+  const ListItem = ({item}) => (
     <FeedCard
       data={item.data.pixels}
       backgroundColor={item.data.backgroundColor}
@@ -106,7 +102,7 @@ const Home = observer(() => {
         />
       </Row>
       <FlatList
-        contentContainerStyle={{ padding: SCREEN_PADDING }}
+        contentContainerStyle={{padding: SCREEN_PADDING}}
         refreshControl={
           <RefreshControl
             refreshing={feedStore.state === STATES.LOADING}
@@ -118,7 +114,11 @@ const Home = observer(() => {
         renderItem={ListItem}
         keyExtractor={(item) => item.id}
         onEndReachedThreshold={0.1}
-        ListEmptyComponent={() => feedStore.state !== STATES.LOADING && <Empty actionTitle="Add the first ever pixel art!" />}
+        ListEmptyComponent={() =>
+          feedStore.state !== STATES.LOADING && (
+            <Empty actionTitle="Add the first ever pixel art!" />
+          )
+        }
         onEndReached={() => feedStore.loadMore()}
         removeClippedSubviews
       />

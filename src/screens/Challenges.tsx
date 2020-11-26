@@ -1,5 +1,5 @@
-import { useNavigation, useTheme } from '@react-navigation/native';
-import React, { useContext, useEffect } from 'react';
+import {useNavigation, useTheme} from '@react-navigation/native';
+import React, {useContext, useEffect} from 'react';
 import {
   View,
   TouchableOpacity,
@@ -12,18 +12,18 @@ import User from '../stores/User';
 import Avatar from '../components/Avatar';
 import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
-import { STATES } from '../constants';
+import {STATES} from '../constants';
 import styled from 'styled-components/native';
 import Challenge from '../stores/Challenge';
 import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
-import { SCREEN_PADDING } from '../theme';
+import {SCREEN_PADDING} from '../theme';
 import FeedCard from '../components/FeedCard';
 import Empty from '../components/Empty';
-import { observer } from 'mobx-react-lite';
+import {observer} from 'mobx-react-lite';
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({ theme }) => theme.secondary};
+  background: ${({theme}) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -31,7 +31,7 @@ const Row = styled.View`
 
 const Challenges = observer(() => {
   const navigation = useNavigation();
-  const { colors } = useTheme();
+  const {colors} = useTheme();
   const userStore = useContext(User);
   const challengeStore = useContext(Challenge);
 
@@ -60,7 +60,7 @@ const Challenges = observer(() => {
     </Pressable>
   );
 
-  const ListItem = ({ item }) => (
+  const ListItem = ({item}) => (
     <FeedCard
       id={item.id}
       data={item.data.pixels}
@@ -88,7 +88,7 @@ const Challenges = observer(() => {
   );
 
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{flex: 1}}>
       <CustomHeader
         title="Pix - Challenges"
         rightComponent={userStore.user ? UserAvatar : OptionsLink}
@@ -109,7 +109,7 @@ const Challenges = observer(() => {
         />
       </Row>
       <FlatList
-        contentContainerStyle={{ padding: SCREEN_PADDING }}
+        contentContainerStyle={{padding: SCREEN_PADDING}}
         refreshControl={
           <RefreshControl
             refreshing={challengeStore.state === STATES.LOADING}
@@ -128,7 +128,11 @@ const Challenges = observer(() => {
         onEndReachedThreshold={0.1}
         onEndReached={() => challengeStore.loadMore()}
         removeClippedSubviews
-        ListEmptyComponent={() => challengeStore.state !== STATES.LOADING && <Empty actionTitle="Add the first entry" />}
+        ListEmptyComponent={() =>
+          challengeStore.state !== STATES.LOADING && (
+            <Empty actionTitle="Add the first entry" />
+          )
+        }
       />
     </View>
   );
