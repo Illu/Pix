@@ -1,9 +1,10 @@
-import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
-import User from '../../stores/User';
-import { Alert, View } from 'react-native';
 import firestore from '@react-native-firebase/firestore';
+import React, { useContext, useEffect } from 'react';
+import { Alert, View } from 'react-native';
+import styled from 'styled-components/native';
+
 import { version } from '../../../package.json';
+import User from '../../stores/User';
 
 const Wrapper = styled.ScrollView`
   padding: 10px 16px;
@@ -55,7 +56,7 @@ const AppIcon = styled.Image`
   margin-right: 10px;
 `;
 
-const AppIconImage = require("../../../assets/images/logo_black.png");
+const AppIconImage = require('../../../assets/images/logo_black.png');
 
 const About = () => {
   const userStore = useContext(User);
@@ -68,14 +69,14 @@ const About = () => {
         .then((data) => {
           if (
             data.docs.findIndex(
-              (user) => user.data().id === userStore.user.uid,
+              (user) => user.data().id === userStore.user.uid
             ) >= 0
           ) {
             userStore.promote();
             Alert.alert(
               'The maker!',
               'You are now signed in as an admin, granting you total power on every post in the App.',
-              [{ text: 'Cool!' }],
+              [{ text: 'Cool!' }]
             );
           }
         });
