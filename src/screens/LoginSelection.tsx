@@ -1,18 +1,20 @@
-import {useNavigation} from '@react-navigation/native';
-import React from 'react';
-import styled from 'styled-components/native';
-import Button from '../components/Button';
-import {Platform} from 'react-native';
-import {BUTTON_WIDTH} from '../constants';
-import {AppleButton} from '@invertase/react-native-apple-authentication';
+import { AppleButton } from '@invertase/react-native-apple-authentication';
+import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
-import {appleAuth} from '@invertase/react-native-apple-authentication';
+import { useNavigation } from '@react-navigation/native';
+import React, { useContext } from 'react';
+import { Alert, Platform } from 'react-native';
+import styled from 'styled-components/native';
+
+import Button from '../components/Button';
+import { BUTTON_WIDTH } from '../constants';
+import User from '../stores/User';
 
 const Wrapper = styled.View`
   align-items: center;
   justify-content: center;
   flex: 1;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const IntroText = styled.Text`
@@ -22,7 +24,7 @@ const IntroText = styled.Text`
   font-size: 15px;
   line-height: 20px;
   margin-bottom: 40px;
-  color: ${({theme}) => theme.secondaryText};
+  color: ${({ theme }) => theme.secondaryText};
 `;
 
 const Image = styled.Image``;
@@ -31,17 +33,19 @@ const Title = styled.Text`
   margin: 30px 0 15px 0;
   font-size: 32px;
   font-weight: 600;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const Koala = require('../../assets/images/koala.png');
 
 const LoginSelection = () => {
+  const userStore = useContext(User);
+
   const onAppleButtonPress = async () => {
     // Start the sign-in request
     const appleAuthRequestResponse = await appleAuth.performRequest({
       requestedOperation: appleAuth.Operation.LOGIN,
-      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME],
+      requestedScopes: [appleAuth.Scope.EMAIL, appleAuth.Scope.FULL_NAME]
     });
 
     // Ensure Apple returned a user identityToken
@@ -50,14 +54,19 @@ const LoginSelection = () => {
     }
 
     // Create a Firebase credential from the response
-    const {identityToken, nonce} = appleAuthRequestResponse;
+    const { identityToken, nonce } = appleAuthRequestResponse;
     const appleCredential = auth.AppleAuthProvider.credential(
       identityToken,
-      nonce,
+      nonce
     );
 
     // Sign the user in with the credential
-    return auth().signInWithCredential(appleCredential);
+    const { fullName } = auth().signInWithCredential(appleCredential);
+    const update = {
+      displayName: fullName || 'Unknown Artist',
+      badges: []
+    };
+    return auth().currentUser.updateProfile(update);
   };
 
   const navigation = useNavigation();
@@ -72,7 +81,7 @@ const LoginSelection = () => {
       <Button
         onPress={() => navigation.navigate('AccountCreation')}
         title="Create an account"
-        style={{marginBottom: 10}}
+        style={{ marginBottom: 10 }}
       />
       <Button
         onPress={() => navigation.navigate('Login')}
@@ -86,10 +95,12 @@ const LoginSelection = () => {
           style={{
             marginTop: 10,
             width: BUTTON_WIDTH,
-            height: 45,
+            height: 45
           }}
           onPress={() =>
-            onAppleButtonPress().then(() => alert('Apple sign-in complete!'))
+            onAppleButtonPress().then(({ fullName }) => {
+              alert('account created with name ' + fullName);
+            })
           }
         />
       )}
