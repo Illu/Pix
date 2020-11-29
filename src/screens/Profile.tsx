@@ -1,32 +1,27 @@
+import firestore from '@react-native-firebase/firestore';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
 import React, { useContext, useEffect } from 'react';
-import styled from 'styled-components';
+import { useState } from 'react';
 import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Alert,
-  InteractionManager,
+  Alert
 } from 'react-native';
+import styled from 'styled-components/native';
+
 import Avatar from '../components/Avatar';
-import { SCREEN_PADDING } from '../theme';
-import IconButton from '../components/IconButton';
-import { useState } from 'react';
-import PixelArt from '../components/PixelArt';
-import { observer } from 'mobx-react-lite';
-import User from '../stores/User';
-import {
-  useFocusEffect,
-  useNavigation,
-  useTheme,
-} from '@react-navigation/native';
-import Icon from '../components/Icon';
-import Drafts from '../stores/Drafts';
-import Empty from '../components/Empty';
-import { STATES } from '../constants';
 import Button from '../components/Button';
-import Images from '../stores/Images';
-import firestore from '@react-native-firebase/firestore';
+import Empty from '../components/Empty';
+import Icon from '../components/Icon';
+import IconButton from '../components/IconButton';
+import PixelArt from '../components/PixelArt';
+import { STATES } from '../constants';
+import Drafts from '../stores/Drafts';
+import User from '../stores/User';
+import { SCREEN_PADDING } from '../theme';
 
 const HeaderWrapper = styled.View`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
@@ -107,26 +102,32 @@ const Profile = observer(() => {
     if (showDrafts) {
       navigation.navigate('EditorModal', {
         screen: 'Edit',
-        params: { data: draftsStore.drafts[index] },
+        params: { data: draftsStore.drafts[index] }
       });
       draftsStore.removeDraft(index);
     } else {
       Alert.alert(
         'Infos',
-        `This post has ${post?.likesCount || 0} likes and ${post?.reports || 0
+        `This post has ${post?.likesCount || 0} likes and ${
+          post?.reports || 0
         } reports`,
-        [{
-          text: 'Delete this post', style: 'destructive', onPress: () => {
-            firestore()
-              .collection('Posts')
-              .doc(post.id)
-              .delete()
-              .then(() => {
-                userStore.loadPosts();
-                Alert.alert('💥', 'Removed post')
-              });
-          }
-        }, { text: 'Cancel', style: 'cancel' }]
+        [
+          {
+            text: 'Delete this post',
+            style: 'destructive',
+            onPress: () => {
+              firestore()
+                .collection('Posts')
+                .doc(post.id)
+                .delete()
+                .then(() => {
+                  userStore.loadPosts();
+                  Alert.alert('💥', 'Removed post');
+                });
+            }
+          },
+          { text: 'Cancel', style: 'cancel' }
+        ]
       );
     }
   };

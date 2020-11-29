@@ -1,10 +1,11 @@
+import auth from '@react-native-firebase/auth';
+import { firebase } from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { makeObservable, observable, action, runInAction } from 'mobx';
 import { createContext } from 'react';
-import auth from '@react-native-firebase/auth';
-import { STATES } from '../constants';
 import { Alert } from 'react-native';
-import firestore from '@react-native-firebase/firestore';
-import { firebase } from '@react-native-firebase/auth';
+
+import { STATES } from '../constants';
 
 class User {
   constructor() {
@@ -19,7 +20,7 @@ class User {
       onAuthStateChanged: action,
       loadPosts: action,
       promote: action,
-      addBadge: action,
+      addBadge: action
     });
   }
 
@@ -74,13 +75,13 @@ class User {
       const badgesRef = firestore().collection('Users').doc(this.user.uid);
       badgesRef
         .update({
-          badges: firebase.firestore.FieldValue.arrayUnion(badge),
+          badges: firebase.firestore.FieldValue.arrayUnion(badge)
         })
         .then(() =>
           Alert.alert(
             'Contrats! 🎉',
-            'You’ve earned a brand new badge for your participation in this month challenge!',
-          ),
+            'You’ve earned a brand new badge for your participation in this month challenge!'
+          )
         );
       this.userData.badges.push(badge);
     }

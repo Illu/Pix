@@ -1,29 +1,30 @@
-import {useNavigation, useTheme} from '@react-navigation/native';
-import React, {useContext, useEffect} from 'react';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect } from 'react';
 import {
   View,
   TouchableOpacity,
   Pressable,
   RefreshControl,
-  FlatList,
+  FlatList
 } from 'react-native';
-import CustomHeader from '../components/CustomHeader';
-import User from '../stores/User';
+import styled from 'styled-components/native';
+
 import Avatar from '../components/Avatar';
+import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
+import CustomHeader from '../components/CustomHeader';
+import Empty from '../components/Empty';
+import FeedCard from '../components/FeedCard';
 import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
-import {STATES} from '../constants';
-import styled from 'styled-components/native';
+import { STATES } from '../constants';
 import Challenge from '../stores/Challenge';
-import CurrentChallengeCard from '../components/challenge/CurrentChallengeCard';
-import {SCREEN_PADDING} from '../theme';
-import FeedCard from '../components/FeedCard';
-import Empty from '../components/Empty';
-import {observer} from 'mobx-react-lite';
+import User from '../stores/User';
+import { SCREEN_PADDING } from '../theme';
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -31,7 +32,7 @@ const Row = styled.View`
 
 const Challenges = observer(() => {
   const navigation = useNavigation();
-  const {colors} = useTheme();
+  const { colors } = useTheme();
   const userStore = useContext(User);
   const challengeStore = useContext(Challenge);
 
@@ -60,7 +61,7 @@ const Challenges = observer(() => {
     </Pressable>
   );
 
-  const ListItem = ({item}) => (
+  const ListItem = ({ item }) => (
     <FeedCard
       id={item.id}
       data={item.data.pixels}
@@ -72,7 +73,7 @@ const Challenges = observer(() => {
           challengeStore.likePost(
             item.id,
             userStore.user.uid,
-            item.likes || [],
+            item.likes || []
           );
         } else {
           navigation.navigate('EditorModal');
@@ -88,7 +89,7 @@ const Challenges = observer(() => {
   );
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <CustomHeader
         title="Pix - Challenges"
         rightComponent={userStore.user ? UserAvatar : OptionsLink}
@@ -109,7 +110,7 @@ const Challenges = observer(() => {
         />
       </Row>
       <FlatList
-        contentContainerStyle={{padding: SCREEN_PADDING}}
+        contentContainerStyle={{ padding: SCREEN_PADDING }}
         refreshControl={
           <RefreshControl
             refreshing={challengeStore.state === STATES.LOADING}
