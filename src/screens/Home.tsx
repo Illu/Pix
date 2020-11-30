@@ -1,24 +1,27 @@
-import React, {useEffect, useState} from 'react';
-import {RefreshControl, TouchableOpacity, FlatList} from 'react-native';
-import CustomHeader from '../components/CustomHeader';
-import FeedCard from '../components/FeedCard';
-import {STATES} from '../constants';
-import {SCREEN_PADDING} from '../theme';
-import styled from 'styled-components/native';
-import IconButton from '../components/IconButton';
-import Avatar from '../components/Avatar';
+import { useNavigation, useTheme } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useEffect, useState } from 'react';
+import { useContext } from 'react';
+import { RefreshControl, TouchableOpacity, FlatList } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
-import {useNavigation, useTheme} from '@react-navigation/native';
-import {useContext} from 'react';
-import User from '../stores/User';
-import {observer} from 'mobx-react-lite';
-import Feed from '../stores/Feed';
-import Icon from '../components/Icon';
+import styled from 'styled-components/native';
+
+import Avatar from '../components/Avatar';
+import CustomHeader from '../components/CustomHeader';
 import Empty from '../components/Empty';
+import FeedCard from '../components/FeedCard';
+import Icon from '../components/Icon';
+import IconButton from '../components/IconButton';
+import { STATES } from '../constants';
+import Feed from '../stores/Feed';
+import User from '../stores/User';
+import {SCREEN_PADDING} from '../theme';
+
+
 
 const Row = styled.View`
   flex-direction: row;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   height: 50px;
   align-items: center;
   justify-content: center;
@@ -28,7 +31,7 @@ const Home = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
   const feedStore = useContext(Feed);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   useEffect(() => {
     feedStore.loadFeed();
@@ -57,11 +60,11 @@ const Home = observer(() => {
     </Pressable>
   );
 
-  const ListItem = ({item}) => (
+  const ListItem = ({ item }) => (
     <FeedCard
       data={item.data.pixels}
       backgroundColor={item.data.backgroundColor}
-      userName={item.user.displayName}
+      userName={item.user?.displayName || 'Unknown'}
       likesCount={item.likesCount}
       id={item.id}
       onLike={() => {
@@ -71,7 +74,7 @@ const Home = observer(() => {
           navigation.navigate('EditorModal');
         }
       }}
-      avatar={item.user.avatar}
+      avatar={item.user?.avatar || 'cat-1'}
       liked={userStore.user && item.likes.includes(userStore.user.uid)}
       onReport={() => feedStore.reportPost(item.id)}
       reports={item.reports}
@@ -102,7 +105,7 @@ const Home = observer(() => {
         />
       </Row>
       <FlatList
-        contentContainerStyle={{padding: SCREEN_PADDING}}
+        contentContainerStyle={{ padding: SCREEN_PADDING }}
         refreshControl={
           <RefreshControl
             refreshing={feedStore.state === STATES.LOADING}

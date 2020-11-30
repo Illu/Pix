@@ -66,7 +66,7 @@ const Challenges = observer(() => {
       id={item.id}
       data={item.data.pixels}
       backgroundColor={item.data.backgroundColor}
-      userName={item.user.displayName}
+      userName={item.user?.displayName || 'Unknown'}
       likesCount={item.likesCount}
       onLike={() => {
         if (userStore.user?.uid) {
@@ -82,7 +82,7 @@ const Challenges = observer(() => {
       liked={userStore.user && item.likes.includes(userStore.user.uid)}
       onReport={() => challengeStore.reportPost(item.id)}
       reports={item.reports}
-      avatar={item.user.avatar}
+      avatar={item.user?.avatar || 'cat-1'}
       desc={item.desc}
       userRef={item.userRef}
     />
