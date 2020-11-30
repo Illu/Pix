@@ -1,11 +1,12 @@
-import React, { useContext } from 'react';
-import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
-import ActionMenu from '../components/ActionMenu';
-import { Alert, Linking } from 'react-native';
-import User from '../stores/User';
 import { observer } from 'mobx-react';
+import React, { useContext } from 'react';
+import { Alert, Linking } from 'react-native';
+import styled from 'styled-components';
+
+import ActionMenu from '../components/ActionMenu';
+import User from '../stores/User';
 
 const Wrapper = styled.ScrollView``;
 
@@ -23,7 +24,7 @@ const Settings = observer(() => {
         thumbIcon: 'Palette',
         thumbColor: '#ED6A5A',
         icon: 'ChevronRight',
-        action: () => navigation.navigate('Appearance'),
+        action: () => navigation.navigate('Appearance')
       },
       {
         title: 'Account',
@@ -31,7 +32,7 @@ const Settings = observer(() => {
         thumbIcon: 'Account',
         thumbColor: '#4DB3FF',
         disabled: !userStore.user,
-        action: () => navigation.navigate('EditProfile'),
+        action: () => navigation.navigate('EditProfile')
       },
       {
         title: !userStore.user ? 'Log in / Sign up' : 'Log me out',
@@ -40,8 +41,8 @@ const Settings = observer(() => {
         thumbColor: '#35CE8D',
         action: !userStore.user
           ? () => navigation.navigate('EditorModal')
-          : logout,
-      },
+          : logout
+      }
     ],
     [
       {
@@ -49,14 +50,14 @@ const Settings = observer(() => {
         icon: 'ChevronRight',
         thumbIcon: 'Infos',
         thumbColor: '#35CE8D',
-        action: () => navigation.navigate('About'),
+        action: () => navigation.navigate('About')
       },
       {
         title: 'Rate the App',
         icon: 'Twitter',
         thumbIcon: 'Star',
         thumbColor: '#4DB3FF',
-        action: () => { },
+        action: () => {}
       },
       {
         title: 'Contact me',
@@ -73,38 +74,38 @@ const Settings = observer(() => {
                 onPress: () => {
                   Linking.openURL('https://twitter.com/MaximeNory');
                 },
-                style: 'default',
+                style: 'default'
               },
               {
                 text: 'Send me an email',
-                onPress: () => { },
-                style: 'default',
+                onPress: () => {},
+                style: 'default'
               },
               {
                 text: 'Cancel',
-                style: 'cancel',
-              },
-            ],
+                style: 'cancel'
+              }
+            ]
           );
-        },
+        }
       },
       {
         title: 'Leave a tip',
         icon: 'Twitter',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => { },
-      },
+        action: () => {}
+      }
     ],
     [
       {
         title: 'Licenses',
         icon: 'ChevronRight',
-        thumbIcon: 'Bucket',
+        thumbIcon: 'Book',
         thumbColor: '#35CE8D',
-        action: () => navigation.navigate('Licenses'),
-      },
-    ],
+        action: () => navigation.navigate('Licenses')
+      }
+    ]
   ];
 
   return (
