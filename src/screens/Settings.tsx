@@ -1,8 +1,9 @@
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useContext } from 'react';
-import { Alert, Linking } from 'react-native';
+import React, { useContext, useEffect } from 'react';
+import { Alert, Linking, Platform } from 'react-native';
+import * as RNIap from 'react-native-iap';
 import styled from 'styled-components';
 
 import ActionMenu from '../components/ActionMenu';
@@ -94,7 +95,7 @@ const Settings = observer(() => {
         icon: 'Twitter',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => {}
+        action: () => navigation.navigate('Tips')
       }
     ],
     [
@@ -107,6 +108,22 @@ const Settings = observer(() => {
       }
     ]
   ];
+
+  const getProducts = async (itemSkus?: string[]) => {
+    if (itemSkus) {
+      try {
+        const test = await RNIap.getProducts(itemSkus);
+        alert(JSON.stringify(test));
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
+
+  useEffect(() => {
+    const itemSkus = ['com.maximenory.pix'];
+    getProducts(itemSkus);
+  }, []);
 
   return (
     <Wrapper>

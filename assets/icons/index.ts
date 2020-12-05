@@ -27,3 +27,6 @@ export { default as Dots } from './dots.svg';
 export { default as Circle } from './circle.svg';
 export { default as CheckCircle } from './checkcircle.svg';
 export { default as Book } from './book.svg';
+export { default as Coffee } from './coffee.svg';
+export { default as Gift } from './gift.svg';
+export { default as Smile } from './smile.svg';
