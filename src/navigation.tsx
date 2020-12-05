@@ -1,24 +1,26 @@
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
 import { Button, TouchableOpacity } from 'react-native';
-import Home from './screens/Home';
-import Challenges from './screens/Challenges';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { createNativeStackNavigator } from 'react-native-screens/native-stack';
+
+import Icon from './components/Icon';
 import Tabbar from './components/Tabbar';
+import AccountCreation from './screens/AccountCreation';
+import AccountPasswordCreation from './screens/AccountPasswordCreation';
+import Challenges from './screens/Challenges';
 import Editor from './screens/Editor';
-import Publish from './screens/Publish';
-import Settings from './screens/Settings';
+import Home from './screens/Home';
 import Login from './screens/Login';
 import LoginSelection from './screens/LoginSelection';
 import Profile from './screens/Profile';
-import AccountCreation from './screens/AccountCreation';
-import AccountPasswordCreation from './screens/AccountPasswordCreation';
-import EditProfile from './screens/settings/EditProfile';
-import Icon from './components/Icon';
-import { useTheme } from '@react-navigation/native';
+import Publish from './screens/Publish';
+import Settings from './screens/Settings';
 import About from './screens/settings/About';
 import Appearance from './screens/settings/Appearance';
+import EditProfile from './screens/settings/EditProfile';
 import Licenses from './screens/settings/Licenses';
+import Tips from './screens/settings/Tips';
 
 export const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -45,7 +47,7 @@ const HomeStack = () => {
             <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
               <Icon name="Settings" size={25} color={colors.text} />
             </TouchableOpacity>
-          ),
+          )
         })}
       />
       <HomeNav.Screen
@@ -56,6 +58,11 @@ const HomeStack = () => {
       <HomeNav.Screen name="Settings" component={Settings} />
       <HomeNav.Screen name="About" component={About} />
       <HomeNav.Screen name="Licenses" component={Licenses} />
+      <HomeNav.Screen
+        name="Tips"
+        component={Tips}
+        options={{ headerTitle: 'Tip Jar' }}
+      />
       <HomeNav.Screen
         name="Appearance"
         component={Appearance}
@@ -91,7 +98,7 @@ export const LoginStack = () => (
       component={LoginSelection}
       options={({ navigation, route }) => ({
         headerLeft: () => <Button onPress={navigation.goBack} title="Close" />,
-        headerTitle: 'Login',
+        headerTitle: 'Login'
       })}
     />
     <LoginNav.Screen
