@@ -1,31 +1,31 @@
-import {useTheme} from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React from 'react';
-import {ActivityIndicator} from 'react-native';
-import {ViewStyleProp} from 'react-native/Libraries/StyleSheet/StyleSheet';
+import { ActivityIndicator, ViewStyle } from 'react-native';
 import styled from 'styled-components/native';
-import {BUTTON_WIDTH} from '../constants';
 
-const Wrapper = styled.TouchableOpacity`
+import { BUTTON_WIDTH } from '../constants';
+
+const Wrapper = styled.TouchableOpacity<{ fill: boolean }>`
   width: ${BUTTON_WIDTH}px;
   padding: 10px;
-  background: ${({theme, fill}) => (fill ? theme.accent : 'transparent')};
+  background: ${({ theme, fill }) => (fill ? theme.accent : 'transparent')};
   border-radius: 4px;
   align-items: center;
-  border-width: ${({fill}) => (fill ? 0 : 1)}px;
-  border-color: ${({theme}) => theme.secondaryText};
-  opacity: ${({disabled}) => (disabled ? 0.5 : 1)};
+  border-width: ${({ fill }) => (fill ? 0 : 1)}px;
+  border-color: ${({ theme }) => theme.secondaryText};
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
 `;
 
-const Title = styled.Text`
+const Title = styled.Text<{ fill: boolean }>`
   font-weight: 600;
-  color: ${({theme, fill}) => (fill ? '#FFFFFF' : theme.secondaryText)};
+  color: ${({ theme, fill }) => (fill ? '#FFFFFF' : theme.secondaryText)};
 `;
 
 interface Props {
   onPress(): void;
   title: string;
   fill?: boolean;
-  style?: ViewStyleProp;
+  style?: ViewStyle;
   disabled?: boolean;
   loading?: boolean;
 }
@@ -36,16 +36,17 @@ const Button = ({
   fill = true,
   style,
   loading = false,
-  disabled = false,
+  disabled = false
 }: Props) => {
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   return (
     <Wrapper
-      style={{...style}}
+      style={{ ...style }}
       onPress={onPress}
       fill={fill}
-      disabled={disabled || loading}>
+      disabled={disabled || loading}
+    >
       {loading ? (
         <ActivityIndicator
           color={fill ? colors.secondary : colors.secondaryText}

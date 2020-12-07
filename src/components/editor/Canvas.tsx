@@ -1,19 +1,20 @@
-import React, {useRef} from 'react';
-import styled from 'styled-components';
-import {Pixel} from '../../types';
-import {PanResponder} from 'react-native';
+import React from 'react';
+import { PanResponder } from 'react-native';
+import { useSafeAreaInsets } from 'react-native-safe-area-context';
+import styled from 'styled-components/native';
+
 import {
   EDITOR_BORDER_SIZE,
   HEADER_HEIGHT,
   PIXEL_COUNT,
   PIXEL_SIZE,
-  TOOLS,
+  TOOLS
 } from '../../constants';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {dropBucket} from '../../helpers';
+import { dropBucket } from '../../helpers';
+import { Pixel } from '../../types';
 
-const Wrapper = styled.View`
-  background: ${({backgroundColor}) => backgroundColor};
+const Wrapper = styled.View<{ backgroundColor: string }>`
+  background: ${({ backgroundColor }) => backgroundColor};
   width: 100%;
   padding: ${EDITOR_BORDER_SIZE}px;
 `;
@@ -27,11 +28,11 @@ const Grid = styled.View`
 `;
 
 const PixelBlock = styled.View`
-  background: ${({color, backgroundColor}) =>
+  background: ${({ color, backgroundColor }) =>
     color === 'none' ? backgroundColor : color};
   height: ${PIXEL_SIZE}px;
   width: ${PIXEL_SIZE}px;
-  ${({displayGrid, index}) =>
+  ${({ displayGrid, index }) =>
     displayGrid &&
     `
     border-bottom-width: 1px;
@@ -56,7 +57,7 @@ const Canvas = ({
   updateData,
   currentColor,
   displayGrid,
-  selectedTool,
+  selectedTool
 }: Props) => {
   const insets = useSafeAreaInsets();
 
@@ -86,43 +87,28 @@ const Canvas = ({
         arrayPosition,
         currentColor,
         data[arrayPosition].color,
-        newData,
+        newData
       );
     } else {
       newData[arrayPosition] = {
-        color: selectedTool === TOOLS.PENCIL ? currentColor : 'none',
+        color: selectedTool === TOOLS.PENCIL ? currentColor : 'none'
       };
     }
     updateData([...newData]);
   };
 
   const panResponder = PanResponder.create({
-    onStartShouldSetPanResponder: (evt, gestureState) => true,
-    onStartShouldSetPanResponderCapture: (evt, gestureState) => true,
-    onMoveShouldSetPanResponder: (evt, gestureState) => true,
-    onMoveShouldSetPanResponderCapture: (evt, gestureState) => true,
+    onStartShouldSetPanResponder: () => true,
+    onStartShouldSetPanResponderCapture: () => true,
+    onMoveShouldSetPanResponder: () => true,
+    onMoveShouldSetPanResponderCapture: () => true,
 
     onPanResponderGrant: updateCanvas,
-    onPanResponderMove: (evt, gestureState) => {
-      // The most recent move distance is gestureState.move{X,Y}
-      // The accumulated gesture distance since becoming responder is
-      // gestureState.d{x,y}
+    onPanResponderMove: (evt) => {
       updateCanvas(evt);
     },
-    onPanResponderTerminationRequest: (evt, gestureState) => true,
-    onPanResponderRelease: (evt, gestureState) => {
-      // The user has released all touches while this view is the
-      // responder. This typically means a gesture has succeeded
-    },
-    onPanResponderTerminate: (evt, gestureState) => {
-      // Another component has become the responder, so this gesture
-      // should be cancelled
-    },
-    onShouldBlockNativeResponder: (evt, gestureState) => {
-      // Returns whether this component should block native components from becoming the JS
-      // responder. Returns true by default. Is currently only supported on android.
-      return true;
-    },
+    onPanResponderTerminationRequest: () => true,
+    onShouldBlockNativeResponder: () => true
   });
   return (
     <Wrapper backgroundColor={backgroundColor}>
@@ -134,7 +120,7 @@ const Canvas = ({
             backgroundColor={backgroundColor}
             displayGrid={displayGrid}
             color={pixel.color}
-            style={{borderColor: '#E5E5E5'}}
+            style={{ borderColor: '#E5E5E5' }}
           />
         ))}
       </Grid>

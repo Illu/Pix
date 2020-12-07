@@ -1,16 +1,17 @@
-import React, {useEffect, useState} from 'react';
-import {TouchableOpacity} from 'react-native';
-import styled from 'styled-components/native';
-import {MONTHS_FULL} from '../../constants';
-import LinearGradient from 'react-native-linear-gradient';
-import {useNavigation} from '@react-navigation/native';
 import storage from '@react-native-firebase/storage';
+import { useNavigation } from '@react-navigation/native';
+import React, { useEffect, useState } from 'react';
+import { ImageSourcePropType, TouchableOpacity } from 'react-native';
+import LinearGradient from 'react-native-linear-gradient';
+import styled from 'styled-components/native';
 
-const Wrapper = styled.ImageBackground`
+import { MONTHS_FULL } from '../../constants';
+
+const Wrapper = styled.ImageBackground<{ source: ImageSourcePropType }>`
   border-radius: 8px;
   margin-bottom: 10px;
   height: 180px;
-  background: ${({theme}) => theme.accent};
+  background: ${({ theme }) => theme.accent};
   justify-content: center;
   overflow: hidden;
 `;
@@ -60,8 +61,8 @@ interface Props {
 
 const currentMonth = MONTHS_FULL[new Date().getMonth()];
 
-const CurrentChallengeCard = ({challengeTitle}: Props) => {
-  const [challengeImageURL, setChallengeImageURL] = useState(null);
+const CurrentChallengeCard = ({ challengeTitle }: Props) => {
+  const [challengeImageURL, setChallengeImageURL] = useState(undefined);
 
   useEffect(() => {
     storage()
@@ -72,7 +73,7 @@ const CurrentChallengeCard = ({challengeTitle}: Props) => {
 
   const navigation = useNavigation();
   return (
-    <Wrapper source={{uri: challengeImageURL}} resizeMode="cover">
+    <Wrapper source={{ uri: challengeImageURL }} resizeMode="cover">
       <ContentWrapper colors={['#00000000', '#00000099']}>
         <Month>{currentMonth} Challenge</Month>
         {challengeTitle ? (
@@ -85,7 +86,8 @@ const CurrentChallengeCard = ({challengeTitle}: Props) => {
               get a chance to enter the hall of fame !
             </Desc>
             <TouchableOpacity
-              onPress={() => navigation.navigate('EditorModal')}>
+              onPress={() => navigation.navigate('EditorModal')}
+            >
               <Link>Create your entry now</Link>
             </TouchableOpacity>
           </>
