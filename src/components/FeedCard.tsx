@@ -13,7 +13,7 @@ import PixelArt from './PixelArt';
 
 const { width } = Dimensions.get('window');
 
-const Row = styled.View`
+const Row = styled.View<{ noMargins?: boolean }>`
   flex-direction: row;
   margin: ${({ noMargins }) => (noMargins ? 0 : 5)}px 0;
   align-items: center;
@@ -110,14 +110,15 @@ const FeedCard = ({
       setLoading(true);
       userRef
         .get()
-        .then((data) => {
-          const { displayName, avatar } = data.data();
+        .then((userData) => {
+          const { displayName, avatar } = userData.data();
           setUserInfos({ displayName, avatar });
         })
         .finally(() => {
           setLoading(false);
         });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

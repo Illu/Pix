@@ -1,14 +1,14 @@
 import React from 'react';
 import styled from 'styled-components/native';
-import {SCREEN_PADDING} from '../../theme';
-import {View} from 'react-native';
-import {PALETTES} from '../../theme';
+
+import { SCREEN_PADDING } from '../../theme';
+import { PALETTES } from '../../theme';
 
 const Wrapper = styled.View`
   height: 500px;
   overflow: visible;
   width: 100%;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
   align-items: center;
   padding: ${SCREEN_PADDING}px;
   z-index: 2;
@@ -18,14 +18,14 @@ const Header = styled.View`
   width: 40px;
   height: 8px;
   border-radius: 4px;
-  background: ${({theme}) => theme.secondaryText};
+  background: ${({ theme }) => theme.secondaryText};
   margin-bottom: 20px;
 `;
 
 const Label = styled.Text`
   font-size: 14px;
   font-weight: 600;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   margin-bottom: 10px;
 `;
 
@@ -39,15 +39,15 @@ const Palette = styled.View`
   width: 100%;
 `;
 
-const ColorDrop = styled.View`
+const ColorDrop = styled.View<{ color: string }>`
   height: 40px;
   width: 40px;
   border-radius: 20px;
-  background: ${({color}) => color};
-  border-width: ${({color}) => (color === '#FFFFFF' ? 1 : 0)}px;
+  background: ${({ color }) => color};
+  border-width: ${({ color }) => (color === '#FFFFFF' ? 1 : 0)}px;
 `;
 
-const Palettes = (onClose) => {
+const Palettes = (onClose: (colors: string[]) => void) => {
   return (
     <Wrapper>
       <Header />

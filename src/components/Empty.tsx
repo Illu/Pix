@@ -1,6 +1,7 @@
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import React from 'react';
 import styled from 'styled-components/native';
+
 import Button from './Button';
 
 const Cactus = require('../../assets/images/cactus.png');
@@ -14,7 +15,7 @@ const Wrapper = styled.View`
 const InfosText = styled.Text`
   font-weight: 600;
   font-size: 14px;
-  color: ${({theme}) => theme.secondaryText};
+  color: ${({ theme }) => theme.secondaryText};
   margin: 15px 0;
 `;
 
@@ -28,7 +29,7 @@ interface Props {
   actionTitle?: string;
 }
 
-const Empty = ({actionTitle = 'Create your first artwork!'}) => {
+const Empty = ({ actionTitle = 'Create your first artwork!' }: Props) => {
   const navigation = useNavigation();
   return (
     <Wrapper>

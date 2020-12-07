@@ -1,13 +1,15 @@
+/* eslint-disable react-native/no-inline-styles */
 import React from 'react';
-import {View} from 'react-native';
+import { View } from 'react-native';
 import styled from 'styled-components/native';
+
 import Icon from './Icon';
 
 // --ActionMenu--
 // Takes an items object to display an organised menu.
 
 const Wrapper = styled.View`
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
 `;
 
 const Row = styled.TouchableOpacity`
@@ -15,13 +17,13 @@ const Row = styled.TouchableOpacity`
   justify-content: space-between;
   align-items: center;
   padding: 10px 16px 10px 0;
-  border-color: ${({theme}) => theme.uiAccent};
+  border-color: ${({ theme }) => theme.uiAccent};
 `;
 
-const Title = styled.Text`
+const Title = styled.Text<{ disabled?: boolean }>`
   font-size: 14px;
   font-weight: 500;
-  color: ${({theme, disabled}) =>
+  color: ${({ theme, disabled }) =>
     disabled ? theme.secondaryText : theme.text};
 `;
 
@@ -29,7 +31,7 @@ const CategoryWrapper = styled.View`
   margin: 20px;
   border-radius: 16px;
   padding: 0 0 0 10px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const ThumbWrapper = styled.View`
@@ -63,7 +65,7 @@ interface Props {
   items: Array<Item[]>;
 }
 
-const ActionMenu = ({items}: Props) => {
+const ActionMenu = ({ items }: Props) => {
   return (
     <Wrapper>
       {items.map((subItems, index) => (
@@ -72,11 +74,12 @@ const ActionMenu = ({items}: Props) => {
             <Row
               key={`${item.title}${i}`}
               style={{
-                borderTopWidth: i !== 0 ? 0.5 : 0,
+                borderTopWidth: i !== 0 ? 0.5 : 0
               }}
               onPress={item.action}
-              disabled={item.disabled}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              disabled={item.disabled}
+            >
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 {item.thumbIcon && (
                   <ThumbWrapper>
                     <Icon
@@ -90,7 +93,7 @@ const ActionMenu = ({items}: Props) => {
                   <ThumbImage
                     source={
                       typeof item.thumbImage === 'string'
-                        ? {uri: item.thumbImage}
+                        ? { uri: item.thumbImage }
                         : item.thumbImage
                     }
                   />

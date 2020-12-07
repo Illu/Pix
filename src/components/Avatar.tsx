@@ -6,7 +6,7 @@ import styled from 'styled-components/native';
 
 import Images from '../stores/Images';
 
-const Wrapper = styled.View`
+const Wrapper = styled.View<{ size: number; border: boolean }>`
   width: ${({ size }) => size}px;
   height: ${({ size }) => size}px;
   border-radius: ${({ size }) => size / 2}px;
@@ -43,6 +43,7 @@ const Avatar = observer(
           .getDownloadURL()
           .then((url) => setUri(url));
       }
+      // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const source = cloudRef
