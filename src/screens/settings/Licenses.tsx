@@ -1,13 +1,13 @@
-import { useLinking } from '@react-navigation/native';
 import React from 'react';
 import { FlatList, TouchableOpacity, Linking } from 'react-native';
-
 import styled from 'styled-components/native';
+
 import { SCREEN_PADDING } from '../../theme';
 
 const licenses = require('./licenses.json');
 
-const Wrapper = styled.View`
+const TitleWrapper = styled.View`
+  padding: ${SCREEN_PADDING}px;
 `;
 
 const Title = styled.Text`
@@ -26,16 +26,15 @@ const SubTitle = styled.Text`
 
 const LicenseTitle = styled.Text`
   font-size: 15px;
-  margin-top: 10px;
+  margin-top: 15px;
   font-weight: 700;
   color: ${({ theme }) => theme.text};
 `;
 
 const DescWrapper = styled.View`
-  border-left-width: 5px;
-  padding: 10px;
-  margin-left: 5px;
-  border-color: ${({ theme }) => theme.accent};
+  border-bottom-width: 1px;
+  padding: 10px 0 15px 0;
+  border-color: ${({ theme }) => theme.uiAccent};
 `;
 
 const Desc = styled.Text`
@@ -43,21 +42,35 @@ const Desc = styled.Text`
 `;
 
 const renderItem = ({ item }) => (
-  <TouchableOpacity onPress={() => Linking.openURL(licenses[item].repository)}>
+  <TouchableOpacity
+    style={{ marginLeft: SCREEN_PADDING }}
+    onPress={() => Linking.openURL(licenses[item].repository)}
+  >
     <LicenseTitle>{item}</LicenseTitle>
     <DescWrapper>
       {licenses[item].publisher && <Desc>{licenses[item].publisher}</Desc>}
       <Desc>{licenses[item].licenses} license</Desc>
     </DescWrapper>
   </TouchableOpacity>
-)
+);
 
 const Licenses = () => (
-  <Wrapper>
-    <Title>Open Source Licenses</Title>
-    <SubTitle>Pix is made possible thanks to the following Open-Source libraries and tools:</SubTitle>
-    <FlatList style={{ padding: SCREEN_PADDING }} data={Object.keys(licenses)} keyExtractor={item => item} renderItem={renderItem} removeClippedSubview />
-  </Wrapper>
-)
+  <>
+    <TitleWrapper>
+      <Title>Open Source Licenses</Title>
+      <SubTitle>
+        Pix is made possible thanks to the following Open-Source libraries and
+        tools:
+      </SubTitle>
+    </TitleWrapper>
+    <FlatList
+      style={{ padding: SCREEN_PADDING }}
+      data={Object.keys(licenses)}
+      keyExtractor={(item) => item}
+      renderItem={renderItem}
+      removeClippedSubview
+    />
+  </>
+);
 
 export default Licenses;
