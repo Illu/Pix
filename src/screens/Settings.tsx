@@ -87,7 +87,9 @@ const Settings = observer(() => {
               },
               {
                 text: 'Send me an email',
-                onPress: () => {},
+                onPress: () => {
+                  Linking.openURL('mailto:hello@maximenory.com');
+                },
                 style: 'default'
               },
               {
