@@ -2,11 +2,13 @@ import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useContext, useEffect } from 'react';
-import { Alert, Linking, Platform } from 'react-native';
+import { Alert, Linking } from 'react-native';
 import * as RNIap from 'react-native-iap';
-import styled from 'styled-components';
+import Rate from 'react-native-rate';
+import styled from 'styled-components/native';
 
 import ActionMenu from '../components/ActionMenu';
+import { RateOptions } from '../config';
 import User from '../stores/User';
 
 const Wrapper = styled.ScrollView``;
@@ -58,7 +60,13 @@ const Settings = observer(() => {
         icon: 'Twitter',
         thumbIcon: 'Star',
         thumbColor: '#4DB3FF',
-        action: () => {}
+        action: () => {
+          Rate.rate(RateOptions || {}, (success) => {
+            if (success) {
+              // user went to the review page
+            }
+          });
+        }
       },
       {
         title: 'Contact me',
