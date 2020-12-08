@@ -1,4 +1,5 @@
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Alert } from 'react-native';
@@ -76,14 +77,19 @@ const AccountPasswordCreation = ({ route }) => {
     setLoading(true);
     auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
+      .then((data) => {
         console.log('User account created & signed in!, setting username...');
-        const update = {
+        return firestore().collection('Users').doc(data.user.uid).set({
           displayName: username,
-          badges: []
-        };
-        return auth().currentUser.updateProfile(update);
-        // navigate success
+          badges: [],
+          avatar: 'cat-1'
+        });
+      })
+      .then(() => {
+        return auth().currentUser?.updateProfile({
+          displayName: username,
+          photoURL: 'cat-1'
+        });
       })
       .then(() => {
         Alert.alert(

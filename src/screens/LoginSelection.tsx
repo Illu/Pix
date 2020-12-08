@@ -1,9 +1,11 @@
+/* eslint-disable react-native/no-inline-styles */
 import { AppleButton } from '@invertase/react-native-apple-authentication';
 import { appleAuth } from '@invertase/react-native-apple-authentication';
 import auth from '@react-native-firebase/auth';
+import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { Alert, Platform } from 'react-native';
+import { Platform } from 'react-native';
 import styled from 'styled-components/native';
 
 import Button from '../components/Button';
@@ -61,12 +63,22 @@ const LoginSelection = () => {
     );
 
     // Sign the user in with the credential
-    const { fullName } = auth().signInWithCredential(appleCredential);
-    const update = {
-      displayName: fullName || 'Unknown Artist',
-      badges: []
-    };
-    return auth().currentUser.updateProfile(update);
+    const { user } = await auth().signInWithCredential(appleCredential);
+
+    await firestore()
+      .collection('Users')
+      .doc(user.uid)
+      .set({
+        displayName: user.displayName || 'Unknown Artist',
+        badges: [],
+        avatar: 'cat-1'
+      });
+
+    const value = await auth().currentUser?.updateProfile({
+      displayName: user.displayName || 'Unknown Artist',
+      photoURL: 'cat-1'
+    });
+    return value;
   };
 
   const navigation = useNavigation();
@@ -98,8 +110,8 @@ const LoginSelection = () => {
             height: 45
           }}
           onPress={() =>
-            onAppleButtonPress().then(({ fullName }) => {
-              alert('account created with name ' + fullName);
+            onAppleButtonPress().then(() => {
+              alert('account created with apple');
             })
           }
         />
