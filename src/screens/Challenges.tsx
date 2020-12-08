@@ -126,13 +126,13 @@ const Challenges = observer(() => {
         data={challengeStore.challenges}
         renderItem={ListItem}
         keyExtractor={(item) => item.id}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.2}
         onEndReached={() => challengeStore.loadMore()}
         removeClippedSubviews
         ListEmptyComponent={() =>
-          challengeStore.state !== STATES.LOADING && (
+          challengeStore.state !== STATES.LOADING ? (
             <Empty actionTitle="Add the first entry" />
-          )
+          ) : null
         }
       />
     </View>

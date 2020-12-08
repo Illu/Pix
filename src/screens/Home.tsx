@@ -15,9 +15,7 @@ import IconButton from '../components/IconButton';
 import { STATES } from '../constants';
 import Feed from '../stores/Feed';
 import User from '../stores/User';
-import {SCREEN_PADDING} from '../theme';
-
-
+import { SCREEN_PADDING } from '../theme';
 
 const Row = styled.View`
   flex-direction: row;
@@ -116,11 +114,11 @@ const Home = observer(() => {
         data={feedStore.feed}
         renderItem={ListItem}
         keyExtractor={(item) => item.id}
-        onEndReachedThreshold={0.1}
+        onEndReachedThreshold={0.2}
         ListEmptyComponent={() =>
-          feedStore.state !== STATES.LOADING && (
+          feedStore.state !== STATES.LOADING ? (
             <Empty actionTitle="Add the first ever pixel art!" />
-          )
+          ) : null
         }
         onEndReached={() => feedStore.loadMore()}
         removeClippedSubviews
