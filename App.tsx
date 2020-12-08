@@ -1,17 +1,23 @@
-import React, {useContext, useEffect} from 'react';
-import {ThemeProvider} from 'styled-components/native';
-import {StatusBar} from 'react-native';
-import {NavigationContainer} from '@react-navigation/native';
-import {AppearanceProvider, useColorScheme} from 'react-native-appearance';
+import { NavigationContainer } from '@react-navigation/native';
+import { observer } from 'mobx-react-lite';
+import React, { useContext, useEffect } from 'react';
+import { StatusBar } from 'react-native';
+import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
+import { SafeAreaProvider } from 'react-native-safe-area-context';
+import { enableScreens } from 'react-native-screens';
+import { ThemeProvider } from 'styled-components/native';
+
+import { getColorScheme } from './src/helpers';
+import {
+  EditorStack,
+  LoginStack,
+  RootStack,
+  TabsStack
+} from './src/navigation';
 import AppState from './src/stores/AppState';
-import {enableScreens} from 'react-native-screens';
-import {getColorScheme} from './src/helpers';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
-import {EditorStack, LoginStack, RootStack, TabsStack} from './src/navigation';
-import User from './src/stores/User';
-import {observer} from 'mobx-react-lite';
 import Challenge from './src/stores/Challenge';
 import Images from './src/stores/Images';
+import User from './src/stores/User';
 
 enableScreens();
 
@@ -25,9 +31,10 @@ const App = observer((props) => {
   useEffect(() => {
     challengeStore.loadCurrentChallenge();
     imagesStore.loadAvatarsURLs();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const {theme, statusBarStyle} = getColorScheme(appStateStore.theme, scheme);
+  const { theme, statusBarStyle } = getColorScheme(appStateStore.theme, scheme);
 
   return (
     <AppearanceProvider>
@@ -39,13 +46,13 @@ const App = observer((props) => {
               <RootStack.Screen
                 name="Main"
                 component={TabsStack}
-                options={{headerShown: false}}
+                options={{ headerShown: false }}
               />
               <RootStack.Screen
                 name="EditorModal"
                 options={{
                   headerShown: false,
-                  stackPresentation: 'fullScreenModal',
+                  stackPresentation: 'fullScreenModal'
                 }}
                 component={userStore.user ? EditorStack : LoginStack}
               />

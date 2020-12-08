@@ -1,4 +1,4 @@
-import auth from '@react-native-firebase/auth';
+import auth, { FirebaseAuthTypes } from '@react-native-firebase/auth';
 import { firebase } from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { makeObservable, observable, action, runInAction } from 'mobx';
@@ -30,7 +30,7 @@ class User {
   isAdmin = false;
   state = STATES.IDLE;
 
-  onAuthStateChanged(user) {
+  onAuthStateChanged(user: FirebaseAuthTypes.User) {
     this.user = user;
     if (user) {
       firestore()

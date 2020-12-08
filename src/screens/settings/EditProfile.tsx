@@ -1,22 +1,23 @@
-import React, {useState, useContext} from 'react';
-import styled from 'styled-components';
 import auth from '@react-native-firebase/auth';
-import {useTheme} from '@react-navigation/native';
-import {Alert, TouchableOpacity} from 'react-native';
-import User from '../../stores/User';
-import Avatar from '../../components/Avatar';
-import {SCREEN_PADDING} from '../../theme';
-import Button from '../../components/Button';
-import {BUTTON_WIDTH, STATES} from '../../constants';
-import BottomSheet from 'reanimated-bottom-sheet';
-import EditAvatar from '../../components/settings/EditAvatar';
-import Animated from 'react-native-reanimated';
 import firestore from '@react-native-firebase/firestore';
+import { useTheme } from '@react-navigation/native';
+import React, { useState, useContext } from 'react';
+import { Alert, TouchableOpacity } from 'react-native';
+import Animated from 'react-native-reanimated';
+import BottomSheet from 'reanimated-bottom-sheet';
+import styled from 'styled-components/native';
+
+import Avatar from '../../components/Avatar';
+import Button from '../../components/Button';
+import EditAvatar from '../../components/settings/EditAvatar';
+import { BUTTON_WIDTH, STATES } from '../../constants';
 import Images from '../../stores/Images';
+import User from '../../stores/User';
+import { SCREEN_PADDING } from '../../theme';
 
 const Wrapper = styled.ScrollView`
   padding: 20px ${SCREEN_PADDING}px 10px ${SCREEN_PADDING}px;
-  background: ${({theme}) => theme.secondary};
+  background: ${({ theme }) => theme.secondary};
 `;
 
 const Label = styled.Text`
@@ -24,33 +25,33 @@ const Label = styled.Text`
   font-size: 14px;
   margin: 5px 0;
   width: ${BUTTON_WIDTH}px;
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
 `;
 
 const TextInput = styled.TextInput`
   border-radius: 4px;
-  background: ${({theme}) => theme.background};
+  background: ${({ theme }) => theme.background};
   padding: 10px;
   width: ${BUTTON_WIDTH}px;
   font-size: 14px;
   margin-bottom: 10px;
 `;
 
-const StatusText = styled.Text`
+const StatusText = styled.Text<{ color: string }>`
   margin-top: 10px;
-  color: ${({color}) => color};
+  color: ${({ color }) => color};
   text-align: center;
 `;
 
 const Footer = styled.Text`
-  color: ${({theme}) => theme.inputBackground};
+  color: ${({ theme }) => theme.inputBackground};
   margin: 50px 0;
 `;
 
 const ResetPassword = styled.Text`
-  color: ${({theme}) => theme.text};
+  color: ${({ theme }) => theme.text};
   text-decoration: underline;
-  text-decoration-color: ${({theme}) => theme.text};
+  text-decoration-color: ${({ theme }) => theme.text};
 `;
 
 const OpacityView = styled(Animated.View)`
@@ -67,7 +68,7 @@ const OpacityView = styled(Animated.View)`
 const EditProfile = () => {
   const userStore = useContext(User);
   const imagesStore = useContext(Images);
-  const {colors} = useTheme();
+  const { colors } = useTheme();
 
   const [status, setStatus] = useState(STATES.IDLE);
   const [username, setUsername] = useState(userStore.user.displayName);
@@ -81,17 +82,19 @@ const EditProfile = () => {
     const update = {
       displayName: username,
       avatar,
-      badges: [],
+      badges: []
     };
+    alert(userStore.user.uid);
     auth()
       .currentUser.updateProfile(update)
       .then(() =>
-        firestore().collection('Users').doc(userStore.user.uid).update(update),
+        firestore().collection('Users').doc(userStore.user.uid).update(update)
       )
       .then(() => {
         setStatus(STATES.SUCCESS);
       })
       .catch((err) => {
+        alert(err);
         setStatus(STATES.ERROR);
       });
   };
@@ -103,11 +106,11 @@ const EditProfile = () => {
       .then(() => {
         Alert.alert(
           'Check your mailbox!',
-          'We sent you an email to help you reset your password.',
+          'We sent you an email to help you reset your password.'
         );
         setStatus(STATES.IDLE);
       })
-      .catch((err) => {
+      .catch(() => {
         setStatus(STATES.ERROR);
       });
   };
@@ -123,12 +126,12 @@ const EditProfile = () => {
 
   const animatedShadowOpacity = Animated.interpolate(fall, {
     inputRange: [0, 1],
-    outputRange: [0.5, 0],
+    outputRange: [0.5, 0]
   });
 
   const categories = {};
 
-  Object.keys(imagesStore.avatars).forEach((key, index) => {
+  Object.keys(imagesStore.avatars).forEach((key) => {
     const avatar = imagesStore.avatars[key];
     if (avatar) {
       if (!categories[avatar.category]) {
@@ -140,7 +143,7 @@ const EditProfile = () => {
 
   return (
     <>
-      <Wrapper contentContainerStyle={{alignItems: 'center'}}>
+      <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
         <Avatar size={119} name={avatar} />
         <Button
           onPress={() => {
@@ -149,7 +152,7 @@ const EditProfile = () => {
           }}
           title="Edit profile picture"
           fill={false}
-          style={{width: 163, marginTop: 10, marginBottom: 30}}
+          style={{ width: 163, marginTop: 10, marginBottom: 30 }}
         />
         <Label>Username</Label>
         <TextInput
@@ -159,7 +162,7 @@ const EditProfile = () => {
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
           onChangeText={setUsername}
-          style={{color: colors.text}}
+          style={{ color: colors.text }}
         />
         <Label>Your email</Label>
         <TextInput
@@ -169,7 +172,7 @@ const EditProfile = () => {
           autoCapitalize="none"
           placeholderTextColor={colors.secondaryText}
           onChangeText={setUsername}
-          style={{color: colors.secondaryText}}
+          style={{ color: colors.secondaryText }}
         />
         <Label>Your password</Label>
         <TextInput
@@ -179,18 +182,19 @@ const EditProfile = () => {
           placeholderTextColor={colors.secondaryText}
           onChangeText={() => {}}
           secureTextEntry
-          style={{color: colors.secondaryText}}
+          style={{ color: colors.secondaryText }}
         />
         <TouchableOpacity
           onPress={resetPassword}
-          disabled={status === STATES.LOADING}>
+          disabled={status === STATES.LOADING}
+        >
           <ResetPassword>Reset your password</ResetPassword>
         </TouchableOpacity>
         <Button
           onPress={update}
           title="Save modifications"
           loading={status === STATES.LOADING}
-          style={{marginTop: 40}}
+          style={{ marginTop: 40 }}
           disabled={status === STATES.LOADING}
         />
         {status === STATES.ERROR && (
@@ -218,7 +222,7 @@ const EditProfile = () => {
       <OpacityView
         pointerEvents={drawerShown ? 'auto' : 'none'}
         style={{
-          opacity: animatedShadowOpacity,
+          opacity: animatedShadowOpacity
         }}
       />
     </>
