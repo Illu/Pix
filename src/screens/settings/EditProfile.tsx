@@ -84,7 +84,6 @@ const EditProfile = () => {
       avatar,
       badges: []
     };
-    alert(userStore.user.uid);
     auth()
       .currentUser.updateProfile(update)
       .then(() =>
@@ -93,8 +92,7 @@ const EditProfile = () => {
       .then(() => {
         setStatus(STATES.SUCCESS);
       })
-      .catch((err) => {
-        alert(err);
+      .catch(() => {
         setStatus(STATES.ERROR);
       });
   };
