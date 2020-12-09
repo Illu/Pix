@@ -72,16 +72,47 @@ const HomeStack = () => {
   );
 };
 
-const ChallengesStack = () => (
-  <ChallengesNav.Navigator>
-    <ChallengesNav.Screen
-      name="Challenges"
-      component={Challenges}
-      options={{ headerShown: false }}
-    />
-    {/* TODO: Duplicate Profile & settings screens here */}
-  </ChallengesNav.Navigator>
-);
+const ChallengesStack = () => {
+  const { colors } = useTheme();
+  return (
+    <ChallengesNav.Navigator>
+      <ChallengesNav.Screen
+        name="Challenges"
+        component={Challenges}
+        options={{ headerShown: false }}
+      />
+      <ChallengesNav.Screen
+        name="Profile"
+        component={Profile}
+        options={({ navigation, route }) => ({
+          headerRight: () => (
+            <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
+              <Icon name="Settings" size={25} color={colors.text} />
+            </TouchableOpacity>
+          )
+        })}
+      />
+      <ChallengesNav.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{ headerTitle: 'Edit your profile' }}
+      />
+      <ChallengesNav.Screen name="Settings" component={Settings} />
+      <ChallengesNav.Screen name="About" component={About} />
+      <ChallengesNav.Screen name="Licenses" component={Licenses} />
+      <ChallengesNav.Screen
+        name="Tips"
+        component={Tips}
+        options={{ headerTitle: 'Tip Jar' }}
+      />
+      <ChallengesNav.Screen
+        name="Appearance"
+        component={Appearance}
+        options={{ headerTitle: 'Theme' }}
+      />
+    </ChallengesNav.Navigator>
+  );
+};
 
 export const TabsStack = () => (
   <Tab.Navigator tabBar={Tabbar}>
