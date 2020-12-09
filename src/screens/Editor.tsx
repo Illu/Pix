@@ -3,11 +3,12 @@ import {
   useNavigation,
   useTheme
 } from '@react-navigation/native';
-import React, { useState, useContext } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { ScrollView, Alert, TouchableOpacity } from 'react-native';
 import ColorPicker from 'react-native-color-picker-ios';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
+import { Pixel } from 'src/types';
 import styled from 'styled-components/native';
 
 import Button from '../components/Button';
@@ -52,12 +53,16 @@ const ColorDrop = styled.TouchableOpacity<{
   justify-content: center;
 `;
 
-const IconWrapper = styled.TouchableOpacity<{ active?: boolean }>`
+const IconWrapper = styled.TouchableOpacity<{
+  active?: boolean;
+  disabled?: boolean;
+}>`
   height: 60px;
   width: 60px;
   align-items: center;
   justify-content: center;
   border-radius: 30px;
+  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
   background: ${({ theme, active }) =>
     active ? theme.accent : theme.background};
 `;
@@ -72,6 +77,8 @@ const OpacityView = styled(Animated.View)`
   opacity: 0.5;
   z-index: 1;
 `;
+
+let history: Pixel[][] = [];
 
 const Editor = ({ route }) => {
   const navigation = useNavigation();
@@ -101,6 +108,18 @@ const Editor = ({ route }) => {
       );
     }, [route.params])
   );
+
+  useEffect(() => {
+    history = [getInitialCanvasData()];
+  }, []);
+
+  const updateCanvas = (data: Pixel[]) => {
+    history.push(canvasData);
+    if (history.length > 10) {
+      history.shift();
+    }
+    setCanvasData(data);
+  };
 
   const goBack = () => {
     setCanvasData(getInitialCanvasData());
@@ -162,7 +181,7 @@ const Editor = ({ route }) => {
       <Wrapper>
         <Canvas
           data={canvasData}
-          updateData={setCanvasData}
+          updateData={updateCanvas}
           backgroundColor={backgroundColor}
           currentColor={currentColor}
           displayGrid={displayGrid}
@@ -206,6 +225,18 @@ const Editor = ({ route }) => {
                   size={24}
                   color={selectedTool === TOOLS.BUCKET ? '#fff' : colors.text}
                 />
+              </IconWrapper>
+              <IconWrapper
+                active={false}
+                disabled={history.length <= 1}
+                onPress={() => {
+                  if (history.length > 1) {
+                    setCanvasData(history[history.length - 2]);
+                    history.pop();
+                  }
+                }}
+              >
+                <Icon name="Undo" size={24} color={colors.text} />
               </IconWrapper>
               <IconWrapper
                 active={selectedTool === TOOLS.ERASER}
