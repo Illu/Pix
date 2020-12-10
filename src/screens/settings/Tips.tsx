@@ -1,5 +1,6 @@
 import { observer } from 'mobx-react';
 import React, { useState } from 'react';
+import { Product } from 'react-native-iap';
 import styled from 'styled-components/native';
 
 import Icon from '../../components/Icon';
@@ -41,6 +42,14 @@ const Row = styled.View`
   margin: ${SCREEN_PADDING}px 0;
 `;
 
+const Text = styled.Text`
+  color: ${({ theme }) => theme.text};
+  font-size: 15px;
+  font-weight: 600;
+  margin: 20px 30px;
+  text-align: center;
+`;
+
 const PriceWrapper = styled.TouchableOpacity`
   background: ${({ theme }) => theme.accent};
   padding: 5px 10px;
@@ -58,8 +67,11 @@ const Label = styled.Text`
   color: ${({ theme }) => theme.text};
 `;
 
-const Tips = observer(() => {
+const Tips = observer(({ route }) => {
   const [egg, setEgg] = useState(0);
+
+  const { products } = route.params;
+
   return (
     <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
       <IconWrapper onPress={() => setEgg(egg + 1)}>
@@ -74,24 +86,21 @@ const Tips = observer(() => {
         tip. It helps us cover the fees needed to keep the App runnning!
       </Title>
       <ContentWrapper>
-        <Row>
-          <Label>☕️ Small Tip</Label>
-          <PriceWrapper>
-            <Price>€1.09</Price>
-          </PriceWrapper>
-        </Row>
-        <Row>
-          <Label>🍕 Medium Tip</Label>
-          <PriceWrapper>
-            <Price>€1.09</Price>
-          </PriceWrapper>
-        </Row>
-        <Row>
-          <Label>💸 Huge Tip</Label>
-          <PriceWrapper>
-            <Price>€1.09</Price>
-          </PriceWrapper>
-        </Row>
+        {products ? (
+          products.map((product: Product, index: number) => (
+            <Row key={index}>
+              <Label>{product.title}</Label>
+              <PriceWrapper>
+                <Price>{product.localizedPrice}</Price>
+              </PriceWrapper>
+            </Row>
+          ))
+        ) : (
+          <>
+            <Text>Weird...</Text>
+            <Text>Unable to retrieve tips at this time, try again later!</Text>
+          </>
+        )}
       </ContentWrapper>
     </Wrapper>
   );
