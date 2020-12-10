@@ -1,6 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
 import React, { useContext, useEffect } from 'react';
-import { Alert, View } from 'react-native';
+import { Alert, Linking, View } from 'react-native';
+import { TouchableOpacity } from 'react-native-gesture-handler';
 import styled from 'styled-components/native';
 
 import { version } from '../../../package.json';
@@ -102,9 +103,16 @@ const About = () => {
         </Desc>
       </DescWrapper>
       <Label>PRIVACY POLICY</Label>
-      <DescWrapper>
-        <Desc>Find out how we deal with privacy here</Desc>
-      </DescWrapper>
+      <TouchableOpacity
+        onPress={() => Linking.openURL('https://maximenory.com/pix')}
+      >
+        <DescWrapper>
+          <Desc>
+            Tap here to open our privacy policy informations (This will open in
+            your default web browser)
+          </Desc>
+        </DescWrapper>
+      </TouchableOpacity>
     </Wrapper>
   );
 };
