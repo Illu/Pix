@@ -1,5 +1,5 @@
 import { BottomTabBarProps } from '@react-navigation/bottom-tabs';
-import { NavigationProp, useTheme } from '@react-navigation/native';
+import { useTheme } from '@react-navigation/native';
 import React, { useState, useEffect } from 'react';
 import { View, Dimensions, Animated } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
@@ -31,6 +31,7 @@ const TabIndicatorWrapper = styled(Animated.View)<{ insetBottom: number }>`
 const TabIndicator = styled.View`
   height: 4px;
   width: 4px;
+  background: ${({ theme }) => theme.accent};
 `;
 
 interface Props {
@@ -90,10 +91,13 @@ const TabbarComponent = ({ props }: Props) => {
           )
         )}
         <TabIndicatorWrapper
-          style={{ left: indicatorPosition, width: tabbarWidth / 4 }}
+          style={{
+            left: indicatorPosition,
+            width: tabbarWidth / 4
+          }}
           insetBottom={insets.bottom}
         >
-          <TabIndicator style={{ backgroundColor: colors.accent }} />
+          <TabIndicator />
         </TabIndicatorWrapper>
       </Wrapper>
     </View>

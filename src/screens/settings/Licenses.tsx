@@ -41,17 +41,20 @@ const Desc = styled.Text`
   color: ${({ theme }) => theme.secondaryText};
 `;
 
+const TouchableWrapper = styled.TouchableOpacity`
+  padding-left: ${SCREEN_PADDING}px;
+  border-radius: 8px;
+  background: ${({ theme }) => theme.secondary};
+`;
+
 const renderItem = ({ item }) => (
-  <TouchableOpacity
-    style={{ marginLeft: SCREEN_PADDING }}
-    onPress={() => Linking.openURL(licenses[item].repository)}
-  >
+  <TouchableWrapper onPress={() => Linking.openURL(licenses[item].repository)}>
     <LicenseTitle>{item}</LicenseTitle>
     <DescWrapper>
       {licenses[item].publisher && <Desc>{licenses[item].publisher}</Desc>}
       <Desc>{licenses[item].licenses} license</Desc>
     </DescWrapper>
-  </TouchableOpacity>
+  </TouchableWrapper>
 );
 
 const Licenses = () => (

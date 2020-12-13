@@ -4,7 +4,7 @@ import {
   useTheme
 } from '@react-navigation/native';
 import React, { useState, useContext, useEffect } from 'react';
-import { ScrollView, Alert, TouchableOpacity } from 'react-native';
+import { ScrollView, Alert, TouchableOpacity, Dimensions } from 'react-native';
 import ColorPicker from 'react-native-color-picker-ios';
 import Animated from 'react-native-reanimated';
 import BottomSheet from 'reanimated-bottom-sheet';
@@ -26,6 +26,8 @@ import {
   PALETTES
 } from '../theme';
 
+const SCREEN_HEIGHT = Dimensions.get('window').height;
+
 const Wrapper = styled.View`
   background: ${({ theme }) => theme.secondary};
   flex: 1;
@@ -34,7 +36,7 @@ const Wrapper = styled.View`
 const Row = styled.View`
   flex-direction: row;
   justify-content: center;
-  margin-top: 25px;
+  margin-top: ${SCREEN_HEIGHT > 750 ? 25 : 15}px;
   align-items: center;
   max-height: 50px;
 `;
@@ -79,6 +81,11 @@ const OpacityView = styled(Animated.View)`
 `;
 
 let history: Pixel[][] = [];
+let fall = new Animated.Value(1);
+const animatedShadowOpacity = Animated.interpolate(fall, {
+  inputRange: [0, 1],
+  outputRange: [0.5, 0]
+});
 
 const Editor = ({ route }) => {
   const navigation = useNavigation();
@@ -98,7 +105,6 @@ const Editor = ({ route }) => {
     DEFAULT_EDITOR_BACKGROUND_COLOR
   );
 
-  let fall = new Animated.Value(1);
   useFocusEffect(
     React.useCallback(() => {
       setCanvasData(route.params?.data?.data?.pixels || getInitialCanvasData());
@@ -130,10 +136,6 @@ const Editor = ({ route }) => {
   const nonEmpty = canvasData.some((item) => item.color !== 'none');
 
   const sheetRef = React.useRef(null);
-  const animatedShadowOpacity = Animated.interpolate(fall, {
-    inputRange: [0, 1],
-    outputRange: [0.5, 0]
-  });
 
   return (
     <>
