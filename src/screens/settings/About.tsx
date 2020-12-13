@@ -108,8 +108,8 @@ const About = () => {
       >
         <DescWrapper>
           <Desc>
-            Tap here to open our privacy policy informations (This will open in
-            your default web browser)
+            Tap here to open our privacy policy informations using your default
+            web browser
           </Desc>
         </DescWrapper>
       </TouchableOpacity>
