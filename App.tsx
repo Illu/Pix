@@ -5,6 +5,7 @@ import { StatusBar } from 'react-native';
 import { AppearanceProvider, useColorScheme } from 'react-native-appearance';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { enableScreens } from 'react-native-screens';
+import SplashScreen from 'react-native-splash-screen';
 import { ThemeProvider } from 'styled-components/native';
 
 import { getColorScheme } from './src/helpers';
@@ -31,6 +32,7 @@ const App = observer((props) => {
   useEffect(() => {
     challengeStore.loadCurrentChallenge();
     imagesStore.loadAvatarsURLs();
+    SplashScreen.hide();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
