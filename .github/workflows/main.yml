@@ -37,7 +37,7 @@ jobs:
         if: steps.yarn-cache.outputs.cache-hit != 'true'
         run: yarn && cd ios && pod install
 
-      - name: Build App
+      - name: Build and Deploy to TestFlight
         run: |
-          echo TODO
-          echo self-hosted runner or Fastlane
+          echo Building and deploying the App to Beta users via TestFlight...
+          fastlane beta
