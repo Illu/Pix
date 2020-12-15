@@ -1,6 +1,9 @@
+import { useTheme } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ActivityIndicator, Alert } from 'react-native';
 import { Product } from 'react-native-iap';
+import * as RNIap from 'react-native-iap';
 import styled from 'styled-components/native';
 
 import Icon from '../../components/Icon';
@@ -67,10 +70,31 @@ const Label = styled.Text`
   color: ${({ theme }) => theme.text};
 `;
 
-const Tips = observer(({ route }) => {
-  const [egg, setEgg] = useState(0);
+const Loader = styled.ActivityIndicator`
+  margin: 40px 0;
+`;
 
-  const { products } = route.params;
+const Tips = observer(() => {
+  const [egg, setEgg] = useState(0);
+  const { colors } = useTheme();
+
+  const [products, setProducts] = useState<RNIap.Product<string>[]>();
+
+  useEffect(() => {
+    const itemSkus = ['com.maximenory.pix'];
+    getProducts(itemSkus);
+  }, []);
+
+  const getProducts = async (itemSkus?: string[]) => {
+    if (itemSkus) {
+      try {
+        const appProducts = await RNIap.getProducts(itemSkus);
+        setProducts(appProducts);
+      } catch (err) {
+        console.warn(err);
+      }
+    }
+  };
 
   return (
     <Wrapper contentContainerStyle={{ alignItems: 'center' }}>
@@ -90,16 +114,13 @@ const Tips = observer(({ route }) => {
           products.map((product: Product, index: number) => (
             <Row key={index}>
               <Label>{product.title}</Label>
-              <PriceWrapper>
+              <PriceWrapper onPress={() => alert('payment...')}>
                 <Price>{product.localizedPrice}</Price>
               </PriceWrapper>
             </Row>
           ))
         ) : (
-          <>
-            <Text>Weird...</Text>
-            <Text>Unable to retrieve tips at this time, try again later!</Text>
-          </>
+          <Loader size="large" color={colors.text} />
         )}
       </ContentWrapper>
     </Wrapper>

@@ -1,9 +1,8 @@
 import auth from '@react-native-firebase/auth';
 import { useNavigation } from '@react-navigation/native';
 import { observer } from 'mobx-react';
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext } from 'react';
 import { Alert, Linking } from 'react-native';
-import * as RNIap from 'react-native-iap';
 import Rate from 'react-native-rate';
 import styled from 'styled-components/native';
 
@@ -20,7 +19,6 @@ const logout = () => {
 const Settings = observer(() => {
   const navigation = useNavigation();
   const userStore = useContext(User);
-  const [products, setProducts] = useState<RNIap.Product<string>[]>();
 
   const items = [
     [
@@ -100,7 +98,7 @@ const Settings = observer(() => {
         title: 'Leave a tip',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => navigation.navigate('Tips', { products })
+        action: () => navigation.navigate('Tips')
       }
     ],
     [
@@ -112,22 +110,6 @@ const Settings = observer(() => {
       }
     ]
   ];
-
-  const getProducts = async (itemSkus?: string[]) => {
-    if (itemSkus) {
-      try {
-        const appProducts = await RNIap.getProducts(itemSkus);
-        setProducts(appProducts);
-      } catch (err) {
-        console.warn(err);
-      }
-    }
-  };
-
-  useEffect(() => {
-    const itemSkus = ['com.maximenory.pix'];
-    getProducts(itemSkus);
-  }, []);
 
   return (
     <Wrapper>
