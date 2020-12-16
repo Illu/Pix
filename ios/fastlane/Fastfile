@@ -15,13 +15,23 @@
 
 default_platform(:ios)
 
+project = "pix.xcodeproj"
+workspace = "pix.xcworkspace"
+
 platform :ios do
   desc "Push a new beta build to TestFlight"
   lane :beta do
-    increment_build_number(xcodeproj: "pix.xcodeproj")
-    get_certificates
-    get_provisioning_profile
-    build_app(workspace: "pix.xcworkspace", scheme: "pix")
+    match(
+      app_identifier: "com.maximenory.pix",
+      readonly: true
+    )
+    increment_build_number(xcodeproj: project)
+    build_app(
+      workspace: workspace,
+      scheme: "pix",
+      xcargs: "-allowProvisioningUpdates",
+      export_xcargs: "-allowProvisioningUpdates"
+    )
     upload_to_testflight
   end
 end
