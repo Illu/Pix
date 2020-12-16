@@ -40,4 +40,4 @@ jobs:
       - name: Build and Deploy to TestFlight
         run: |
           echo Building and deploying the App to Beta users via TestFlight...
-          fastlane beta
+          cd ios && fastlane beta
