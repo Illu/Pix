@@ -5,7 +5,7 @@ import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation } from '@react-navigation/native';
 import React, { useContext } from 'react';
-import { Platform } from 'react-native';
+import { Platform, Alert } from 'react-native';
 import styled from 'styled-components/native';
 
 import Button from '../components/Button';
@@ -111,7 +111,10 @@ const LoginSelection = () => {
           }}
           onPress={() =>
             onAppleButtonPress().then(() => {
-              alert('account created with apple');
+              Alert.alert(
+                'Welcome to Pix 👋',
+                'You can try our editor and post your first artwork right now! You can set your username at any time in your profile page.'
+              );
             })
           }
         />
