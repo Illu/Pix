@@ -1,7 +1,7 @@
 import { useTheme } from '@react-navigation/native';
 import { observer } from 'mobx-react';
 import React, { useState, useEffect } from 'react';
-import { ActivityIndicator, Alert } from 'react-native';
+import { Alert } from 'react-native';
 import { Product } from 'react-native-iap';
 import * as RNIap from 'react-native-iap';
 import styled from 'styled-components/native';
@@ -91,6 +91,10 @@ const Tips = observer(() => {
         const appProducts = await RNIap.getProducts(itemSkus);
         setProducts(appProducts);
       } catch (err) {
+        Alert.alert(
+          'Oh no!',
+          'Unable to retrieve tips at this time... Try again later!'
+        );
         console.warn(err);
       }
     }

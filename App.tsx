@@ -22,7 +22,7 @@ import User from './src/stores/User';
 
 enableScreens();
 
-const App = observer((props) => {
+const App = observer(() => {
   const scheme = useColorScheme();
   const appStateStore = useContext(AppState);
   const challengeStore = useContext(Challenge);
@@ -30,9 +30,12 @@ const App = observer((props) => {
   const userStore = useContext(User);
 
   useEffect(() => {
-    challengeStore.loadCurrentChallenge();
-    imagesStore.loadAvatarsURLs();
-    SplashScreen.hide();
+    const initApp = async () => {
+      await challengeStore.loadCurrentChallenge();
+      await imagesStore.loadAvatarsURLs();
+      SplashScreen.hide();
+    };
+    initApp();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
