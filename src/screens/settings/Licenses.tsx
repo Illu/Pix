@@ -43,7 +43,6 @@ const Desc = styled.Text`
 
 const TouchableWrapper = styled.TouchableOpacity`
   padding-left: ${SCREEN_PADDING}px;
-  border-radius: 8px;
   background: ${({ theme }) => theme.secondary};
 `;
 
