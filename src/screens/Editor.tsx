@@ -287,7 +287,9 @@ const Editor = ({ route }) => {
                 onPress={() => {
                   if (displayDrawTab) {
                     setCurrentColor(color);
-                    setSelectedTool(TOOLS.PENCIL);
+                    if (selectedTool === TOOLS.ERASER) {
+                      setSelectedTool(TOOLS.PENCIL);
+                    }
                   } else {
                     setBackgroundColor(color);
                   }
