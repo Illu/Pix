@@ -284,11 +284,14 @@ const Editor = ({ route }) => {
             {colorPalette.map((color, index) => (
               <ColorDrop
                 key={index}
-                onPress={() =>
-                  displayDrawTab
-                    ? setCurrentColor(color)
-                    : setBackgroundColor(color)
-                }
+                onPress={() => {
+                  if (displayDrawTab) {
+                    setCurrentColor(color);
+                    setSelectedTool(TOOLS.PENCIL);
+                  } else {
+                    setBackgroundColor(color);
+                  }
+                }}
                 color={color}
                 selected={
                   selectedTool !== TOOLS.ERASER && displayDrawTab
