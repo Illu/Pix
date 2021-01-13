@@ -111,7 +111,7 @@ const Tips = observer(() => {
       </IconWrapper>
       <Title>
         If you want to support the development of the App, feel free to leave a
-        tip. It helps us cover the fees needed to keep the App runnning!
+        tip. It helps us cover the fees needed to keep the App running!
       </Title>
       <ContentWrapper>
         {products ? (
