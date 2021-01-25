@@ -98,7 +98,8 @@ const Settings = observer(() => {
         title: 'Leave a tip',
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
-        action: () => navigation.navigate('Tips')
+        action: () => navigation.navigate('Tips'),
+        disabled: true
       }
     ],
     [
