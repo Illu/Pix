@@ -99,7 +99,7 @@ const Settings = observer(() => {
         thumbIcon: 'Money',
         thumbColor: '#FFB800',
         action: () => navigation.navigate('Tips'),
-        disabled: true
+        disabled: false
       }
     ],
     [
