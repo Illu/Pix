@@ -6590,6 +6590,11 @@ react-native-color-picker-ios@^0.1.2:
   resolved "https://registry.yarnpkg.com/react-native-color-picker-ios/-/react-native-color-picker-ios-0.1.2.tgz#8e74ea9ea57040744964d66a95216a6bff3ff741"
   integrity sha512-P+GPATGexpqi6nRg48dxggvboYBIdD7bU1qJfftgdF3Ac05OoKBHsnavgHx+LllrxNhsOHf4HlZ2QNzkFCWSeA==
 
+react-native-confetti@^0.1.0:
+  version "0.1.0"
+  resolved "https://registry.yarnpkg.com/react-native-confetti/-/react-native-confetti-0.1.0.tgz#9ec93c07f845de5ebeaed700043fd5218792b6f1"
+  integrity sha512-+cXJvnPXKc0i/eTQcuzcjrlfIxmn/xFw4UyuVKQOWNK6BfWABvO6Ms6Zp6ivF1E8Vxt2vJkzJlNyoBvMh9FxKA==
+
 react-native-fast-image@^8.3.4:
   version "8.3.4"
   resolved "https://registry.yarnpkg.com/react-native-fast-image/-/react-native-fast-image-8.3.4.tgz#79edca177e30311b19d59ff335625bcbe22650d7"
