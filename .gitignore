@@ -60,3 +60,4 @@ buck-out/
 
 # Api keys
 src/config.ts
+GoogleService-Info.plist
