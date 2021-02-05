@@ -1,13 +1,13 @@
+<p align="center">
+  <img width="200" src="https://maximenory.com/pix/logo.png" />
+</p>
+
 # [Pix](https://apps.apple.com/app/pix-share-your-art/id1542611830?l=en)
 
 [![iTunes App Store](https://img.shields.io/itunes/v/1542611830.svg?style=flat-square)](https://apps.apple.com/app/pix-share-your-art/id1542611830?l=en)
 ![license: MIT](https://img.shields.io/github/license/illu/pix?style=flat-square)
 [![code style: prettier](https://img.shields.io/badge/code_style-prettier-ff69b4.svg?style=flat-square)](https://github.com/prettier/prettier)
 ![Build iOS](https://github.com/Illu/Pix/workflows/Build%20iOS/badge.svg?branch=main)
-
-<p align="center">
-  <img width="200" src="https://maximenory.com/pix/logo.png" />
-</p>
 
 Pix is an online pixel art community where everyone can unleash their creativity on a 16x16 canvas, built with [React-Native](https://github.com/facebook/react-native) for iOS devices.
 
