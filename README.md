@@ -34,7 +34,7 @@ Pix is an online pixel art community where everyone can unleash their creativity
 
 If you want to test the app on a simulator running locally, follow these instructions:
 
-First, you'll need to create or import a `config.ts` file in the `scr` folder, which should export the `firebaseConfig` object.
+First, you'll need to create or import a `config.ts` file in the `scr` folder, which should export the `firebaseConfig` object. Then create or import a `GoogleService-Info.plist` file in the `ios` folder.
 
 ```bash
 $ cd pix
