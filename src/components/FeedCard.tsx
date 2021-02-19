@@ -1,9 +1,10 @@
 import firestore from '@react-native-firebase/firestore';
 import { useTheme } from '@react-navigation/native';
-import React, { useContext, useState, useEffect } from 'react';
+import React, { useContext, useState, useEffect, useMemo } from 'react';
 import { Dimensions, TouchableOpacity, Alert } from 'react-native';
 import styled from 'styled-components/native';
 
+import { MONTHS } from '../constants';
 import User from '../stores/User';
 import { SCREEN_PADDING } from '../theme';
 import { Pixel } from '../types';
@@ -66,6 +67,12 @@ const LoadingUserName = styled.View`
   background: ${({ theme }) => theme.background};
 `;
 
+const DateText = styled(Desc)`
+  margin-top: 3px;
+  font-size: 13px;
+  font-weight: 200;
+`;
+
 interface Props {
   data: Pixel[];
   backgroundColor: string;
@@ -78,6 +85,7 @@ interface Props {
   reports?: number;
   avatar?: string;
   desc?: string;
+  timestamp?: number;
   userRef: any;
 }
 
@@ -93,7 +101,8 @@ const FeedCard = ({
   reports,
   desc = '',
   avatar = 'cat-1',
-  userRef
+  userRef,
+  timestamp
 }: Props) => {
   const { colors } = useTheme();
   const userStore = useContext(User);
@@ -120,6 +129,14 @@ const FeedCard = ({
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  const date = useMemo(() => {
+    if (timestamp) {
+      const d = new Date(timestamp);
+      return `${d.getDate()} ${MONTHS[d.getMonth()]} ${d.getFullYear()}`;
+    }
+    return null;
+  }, [timestamp]);
 
   return (
     <Wrapper>
@@ -221,6 +238,7 @@ const FeedCard = ({
         )}
       </LikesRow>
       {!!desc && <Desc>{desc}</Desc>}
+      {date && <DateText>{date}</DateText>}
     </Wrapper>
   );
 };

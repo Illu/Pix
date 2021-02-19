@@ -1,6 +1,6 @@
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { useContext } from 'react';
 import { RefreshControl, TouchableOpacity, FlatList } from 'react-native';
 import Pressable from 'react-native/Libraries/Components/Pressable/Pressable';
@@ -78,6 +78,7 @@ const Home = observer(() => {
       reports={item.reports}
       desc={item.desc}
       userRef={item.userRef}
+      timestamp={item.timestamp}
     />
   );
 

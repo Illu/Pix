@@ -85,6 +85,7 @@ const Challenges = observer(() => {
       avatar={item.user?.avatar || 'cat-1'}
       desc={item.desc}
       userRef={item.userRef}
+      timestamp={item.timestamp}
     />
   );
 

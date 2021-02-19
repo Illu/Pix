@@ -216,7 +216,6 @@
 				00E356EB1AD99517003FC87E /* Frameworks */,
 				00E356EC1AD99517003FC87E /* Resources */,
 				9B5127785A541987206E098D /* [CP] Copy Pods Resources */,
-				438E0C8EC937284822E92C2F /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -240,7 +239,6 @@
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
 				E8804C9A53E100D16C8CB566 /* [CP] Copy Pods Resources */,
 				F5AF2ABCAB4FA46E2474D5CA /* [CP-User] [RNFB] Core Configuration */,
-				B405A52BED67655F1FC2C005 /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -447,24 +445,6 @@
 			shellPath = /bin/sh;
 			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh";
 		};
-		438E0C8EC937284822E92C2F /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-pix-pixTests/Pods-pix-pixTests-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pix-pixTests/Pods-pix-pixTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		54CB6ECCD031A44ADDD36973 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -527,24 +507,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pix-pixTests/Pods-pix-pixTests-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		B405A52BED67655F1FC2C005 /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-pix/Pods-pix-frameworks.sh",
-				"${PODS_XCFRAMEWORKS_BUILD_DIR}/OpenSSL/OpenSSL.framework/OpenSSL",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/OpenSSL.framework",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-pix/Pods-pix-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		E8804C9A53E100D16C8CB566 /* [CP] Copy Pods Resources */ = {
