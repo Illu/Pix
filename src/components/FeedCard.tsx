@@ -68,9 +68,9 @@ const LoadingUserName = styled.View`
 `;
 
 const DateText = styled(Desc)`
-  margin-top: 3px;
+  margin-top: 5px;
   font-size: 13px;
-  font-weight: 200;
+  font-weight: 300;
 `;
 
 interface Props {
