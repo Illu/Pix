@@ -108,6 +108,12 @@ const Settings = observer(() => {
         thumbIcon: 'Book',
         thumbColor: '#35CE8D',
         action: () => navigation.navigate('Licenses')
+      },
+      {
+        title: 'Source Code',
+        thumbIcon: 'Github',
+        thumbColor: '#4DB3FF',
+        action: () => Linking.openURL('https://github.com/illu/pix')
       }
     ]
   ];

@@ -31,3 +31,4 @@ export { default as Coffee } from './coffee.svg';
 export { default as Gift } from './gift.svg';
 export { default as Smile } from './smile.svg';
 export { default as Undo } from './undo.svg';
+export { default as Github } from './github.svg';
