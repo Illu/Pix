@@ -18,9 +18,9 @@ export const getColorScheme = (theme: Themes, scheme: ColorSchemeName) => {
 };
 
 export const getInitialCanvasData = () =>
-  Array.apply(null, {
+  Array.from({
     length: PIXEL_COUNT * PIXEL_COUNT,
-  }).map(() => ({color: 'none'}));
+  }, () => ({color: 'none'}));
 
 export const dropBucket = (
   data: Pixel[],
