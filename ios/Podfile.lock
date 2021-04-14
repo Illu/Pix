@@ -559,7 +559,7 @@ PODS:
     - React
   - react-native-color-picker-ios (0.1.2):
     - React
-  - react-native-safe-area-context (3.1.9):
+  - react-native-safe-area-context (3.2.0):
     - React-Core
   - react-native-splash-screen (3.2.0):
     - React
@@ -623,7 +623,7 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
-  - RNAppleAuthentication (2.1.0):
+  - RNAppleAuthentication (2.1.1):
     - React-Core
   - RNCAsyncStorage (1.12.1):
     - React-Core
@@ -633,7 +633,7 @@ PODS:
     - React-Core
     - SDWebImage (~> 5.8)
     - SDWebImageWebPCoder (~> 0.6.1)
-  - RNFBApp (10.8.0):
+  - RNFBApp (10.8.1):
     - Firebase/CoreOnly (~> 7.6.0)
     - React-Core
   - RNFBAuth (9.3.5):
@@ -644,19 +644,19 @@ PODS:
     - Firebase/Firestore (~> 7.6.0)
     - React-Core
     - RNFBApp
-  - RNFBStorage (10.8.0):
+  - RNFBStorage (10.8.1):
     - Firebase/Storage (~> 7.6.0)
     - React-Core
     - RNFBApp
-  - RNGestureHandler (1.10.1):
+  - RNGestureHandler (1.10.3):
     - React-Core
-  - RNIap (5.2.7):
+  - RNIap (5.2.14):
     - React-Core
   - RNRate (1.2.4):
     - React
-  - RNReanimated (1.13.2):
+  - RNReanimated (1.13.3):
     - React-Core
-  - RNScreens (2.17.1):
+  - RNScreens (2.18.1):
     - React-Core
   - RNSVG (12.1.0):
     - React
@@ -911,7 +911,7 @@ SPEC CHECKSUMS:
   React-jsinspector: 8e68ffbfe23880d3ee9bafa8be2777f60b25cbe2
   react-native-appearance: 0f0e5fc2fcef70e03d48c8fe6b00b9158c2ba8aa
   react-native-color-picker-ios: 2e23dbcbfd3506c7560632c58b7e130b6015fbeb
-  react-native-safe-area-context: b6e0e284002381d2ff29fa4fff42b4d8282e3c94
+  react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
   react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: 53ea72699698b0b47a6421cb1c8b4ab215a774aa
   React-RCTAnimation: 1befece0b5183c22ae01b966f5583f42e69a83c2
@@ -923,19 +923,19 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
-  RNAppleAuthentication: 46cbc67739bae83ca229497f9b0038f3f5431443
+  RNAppleAuthentication: f4cc93d710f1337f66550d04d84bf47553bc0eae
   RNCAsyncStorage: b03032fdbdb725bea0bd9e5ec5a7272865ae7398
   RNCMaskedView: 5a8ec07677aa885546a0d98da336457e2bea557f
   RNFastImage: d4870d58f5936111c56218dbd7fcfc18e65b58ff
-  RNFBApp: 97b618641633d6d23187a9d0537c3893482c483f
+  RNFBApp: 02bde3edecf2e9694b908a5d3504e03449980f20
   RNFBAuth: 4facfc03bd7c14fa72ad67772f104e119c4506df
   RNFBFirestore: b7e34df88ec867e3037dccf1e8be4e2494afbd67
-  RNFBStorage: e6e439c14e413f6810d304807bf7295ebe22fc7b
-  RNGestureHandler: 5e58135436aacc1c5d29b75547d3d2b9430d052c
-  RNIap: 69c0e2cbf78c91c1bd636d53ecf1d41f66738dca
+  RNFBStorage: fb33c149ca21187b86f4e32dc35693525b5f2ac0
+  RNGestureHandler: a479ebd5ed4221a810967000735517df0d2db211
+  RNIap: f00befe6581a5953191108cb97d9b3872473337b
   RNRate: 15b861025a7821730761fce7f44561ce7e0b2de0
-  RNReanimated: e03f7425cb7a38dcf1b644d680d1bfc91c3337ad
-  RNScreens: b6c9607e6fe47c1b6e2f1910d2acd46dd7ecea3a
+  RNReanimated: 514a11da3a2bcc6c3dfd9de32b38e2b9bf101926
+  RNScreens: f7ad633b2e0190b77b6a7aab7f914fad6f198d8d
   RNSVG: ce9d996113475209013317e48b05c21ee988d42e
   SDWebImage: c666b97e1fa9c64b4909816a903322018f0a9c84
   SDWebImageWebPCoder: d0dac55073088d24b2ac1b191a71a8f8d0adac21
