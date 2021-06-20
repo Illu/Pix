@@ -108,9 +108,8 @@ const Profile = observer(() => {
     } else {
       Alert.alert(
         'Infos',
-        `This post has ${post?.likesCount || 0} likes and ${
-          post?.reports || 0
-        } reports`,
+        `This post has ${post?.likesCount || 0} likes, ${post?.comments?.length || 0
+        } comments, and ${post?.reports || 0} reports`,
         [
           {
             text: 'Delete this post',
