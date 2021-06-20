@@ -13,6 +13,7 @@ import Editor from './screens/Editor';
 import Home from './screens/Home';
 import Login from './screens/Login';
 import LoginSelection from './screens/LoginSelection';
+import PostDetails from './screens/PostDetails';
 import Profile from './screens/Profile';
 import Publish from './screens/Publish';
 import Settings from './screens/Settings';
@@ -67,6 +68,14 @@ const HomeStack = () => {
         name="Appearance"
         component={Appearance}
         options={{ headerTitle: 'Theme' }}
+      />
+      <HomeNav.Screen
+        name="PostDetails"
+        component={PostDetails}
+        options={{
+          headerTitle: 'Comments',
+          stackPresentation: 'modal'
+        }}
       />
     </HomeNav.Navigator>
   );

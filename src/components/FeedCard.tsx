@@ -1,7 +1,7 @@
 import firestore from '@react-native-firebase/firestore';
-import { useTheme } from '@react-navigation/native';
+import { useNavigation, useTheme } from '@react-navigation/native';
 import React, { useContext, useState, useEffect, useMemo } from 'react';
-import { Dimensions, TouchableOpacity, Alert } from 'react-native';
+import { Dimensions, TouchableOpacity, Alert, View } from 'react-native';
 import styled from 'styled-components/native';
 
 import { MONTHS } from '../constants';
@@ -21,18 +21,19 @@ const Row = styled.View<{ noMargins?: boolean }>`
   justify-content: space-between;
 `;
 
-const Wrapper = styled.View`
+const Wrapper = styled.Pressable`
   border-radius: 8px;
   padding: ${SCREEN_PADDING}px;
   background: ${({ theme }) => theme.secondary};
   margin-bottom: ${SCREEN_PADDING}px;
 `;
 
-const Likes = styled.Text`
+const IconLabel = styled.Text`
   color: ${({ theme }) => theme.text};
   font-size: 14px;
   margin-left: 5px;
   font-weight: 600;
+  margin-right: 10px;
 `;
 
 const LikesRow = styled.Pressable`
@@ -87,6 +88,7 @@ interface Props {
   desc?: string;
   timestamp?: number;
   userRef: any;
+  comments: any[];
 }
 
 const FeedCard = ({
@@ -102,10 +104,12 @@ const FeedCard = ({
   desc = '',
   avatar = 'cat-1',
   userRef,
-  timestamp
+  timestamp,
+  comments = []
 }: Props) => {
   const { colors } = useTheme();
   const userStore = useContext(User);
+  const navigation = useNavigation();
 
   const [userInfos, setUserInfos] = useState({ avatar, displayName: userName });
   const [loading, setLoading] = useState(false);
@@ -138,8 +142,12 @@ const FeedCard = ({
     return null;
   }, [timestamp]);
 
+  const goToDetails = () => {
+    navigation.navigate('PostDetails', { comments, id });
+  };
+
   return (
-    <Wrapper>
+    <Wrapper onPress={goToDetails}>
       <Row>
         <Row noMargins>
           {loading ? (
@@ -169,7 +177,7 @@ const FeedCard = ({
                   {
                     text: 'Cancel',
                     style: 'cancel',
-                    onPress: () => {}
+                    onPress: () => { }
                   }
                 ]
               );
@@ -177,8 +185,7 @@ const FeedCard = ({
             }
             Alert.alert(
               'Options',
-              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${
-                userStore.isAdmin ? `\n\nID: ${id}` : ''
+              `Help us get rid of low quality posts (such as innapropriate content or low-effort)${userStore.isAdmin ? `\n\nID: ${id}` : ''
               }`,
               [
                 {
@@ -189,7 +196,7 @@ const FeedCard = ({
                 {
                   text: 'Cancel',
                   style: 'cancel',
-                  onPress: () => {}
+                  onPress: () => { }
                 },
                 userStore.isAdmin && {
                   text: 'Delete',
@@ -214,29 +221,36 @@ const FeedCard = ({
         backgroundColor={backgroundColor}
         size={width - SCREEN_PADDING * 4}
       />
-      <LikesRow
-        onPress={() => {
-          if (userStore.user) {
-            setLocalLiked(!localLiked);
-          }
-          onLike();
-        }}
-      >
-        <Icon
-          name={localLiked ? 'HeartFull' : 'Heart'}
-          color={localLiked ? '#ED6A5A' : colors.text}
-          size={24}
-        />
-        <Likes>{localLikesCount}</Likes>
-        {userStore.isAdmin && reports && (
-          <>
-            <Likes>
-              {'- '}
-              {reports} Reports
-            </Likes>
-          </>
-        )}
-      </LikesRow>
+      <View style={{ flexDirection: 'row' }}>
+        <LikesRow
+          onPress={() => {
+            if (userStore.user) {
+              setLocalLiked(!localLiked);
+            }
+            onLike();
+          }}
+        >
+          <Icon
+            name={localLiked ? 'HeartFull' : 'Heart'}
+            color={localLiked ? '#ED6A5A' : colors.text}
+            size={24}
+          />
+          <IconLabel>{localLikesCount}</IconLabel>
+        </LikesRow>
+        <LikesRow onPress={goToDetails}>
+          <Icon name="Bubble" color={colors.text} size={24} />
+          <IconLabel>{comments.length}</IconLabel>
+          {userStore.isAdmin && reports && (
+            <>
+              <IconLabel>
+                {'- '}
+                {reports} Reports
+              </IconLabel>
+            </>
+          )}
+        </LikesRow>
+      </View>
+
       {!!desc && <Desc>{desc}</Desc>}
       {date && <DateText>{date}</DateText>}
     </Wrapper>

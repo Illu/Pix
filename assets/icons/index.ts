@@ -32,3 +32,5 @@ export { default as Gift } from './gift.svg';
 export { default as Smile } from './smile.svg';
 export { default as Undo } from './undo.svg';
 export { default as Github } from './github.svg';
+export { default as Send } from './send.svg';
+export { default as Bubble } from './bubble.svg';

@@ -79,6 +79,7 @@ const Home = observer(() => {
       desc={item.desc}
       userRef={item.userRef}
       timestamp={item.timestamp}
+      comments={item.comments}
     />
   );
 
