@@ -1,26 +1,21 @@
 import firestore from '@react-native-firebase/firestore';
 import { useNavigation, useTheme } from '@react-navigation/native';
 import { observer } from 'mobx-react-lite';
-import React, { useContext, useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useState } from 'react';
 import {
   Dimensions,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
-  Alert
 } from 'react-native';
 import styled from 'styled-components/native';
 
 import Avatar from '../components/Avatar';
 import Button from '../components/Button';
 import Empty from '../components/Empty';
-import Icon from '../components/Icon';
 import IconButton from '../components/IconButton';
 import PixelArt from '../components/PixelArt';
-import { STATES } from '../constants';
-import Drafts from '../stores/Drafts';
-import User from '../stores/User';
 import { SCREEN_PADDING } from '../theme';
 
 const HeaderWrapper = styled.View`
@@ -56,11 +51,6 @@ const InfosWrapper = styled.View`
   flex: 1;
 `;
 
-const EditButton = styled.TouchableOpacity`
-  align-self: flex-start;
-  margin-right: 10px;
-`;
-
 const ButtonsRow = styled.View`
   flex-direction: row;
   align-items: center;
@@ -75,81 +65,65 @@ const PostWrapper = styled.View`
   justify-content: space-between;
 `;
 
-const Profile = observer(() => {
-  const [showDrafts, setShowDrafts] = useState(false);
+const UserProfile = observer(({ route }) => {
   const [postsDisplayed, setPostDisplayed] = useState(4);
-  const userStore = useContext(User);
-  const draftsStore = useContext(Drafts);
+  const [loading, setLoading] = useState(false);
   const navigation = useNavigation();
-  const { colors } = useTheme();
 
+  const { userRef } = route.params;
+  const [userInfos, setUserInfos] = useState({ avatar: undefined, displayName: undefined, badges: [] });
+  const [posts, setPosts] = useState([]);
   useEffect(() => {
-    userStore.loadPosts();
+    if (userRef) {
+      setLoading(true);
+      userRef
+        .get()
+        .then((userData: any) => {
+          const { displayName, avatar } = userData.data();
+          setUserInfos({ displayName, avatar });
+        })
+        .finally(() => {
+          setLoading(false);
+        });
+    }
+    loadPosts()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!userStore.user) {
-    navigation.popToTop();
-    return;
+  const loadPosts = async () => {
+    const snapshot = await firestore()
+    .collection('Posts')
+    .where('user.id', '==', userRef.id)
+    .orderBy('timestamp', 'desc')
+    .get();
+  const newPosts = [];
+  snapshot.forEach((doc) => {
+    newPosts.push({ ...doc.data(), id: doc.id });
+  });
+  setPosts(newPosts);
   }
 
   const postSize = (Dimensions.get('window').width - SCREEN_PADDING * 3) / 2;
 
-  const displayedData = showDrafts
-    ? draftsStore.drafts
-    : userStore.posts?.slice(0, postsDisplayed);
+  if (loading) {
+    return <ActivityIndicator style={{ margin: 50 }} /> 
+  }
 
-  const openArt = (index: number, post?: any) => {
-    if (showDrafts) {
-      navigation.navigate('EditorModal', {
-        screen: 'Edit',
-        params: { data: draftsStore.drafts[index] }
-      });
-      draftsStore.removeDraft(index);
-    } else {
-      Alert.alert(
-        'Infos',
-        `This post has ${post?.likesCount || 0} likes, ${post?.comments?.length || 0
-        } comments, and ${post?.reports || 0} reports`,
-        [
-          {
-            text: 'Read comments',
-            onPress: () => {
-              navigation.navigate('PostDetails', { comments: post.comments, id: post.id })
-            }
-          },
-          {
-            text: 'Delete this post',
-            style: 'destructive',
-            onPress: () => {
-              firestore()
-                .collection('Posts')
-                .doc(post.id)
-                .delete()
-                .then(() => {
-                  userStore.loadPosts();
-                  Alert.alert('💥', 'Removed post');
-                });
-            }
-          },
-          { text: 'Cancel', style: 'cancel' }
-        ]
-      );
-    }
-  };
+  const displayedData = posts?.slice(0, postsDisplayed);
 
   return (
     <>
       <HeaderWrapper>
         <Row>
-          <Avatar size={119} name={userStore.userData?.avatar} />
+          <Avatar size={119} name={userInfos.avatar} />
           <InfosWrapper>
-            <UserName>{userStore.user.displayName}</UserName>
+            <UserName>{userInfos.displayName}</UserName>
             <PostsInfos>
-              {userStore.posts?.length || 'no'} post
-              {userStore.posts?.length === 1 ? '' : 's'}
+              {posts?.length || 'no'} post
+              {posts?.length === 1 ? '' : 's'}
             </PostsInfos>
             <BadgesRow>
-              {userStore.userData?.badges?.map((badge) => (
+              {userInfos.badges?.map((badge) => (
                 <Avatar
                   key={badge}
                   cloudRef={`badges/${badge.toLowerCase()}.png`}
@@ -157,34 +131,21 @@ const Profile = observer(() => {
               ))}
             </BadgesRow>
           </InfosWrapper>
-          <EditButton onPress={() => navigation.navigate('EditProfile')}>
-            <Icon name="Edit" color={colors.text} size={24} />
-          </EditButton>
         </Row>
         <ButtonsRow>
           <IconButton
             title="Published"
-            onPress={() => setShowDrafts(false)}
-            active={!showDrafts}
+            onPress={() => {}}
+            active
             icon="Picture"
             color="green"
           />
-          <IconButton
-            title="Drafts"
-            onPress={() => setShowDrafts(true)}
-            active={showDrafts}
-            icon="EditPicture"
-            color="yellow"
-          />
         </ButtonsRow>
       </HeaderWrapper>
-      {userStore.state === STATES.LOADING && (
-        <ActivityIndicator style={{ margin: 50 }} />
-      )}
       <ScrollView>
         <PostWrapper>
           {displayedData?.map((post, index) => (
-            <TouchableOpacity key={index} onPress={() => openArt(index, post)}>
+            <TouchableOpacity key={index} onPress={() => {navigation.navigate('PostDetails', { comments: post.comments, id: post.id })}}>
               <PixelArt
                 size={postSize}
                 data={post.data.pixels}
@@ -195,9 +156,8 @@ const Profile = observer(() => {
             </TouchableOpacity>
           ))}
           {!displayedData || (displayedData.length === 0 && <Empty />)}
-          {!showDrafts &&
-            displayedData &&
-            postsDisplayed < userStore.posts.length && (
+          {displayedData &&
+            postsDisplayed < posts.length && (
               <ButtonsRow style={{ marginTop: 15 }}>
                 <Button
                   fill
@@ -212,4 +172,4 @@ const Profile = observer(() => {
   );
 });
 
-export default Profile;
+export default UserProfile;

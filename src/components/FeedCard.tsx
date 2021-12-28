@@ -156,10 +156,10 @@ const FeedCard = ({
               <LoadingUserName />
             </>
           ) : (
-            <>
+            <TouchableOpacity onPress={() => navigation.navigate('UserProfile', { userRef, displayName: userName })} style={{flexDirection: 'row', alignItems: 'center'}}>
               <Avatar name={userInfos?.avatar || 'cat-1'} size={32} />
               <UserName>{userInfos?.displayName || 'Unknown'}</UserName>
-            </>
+            </TouchableOpacity>
           )}
         </Row>
         <TouchableOpacity

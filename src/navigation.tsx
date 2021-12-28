@@ -22,6 +22,7 @@ import Appearance from './screens/settings/Appearance';
 import EditProfile from './screens/settings/EditProfile';
 import Licenses from './screens/settings/Licenses';
 import Tips from './screens/settings/Tips';
+import UserProfile from './screens/UserProfile';
 
 export const RootStack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -43,12 +44,19 @@ const HomeStack = () => {
       <HomeNav.Screen
         name="Profile"
         component={Profile}
-        options={({ navigation, route }) => ({
+        options={({ navigation }) => ({
           headerRight: () => (
             <TouchableOpacity onPress={() => navigation.navigate('Settings')}>
               <Icon name="Settings" size={25} color={colors.text} />
             </TouchableOpacity>
           )
+        })}
+      />
+      <HomeNav.Screen
+        name="UserProfile"
+        component={UserProfile}
+        options={({ route }) => ({
+          headerTitle: `${route.params.displayName || "User"}`
         })}
       />
       <HomeNav.Screen
