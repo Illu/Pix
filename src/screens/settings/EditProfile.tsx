@@ -82,7 +82,6 @@ const EditProfile = () => {
     const update = {
       displayName: username,
       avatar,
-      badges: []
     };
     auth()
       .currentUser.updateProfile(update)
