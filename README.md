@@ -11,6 +11,7 @@
 
 Pix is an online pixel art community where everyone can unleash their creativity on a 16x16 canvas, built with [React-Native](https://github.com/facebook/react-native) for iOS devices.
 
+⚠️ **Note**: This is the repository for version 1 and lower. For version 2 and up, see [the Pix SwiftUI repository](https://github.com/Illu/pix-swiftui). This repository will get updated with the newer code in the future.
 
 ## Stack
 
